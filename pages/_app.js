@@ -33,10 +33,10 @@ function MyApp({ Component, pageProps, router }) {
   return (
     <StateProvider>
       <Header data={pageProps.data?.menuData} />
-      <Ticker />
+      {/* <Ticker />
       <Filter data={ pageProps.data?.homeData?.filters } />
       <Grid />
-      <Islands data={pageProps.data?.homeData} allProjects={pageProps.data?.allProjectsData}/>
+      <Islands data={pageProps.data?.homeData} allProjects={pageProps.data?.allProjectsData}/> */}
       {/* <CookieConsent
         buttonText={pageProps.data?.menuData.cookieaccept}
         declineButtonText={pageProps.data?.menuData.cookierefuse}
