@@ -47,11 +47,7 @@ export default function About({ data = {}, preview }) {
   }
 
   useEffect(() => {
-    document.querySelector(".filter").classList.add("hide-filter")
 
-    return () => {
-      document.querySelector(".filter").classList.remove("hide-filter")
-    }
   }, []);
 
   return (

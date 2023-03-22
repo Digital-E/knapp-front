@@ -3,39 +3,16 @@ import { motion } from "framer-motion"
 
 
 const Container = styled(motion.div)`
-    border: 1px solid black;
+    padding: 9px 12px;
     border-radius: 999px;
-    background: white;
-    transition: background 0.2s;
-    line-height: 0.8;
-    width: fit-content;
-    cursor: pointer;
+    background: #161616;
+    text-transform: uppercase;
+    font-family: ProFontWindows;
+    font-size: 0.875rem;
 
-    > a:hover {
-        background: var(--light-gray) !important;
-    }
-
-    > a {
+    span {
         position: relative;
-        display: block;
-        border-radius: 999px;
-        color: black;
-        font-family: Picnic Regular;
-        font-size: 2rem;
-        text-decoration: none;
-        line-height: 0.8;
-        padding: 0.5rem 0.5rem;
-        margin: 0;
-    }
-
-    .active-link {
-        background: var(--gray);
-    }
-
-    > a > span {
-        position: relative;
-        font-family: Picnic Regular;
-        top: -2px;
+        top: 0.5px;
     }
 `
 
@@ -45,7 +22,7 @@ export default function Component ({ children }) {
         <Container 
         // whileHover={{scale: 1.05}}
         >
-            {children}
+            <span>{children}</span>
         </Container>
     )
 }

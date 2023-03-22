@@ -1,0 +1,31 @@
+import { useEffect, useState, useRef } from 'react'
+import styled from 'styled-components'
+
+import Thumbnails from './thumbnails'
+
+const Container = styled.div`
+    margin-top: 170px;
+`
+
+import SubList from './sub-list'
+
+function Component({ data }) {
+    let [currentSelected, setCurrentSelected] = useState(null);
+
+    let toggleProject = (currentProject) => {
+        setCurrentSelected(currentProject)
+    }
+
+    return(
+        <Container>
+            {
+                data?.categories?.map((item, index) => (
+                    <SubList data={item} categoryIndex={index} toggleProject={(currentProject) => toggleProject(currentProject)} />
+                ))
+            }
+            <Thumbnails data={data} currentSelected={currentSelected} />
+        </Container>
+    )
+}
+
+export default Component

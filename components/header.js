@@ -8,13 +8,15 @@ import Button from './button'
 
 let Container = styled.header`
   position: fixed;
-  width: 100%;
+  width: fit-content;
   display: flex;
   align-items: center;
-  padding: 30px 30px;
+  padding: 20px;
   z-index: 2;
   top: 0;
+  right: 0;
   box-sizing: border-box;
+  user-select: none;
 
   > div:nth-child(1) {
     z-index: 1;
@@ -28,44 +30,48 @@ let Container = styled.header`
    margin: 0;
   }
 
-  .nav-mobile-burger {
-    display: none;
-    flex-direction: column;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-    position: relative;
-    width: 30px;
-    height: 35px;
-    z-index: 1;
+  @media(min-width: 990px) {
+    .active-link {
+      opacity: 1 !important;
+    }
+  }
+
+.nav-mobile-burger {
+  position: relative;
+  display: none;
+  padding: 7px 10px;
+  border-radius: 25px;
+  z-index: 1;
+  color: var(--primary);
+  background: #252525;
+  font-family: FT88 Regular;
+  text-transform: uppercase;
+  font-size: 0.875rem;
 }
 
-.nav-mobile-burger > div {
-    height: 1px;
-    width: 30px;
-    background-color: black;
-    margin: 3px 0px;
+.nav-mobile-burger > span:nth-child(1) {
+  display: block;
 }
 
-&.nav--open .nav-mobile-burger > div:nth-child(1) {
-    position: absolute;
-    transform: rotateZ(45deg);
-    transform-origin: center center;
+.nav-mobile-burger > span:nth-child(2) {
+  display: none;
 }
 
-&.nav--open .nav-mobile-burger > div:nth-child(2) {
-    position: absolute;
-    transform: rotateZ(-45deg);
-    transform-origin: center center;
+&.nav--open .nav-mobile-burger > span:nth-child(1) {
+  display: none;
 }
 
-&.nav--open .nav-mobile-burger > div:nth-child(3) {
-    display: none;
+&.nav--open .nav-mobile-burger > span:nth-child(2) {
+  display: block;
 }
+
 
 @media(max-width: 989px) {
-  // background: white;
+  top: auto;
+  bottom: 0;
+  left: 50%;
+  padding: 35px;
+  transform: translateX(-50%);
   justify-content: space-between;
   
   .nav-mobile-burger {
@@ -77,34 +83,55 @@ let Container = styled.header`
 
 let List = styled.ul`
   display: flex;
-  flex-direction: column;
+
+  @media(max-width: 989px) {
+    align-items: center;
+  }
 `
 
 let ListItem = styled.li`
-  width: fit-content;
+
+  a {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  @media(max-width: 989px) {
+    > a > span:nth-child(2) {
+      display: none;
+    }
+  }
+
+  @media(min-width: 990px) {
+    > a > span:nth-child(3) {
+      display: none;
+    }
+  }
 `
 
 let Menu = styled.div`
-  display: flex;
-  top: 0;
-  left: 0;
-  width: 100%;
   
-
   ${ListItem} {
-    margin-left: 10px;
+    margin-right: 20px;
   }
 
   @media(max-width: 989px) {
     display: none;
-    position: absolute;
     flex-direction: column;
-    padding: 80px 30px 30px 30px;
-    // background: white;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    background: #1A1A1A;
+    border-radius: 25px;
+    bottom: 20px;
+    padding: 20px 0 65px 0;
 
     ${ListItem} {
-      margin-left: 0px;
-      margin-bottom: 10px;
+      margin: 0;
     }
 
     > ul {
@@ -116,9 +143,25 @@ let Menu = styled.div`
     }
   }
 `
+let Dot = styled.div`
+  height: 5px;
+  width: 5px;
+  min-height: 5px;
+  min-width: 5px;
+  border: 1px solid var(--primary);
+  border-radius: 999px;
+  margin-right: 5px;
+
+  @media(max-width: 989px) {
+    display: none;
+  }
+`
 
 
-
+let sliceLabel = (label) => {
+  let firstLetter = label.split('').splice(0,1)
+  return firstLetter
+}
 
 
 export default function Header({ data }) {
@@ -130,25 +173,31 @@ export default function Header({ data }) {
 
   return (
     <Container className={menuOpen ? "nav--open" : ""}>
-      <div
+      {/* <div
         onClick={() => {setMenuOpen(false);}}>
           <Button>
             <Link href={`/`}>
-              <span>cities.work</span>
+              <span></span>
             </Link>
           </Button>
-      </div>
+      </div> */}
       <div class="nav-mobile-burger" onClick={() => setMenuOpen(!menuOpen)}>
-        <div></div>
-        <div></div>
-        <div></div>
+        <span>Menu</span>
+        <span>Close</span>
       </div>
       <Menu className={menuOpen ? "nav--open" : ""}>
         <List>
           {
           data?.menuItems?.map((item, index) => {
-            let isLast = index === data.menuItems.length - 1 ? true : false
-            return <ListItem key={item._id}  onClick={() => setMenuOpen(false)} ><Button><Link href={item.url} isMenu={true}><span>{item.label}</span></Link></Button></ListItem>
+            return (
+              <ListItem key={item._id}  onClick={() => setMenuOpen(false)} >
+                <Link href={item.url} isMenu={true}>
+                  <Dot className='dot' />
+                  <span>{sliceLabel(item.label)}</span>
+                  <span>{item.label}</span>
+                </Link>
+              </ListItem>
+            )
           })
           }
         </List>

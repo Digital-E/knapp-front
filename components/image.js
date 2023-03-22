@@ -5,7 +5,7 @@ import Img from 'next/image';
 
 const Image = ({ data, hasCaption }) => {
 
-    if(data === null) return null;
+    if(data === null || data === undefined) return null;
 
     const configuredSanityClient = sanityClient(sanityConfig);
 

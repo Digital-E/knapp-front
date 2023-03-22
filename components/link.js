@@ -17,11 +17,11 @@ const LinkComponent = ({href, children, isMenu, isSubSubPage, isLast}) => {
 
     // Refactor Link if it has underscores
 
-    if(split.length === 3 && href !== null) {
+    if(split.length === 2 && href !== null) {
 
-        newUrl = `/${split[0]}/${split[1]}/${split[2]}`
+        newUrl = `/${split[0]}/${split[1]}`
 
-    } else if (split.length === 4 && href !== null) {
+    } else if (split.length === 3 && href !== null) {
 
         newUrl = `/${split[0]}/${split[1]}/${split[2]}/${split[3]}`
         
