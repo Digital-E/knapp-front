@@ -2,8 +2,7 @@ import styled from 'styled-components'
 
 const Container = styled.div`
     position: relative;
-    height: 100%;
-    width: 100%;
+    padding-bottom: ${props => props.height / props.width * 100}%;
 
     > video {
         position: absolute;
@@ -19,7 +18,7 @@ export default function Component({ data, id }) {
 
     return (
         <>
-            <Container>
+            <Container width={data.width} height={data.height}>
                 <video width={data.width} height={data.height} autoPlay muted loop playsInline>
                     <source src={data.asset.url} type="video/mp4" />
                     Your browser does not support the video tag.
