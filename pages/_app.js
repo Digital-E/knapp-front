@@ -16,12 +16,6 @@ import Header from '../components/header'
 import Footer from '../components/footer'
 
 
-import Grid from '../components/home/grid'
-import Filter from '../components/home/filter'
-import Islands from '../components/home/islands/islands'
-import Ticker from '../components/ticker'
-
-
 function MyApp({ Component, pageProps, router }) {
 
   useEffect(() => {

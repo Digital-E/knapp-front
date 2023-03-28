@@ -1,0 +1,33 @@
+import styled from 'styled-components'
+
+const Container = styled.div`
+    position: relative;
+    height: 100%;
+    width: 100%;
+
+    > video {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
+    }
+`
+
+
+export default function Component({ data, id }) {
+
+    return (
+        <>
+            <Container>
+                <video width={data.width} height={data.height} autoPlay muted loop playsInline>
+                    <source src={data.asset.url} type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            </Container>
+            {
+                data?.caption && <span className="caption">{data.caption}</span>
+            }
+        </>
+    )
+}

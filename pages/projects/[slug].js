@@ -10,27 +10,66 @@ import { sanityClient, getClient } from '../../lib/sanity.server'
 
 import { store } from "../../store"
 
-import SidePanel from '../../components/home/side-panel'
-
 import styled from "styled-components"
 
 import splitSlug from "../../lib/splitSlug"
 
+// Components
+
+import Header from '../../components/projects/header'
+import Body from '../../components/body'
+import Slices from '../../components/projects/slices'
+import MediaStack from '../../components/projects/media-stack'
+
 let Container = styled.div`
-    position: absolute;
-    height: 100vh;
-    width: 100vw;
-    top: 0;
-    left: 0;
-    z-index: 3;
+`
+
+let InnerContainer = styled.div`
+  display: flex;
+`
+
+
+let LeftCol = styled.div`
+  flex-basis: 70%;
+  margin: 10px 0 0 120px;
+`
+
+let InnerLeftCol = styled.div`
+  > div:nth-child(1) {
+    width: 65%
+  }
+
+  .media-gallery {
+    width: 75%
+  }
+
+  .text {
+    width: 85%
+  }
+`
+
+
+let RightCol = styled.div`
+  flex-basis: 30%;
+  margin-right: 30px;
 `
 
 
 
+let Description = styled.div`
+
+  p {
+    font-size: inherit;
+  }
+`
+
+
 export default function Component({ data = {}, preview }) {
-    //Context
-    const context = useContext(store);
-    const { state, dispatch } = context;
+  //Context
+  const context = useContext(store);
+  const { state, dispatch } = context;
+
+  let [mediaStack, setMediaStack] = useState([])
 
   const router = useRouter()
 
@@ -42,7 +81,16 @@ export default function Component({ data = {}, preview }) {
   }
 
   useEffect(() => {
+    // Create Media Stack Array
+    let array = []
 
+    data.data.slices.forEach(item => {
+      if(item._type === 'MediaGallery') {
+        array.push(...item.media)
+      }
+    })
+
+    setMediaStack(array)
   }, [])
 
   return (
@@ -61,7 +109,21 @@ export default function Component({ data = {}, preview }) {
                 />
               </Head>
               <Container>
-                <SidePanel data={data.data} />
+                <Header data={data.data} />
+                <InnerContainer>
+                  <LeftCol>
+                    <InnerLeftCol>
+                      <Description className='body-large'>
+                        <Body content={data.data.description} />
+                      </Description>
+
+                      <Slices data={data.data.slices} />
+                    </InnerLeftCol>
+                  </LeftCol>
+                  <RightCol>
+                    <MediaStack data={mediaStack} />
+                  </RightCol>
+                </InnerContainer>
               </Container>
           </>
         )}

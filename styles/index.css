@@ -190,15 +190,16 @@ h4, .h4 {
 }
 
 h5, .h5 {
-    font-family: "ProFontWindows";
+    font-family: "FT88 Regular";
     /* font-size: 1.6rem; */
     /* font-size: 1.12rem; */
     /* font-size: 1.3rem; */
-    font-size: 1rem;
+    font-size: 0.75rem;
     /* letter-spacing: -0.02em; */
     font-weight: 100;
     margin: 0;
     line-height: 1;
+    text-transform: uppercase;
 }
 
 h6, .h6 {
@@ -211,15 +212,28 @@ h6, .h6 {
     line-height: 1;
 }
 
-
-p, .p, a {
+.body-large {
     font-family: "FT88 Regular";
     /* font-size: 1.3rem; */
-    font-size: 1rem;
+    font-size: 0.875rem;
     letter-spacing: 0.02em;
     font-weight: 100;
     margin: 10px 0;
     line-height: 1;
+    color: var(--secondary);
+    text-transform: uppercase;
+}
+
+
+p, .p, a {
+    font-family: "FT88 Regular";
+    /* font-size: 1.3rem; */
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    font-weight: 100;
+    margin: 10px 0;
+    line-height: 1;
+    color: var(--secondary)
 }
 
 input, input::placeholder, button, .error-label, label {

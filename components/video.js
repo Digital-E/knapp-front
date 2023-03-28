@@ -20,9 +20,9 @@ const Container = styled.div`
 
 export default function Component({ data, id }) {
 
-    if(data.videoId === null) return null;
+    if(data?.videoId === null) return null;
 
-    let videoId = data.videoId;
+    let videoId = data?.videoId;
 
     let regExp = /[a-zA-Z]/g;
 

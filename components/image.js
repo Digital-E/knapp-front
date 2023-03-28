@@ -16,7 +16,10 @@ const Image = ({ data, hasCaption }) => {
 
     return (
         <>
-        <Img {...imageProps} alt={data.caption} layout="responsive" sizes="(max-width: 800px) 100vw, 800px" />
+        <Img {...imageProps} alt={data.caption} 
+        layout="responsive" 
+        sizes="(max-width: 800px) 100vw, 800px" 
+        />
         {
             (hasCaption && data.caption) && <span className="caption">{data.caption}</span>
         }
