@@ -11,8 +11,6 @@ import styled from 'styled-components'
 
 import Body from "../components/body"
 
-import Grid from "../components/home/grid"
-
 import Text from "../components/about/text"
 
 const Container = styled.div`
@@ -64,7 +62,6 @@ export default function About({ data = {}, preview }) {
             <TextPlaceholder>
               <img src='images/text-placeholder.svg' />
             </TextPlaceholder>
-            <Grid />
         </Container>
       </Layout>
     </>
