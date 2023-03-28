@@ -23,10 +23,12 @@ import Slices from '../../components/projects/slices'
 import MediaStack from '../../components/projects/media-stack'
 
 let Container = styled.div`
+  position: relative; 
+  min-height: 100vh;
 `
 
 let InnerContainer = styled.div`
-  position: fixed;
+  position: absolute;
   display: flex;
   height: 100vh;
   overflow: scroll;

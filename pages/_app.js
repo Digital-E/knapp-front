@@ -19,12 +19,19 @@ import Footer from '../components/footer'
 
 let desktopVariants = {
   pageInitial: {
-    opacity: 0
+    opacity: 0,
+    filter: "blur(10px)"
   },
   pageAnimate: {
     opacity: 1,
+    filter: "blur(0px)",
     transition: {
-      duration: 1
+      opacity: {
+        duration: 0.5
+      },
+      filter: {
+        duration: 0.5,
+      }
     }
   },
   pageExit: {
@@ -67,7 +74,7 @@ function MyApp({ Component, pageProps, router }) {
         >
         <Body content={pageProps.data?.menuData.cookietext} />
       </CookieConsent> */} 
-      <AnimatePresence mode='wait' onExitComplete={() => { window.scrollTo(0,0) }}>   
+      <AnimatePresence exitBeforeEnter onExitComplete={() => { window.scrollTo(0,0) }}>   
         <motion.div key={router.asPath} initial="pageInitial" animate="pageAnimate" exit="pageExit" variants={desktopVariants}>            
           <Component {...pageProps} />
         </motion.div>
