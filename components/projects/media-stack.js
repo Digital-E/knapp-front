@@ -4,12 +4,17 @@ import Image from "../image"
 import Video from "../video-native"
 
 
-const Container = styled.div``
+const Container = styled.div`
+`
 
 const SliceWrapper = styled.div`
     border-radius: 7px;
     overflow: hidden;
     margin-bottom: 10px;
+
+    :last-child {
+        margin-bottom: 30px;
+    }
 `
 
 
@@ -17,9 +22,9 @@ let renderSlice = (slice, index) => {
     
       switch(slice._type) {
           case 'video':
-          return <SliceWrapper key={slice._key}><Video data={slice} hasCaption={true} /></SliceWrapper>
+          return <SliceWrapper key={slice._key} id={`media-stack-element-${index}`}><Video data={slice} hasCaption={true} /></SliceWrapper>
           case 'image':
-          return <SliceWrapper key={slice._key}><Image data={slice} hasCaption={true} /></SliceWrapper>
+          return <SliceWrapper key={slice._key} id={`media-stack-element-${index}`}><Image data={slice} hasCaption={true} /></SliceWrapper>
       }
 }
 

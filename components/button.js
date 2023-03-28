@@ -3,6 +3,7 @@ import { motion } from "framer-motion"
 
 
 const Container = styled(motion.div)`
+    width: fit-content;
     padding: 9px 12px;
     border-radius: 999px;
     background: #161616;

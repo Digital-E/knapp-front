@@ -17,6 +17,7 @@
 :root {
     /* Globals */
     --background: #1C1C1C;
+    --background-secondary: #161616;
     --primary: #88C48D;
     --secondary: #8B8B8B;
     --ternary: #7C7C7C;
@@ -47,6 +48,10 @@
     color: var(--primary);
 }
 
+*::-webkit-scrollbar {
+    display: none;
+}
+
 #__next {
     opacity: 0;
     transition: opacity 1s;
@@ -58,7 +63,7 @@ html {
 
 body {
     position: relative;
-    background: #1C1C1C;
+    background: var(--background);
 }
 
 .body-lock {

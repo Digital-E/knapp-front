@@ -2,18 +2,44 @@ import 'reset-css';
 
 import '../styles/index.css'
 
-import "../styles/flickity.css";
+import '../styles/flickity.css';
 
 import { useEffect } from 'react'
 
-import { StateProvider } from "../store"
+import { motion, AnimatePresence } from 'framer-motion'
 
-import Body from "../components/body"
-import CookieConsent from "react-cookie-consent"
+import { StateProvider } from '../store'
+
+import Body from '../components/body'
+import CookieConsent from 'react-cookie-consent'
 
 
 import Header from '../components/header'
 import Footer from '../components/footer'
+
+let desktopVariants = {
+  pageInitial: {
+    opacity: 0
+  },
+  pageAnimate: {
+    opacity: 1,
+    transition: {
+      duration: 1
+    }
+  },
+  pageExit: {
+    opacity: 0,
+    filter: "blur(20px)",
+    transition: {
+      opacity: {
+        duration: 0.5
+      },
+      filter: {
+        duration: 0.5,
+      }
+    }
+  }
+}
 
 
 function MyApp({ Component, pageProps, router }) {
@@ -27,10 +53,6 @@ function MyApp({ Component, pageProps, router }) {
   return (
     <StateProvider>
       <Header data={pageProps.data?.menuData} />
-      {/* <Ticker />
-      <Filter data={ pageProps.data?.homeData?.filters } />
-      <Grid />
-      <Islands data={pageProps.data?.homeData} allProjects={pageProps.data?.allProjectsData}/> */}
       {/* <CookieConsent
         buttonText={pageProps.data?.menuData.cookieaccept}
         declineButtonText={pageProps.data?.menuData.cookierefuse}
@@ -44,8 +66,12 @@ function MyApp({ Component, pageProps, router }) {
         onDecline={() => {}}
         >
         <Body content={pageProps.data?.menuData.cookietext} />
-      </CookieConsent> */}   
-      <Component {...pageProps} />
+      </CookieConsent> */} 
+      <AnimatePresence mode='wait' onExitComplete={() => { window.scrollTo(0,0) }}>   
+        <motion.div key={router.asPath} initial="pageInitial" animate="pageAnimate" exit="pageExit" variants={desktopVariants}>            
+          <Component {...pageProps} />
+        </motion.div>
+      </AnimatePresence>
       {/* <Footer data={pageProps.data?.footerData}/> */}
     </StateProvider>
   )

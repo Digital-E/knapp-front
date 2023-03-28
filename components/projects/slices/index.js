@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import styled from "styled-components"
 
 import Body from '../../body'
@@ -5,26 +6,31 @@ import MediaGallery from './media-gallery'
 
 const SliceWrapper = styled.div`
     margin: 70px 0 70px 0;
+`
 
-    // &.text {
-    //     width: 75%;
-    // }
+const HideCounter = styled.div`
+  display: none;
 `
 
 
-let renderSlice = (slice, index) => {
-    
-    
-      switch(slice._type) {
-          case 'MediaGallery':
-          return <SliceWrapper key={slice._key} className='media-gallery'><MediaGallery data={slice.media}  /></SliceWrapper>
-          case 'textObject':
-          return <SliceWrapper key={slice._key} className='text'><Body content={slice.text} /></SliceWrapper>;
-      }
-}
-
 
 export default function Component({ data }) {
+
+  let mediaCount = useRef(0);
+
+  let renderSlice = (slice, index) => {
+        switch(slice._type) {
+            case 'MediaGallery':
+            return (
+              <>
+              <SliceWrapper key={slice._key} className='media-gallery'><MediaGallery data={slice.media} mediaCount={mediaCount.current} /></SliceWrapper>
+              <HideCounter>{mediaCount.current += slice.media.length}</HideCounter>
+              </>
+            )
+            case 'textObject':
+            return <SliceWrapper key={slice._key} className='text'><Body content={slice.text} /></SliceWrapper>;
+        }
+  }  
 
   return (data !== null && data !== undefined) ? data.map((slice, index) => renderSlice(slice, index)) : null
 }

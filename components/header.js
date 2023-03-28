@@ -1,10 +1,7 @@
 import { useRouter } from "next/router"
 import { useState } from "react"
 import Link from './link'
-import LocaleLink from "./locale-link"
 import styled from "styled-components"
-
-import Button from './button'
 
 let Container = styled.header`
   position: fixed;

@@ -16,6 +16,7 @@ import splitSlug from "../../lib/splitSlug"
 
 // Components
 
+import Button from '../../components/button'
 import Header from '../../components/projects/header'
 import Body from '../../components/body'
 import Slices from '../../components/projects/slices'
@@ -25,13 +26,19 @@ let Container = styled.div`
 `
 
 let InnerContainer = styled.div`
+  position: fixed;
   display: flex;
+  height: 100vh;
+  overflow: scroll;
+  z-index: 0;
 `
 
 
 let LeftCol = styled.div`
   flex-basis: 70%;
-  margin: 10px 0 0 120px;
+  margin: 0px 0 0 120px;
+  padding-top: 120px;
+  overflow: scroll;
 `
 
 let InnerLeftCol = styled.div`
@@ -48,13 +55,12 @@ let InnerLeftCol = styled.div`
   }
 `
 
-
 let RightCol = styled.div`
   flex-basis: 30%;
-  margin-right: 30px;
+  margin: 0 40px 0 0;
+  padding-top: 130px;
+  overflow: scroll;
 `
-
-
 
 let Description = styled.div`
 
@@ -62,6 +68,15 @@ let Description = styled.div`
     font-size: inherit;
   }
 `
+
+const ButtonWrapper = styled.div`
+  width: 85%;
+
+  > div {
+    margin: 0 auto 30px auto;
+  }
+`
+
 
 
 export default function Component({ data = {}, preview }) {
@@ -116,11 +131,13 @@ export default function Component({ data = {}, preview }) {
                       <Description className='body-large'>
                         <Body content={data.data.description} />
                       </Description>
-
                       <Slices data={data.data.slices} />
+                      <ButtonWrapper>
+                        <Button>More Projects +</Button>
+                      </ButtonWrapper>
                     </InnerLeftCol>
                   </LeftCol>
-                  <RightCol>
+                  <RightCol id='project-page-right-column'>
                     <MediaStack data={mediaStack} />
                   </RightCol>
                 </InnerContainer>
