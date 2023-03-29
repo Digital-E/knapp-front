@@ -4,9 +4,12 @@ import Image from '../image'
 
 const Container = styled.div`
     position: fixed;
+    display: flex;
+    align-items: flex-end;
     bottom: 30px;
     right: 40px;
     width: 25%;
+    height: 100%;
 `
 
 const Thumbnail = styled.div`
@@ -15,10 +18,16 @@ const Thumbnail = styled.div`
     width: 100%;
     border-radius: 10px;
     overflow: hidden;
+    // transform: translateY(5px);
+    // filter: blur(20px);
+    // transition: opacity 0.5s, transform 0.5s;
 
     &.show-thumbnail {
-        position: relative;
+        position: absolute;
         opacity: 1;
+        transform: translateY(0px);
+        // filter: blur(0px);
+        // transition: opacity 0.7s 0.4s, transform 0.7s 0.3s, filter 0.3s;
     }
 `
 
@@ -66,7 +75,7 @@ function Component({ data, currentSelected }) {
 
         let index = allData[currentSelected.category].projects[currentSelected.project].project.index
 
-        Array.from(containerRef.current.children)[index].classList.add('show-thumbnail')
+        Array.from(containerRef.current.children)[index]?.classList.add('show-thumbnail')
 
     }, [currentSelected])
 

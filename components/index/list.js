@@ -20,7 +20,7 @@ function Component({ data }) {
         <Container>
             {
                 data?.categories?.map((item, index) => (
-                    <SubList data={item} categoryIndex={index} toggleProject={(currentProject) => toggleProject(currentProject)} />
+                    <SubList index={index} data={item} categoryIndex={index} currentSelected={currentSelected} toggleProject={(currentProject) => toggleProject(currentProject)} />
                 ))
             }
             <Thumbnails data={data} currentSelected={currentSelected} />

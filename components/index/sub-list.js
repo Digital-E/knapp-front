@@ -2,7 +2,17 @@ import styled from 'styled-components'
 
 import ListItem from './list-item'
 
-const Container = styled.div``
+const Container = styled.div`
+    &.hide {
+        opacity: 0.1;
+        transition: opacity 0.3s;
+    }
+
+    &.show {
+        opacity: 1;
+        transition: opacity 0.7s;
+    }
+`
 
 const ListHeader = styled.h3`
 `
@@ -12,15 +22,15 @@ const List = styled.div`
 `
 
 
-function Component({ data, categoryIndex, toggleProject }) {
+function Component({ index, data, categoryIndex, currentSelected, toggleProject }) {
 
     return(
-        <Container>
+        <Container className={currentSelected?.category === index ? 'show' : currentSelected !== null ? 'hide' : 'show'}>
             <ListHeader>{data.title}</ListHeader>
             <List>
                 {
                     data.projects.map((item, index) => (
-                        <ListItem data={item} categoryIndex={categoryIndex} projectIndex={index} toggleProject={(currentProject) => toggleProject(currentProject)}/>
+                        <ListItem data={item} currentSelected={currentSelected} categoryIndex={categoryIndex} projectIndex={index} toggleProject={(currentProject) => toggleProject(currentProject)}/>
                     ))
                 }
             </List>

@@ -12,14 +12,23 @@ import { getClient } from '../lib/sanity.server'
 
 import Body from "../components/body"
 
-const Wrapper = styled.div`
-    padding: 0 0px;
-    width: 70%;
-    margin: 0 0 100px 0;
+const Container = styled.div`
+    position: relative;
+    display: flex;
+    min-height: calc(100vh - 50px);
+    padding: 20px 120px 30px 120px;
+`
 
-    @media(max-width: 990px) {
-        width: 100%;
-      }
+const Text = styled.div`
+  width: 50%;
+
+  &.body-large p, &.body-large a {
+    font-size: inherit;
+  }
+
+  * {
+    text-transform: uppercase;
+  }
 `
 
 
@@ -52,10 +61,11 @@ export default function Post({ data = {}, preview }) {
                   content={data.content}
                 />
               </Head>
-              {/* <MediaHeader data={data} /> */}
-              <Wrapper>
-                <Body content={data.text} />
-              </Wrapper>
+              <Container>
+                <Text className='body-large'>
+                  <Body content={data.text} />
+                </Text>
+              </Container>              
           </>
         )}
     </Layout>

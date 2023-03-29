@@ -83,12 +83,15 @@ a {
     color: var(--primary);
     font-size: 1.125rem;
     text-decoration: none;
-    transition: opacity var(--transition-out);
+    /* transition: opacity var(--transition-out); */
+    transition: color var(--transition-out);
 }
 
 a:hover {
-    opacity: 0.4;
-    transition: opacity var(--transition-in);
+    /* opacity: 0.4;
+    transition: opacity var(--transition-in); */
+    color: var(--primary);
+    transition: color var(--transition-in);
 }
 
 .button {
@@ -187,11 +190,12 @@ h4, .h4 {
     font-family: "ProFontWindows";
     /* font-size: 1.8rem; */
     /* font-size: 1.3rem; */
-    font-size: 1.3rem;
+    font-size: 1.125rem;
     /* letter-spacing: -0.02em; */
     font-weight: 100;
     margin: 0;
     line-height: 1;
+    text-transform: uppercase;
 }
 
 h5, .h5 {

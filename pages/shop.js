@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import Layout from '../components/layout'
 import { SITE_NAME } from '../lib/constants'
-import { homeQuery, previewHomeQuery, aboutQuery, previewAboutQuery, menuQuery, footerQuery } from '../lib/queries'
+import { homeQuery, previewHomeQuery, shopQuery, previewShopQuery, menuQuery, footerQuery } from '../lib/queries'
 import { getClient } from '../lib/sanity.server'
 
 import styled from 'styled-components'
@@ -33,29 +33,30 @@ const Text = styled.div`
 
 
 
-export default function About({ data = {}, preview }) {
+export default function Shop({ data = {}, preview }) {
 
   const router = useRouter()
 
-  const slug = data?.aboutData?.slug
+  const slug = data?.shopData?.slug
 
   if (!router.isFallback && !slug) {
     return <ErrorPage statusCode={404} />
   }
 
+
   return (
     <>
       <Layout preview={preview}>
         <Head>
-          <title>{data?.aboutData?.title} | { SITE_NAME }</title>
+          <title>{data?.shopData?.title} | { SITE_NAME }</title>
           <meta
           name="description"
-          content={data?.aboutData?.content}
+          content={data?.shopData?.content}
           />
         </Head>
         <Container>
           <Text className='body-large'>
-            <Body content={data?.aboutData?.text} />
+            <Body content={data?.shopData?.text} />
           </Text>
         </Container>
       </Layout>
@@ -65,18 +66,18 @@ export default function About({ data = {}, preview }) {
 
 export async function getStaticProps({ preview = false, params }) {
 
-  let slug = `about`
+  let slug = `shop`
 
   let homeData = await getClient(preview).fetch(homeQuery)
 
-  let aboutData = await getClient(preview).fetch(aboutQuery, {
+  let shopData = await getClient(preview).fetch(shopQuery, {
     slug: slug,
   })
 
   if(preview) {
-    homeData = await getClient(preview).fetch(previewHomeQuery) 
+    shopData = await getClient(preview).fetch(previewShopQuery) 
 
-    aboutData = await getClient(preview).fetch(previewAboutQuery, {
+    aboutData = await getClient(preview).fetch(previewShopQuery, {
       slug: slug,
     })
   }
@@ -92,7 +93,7 @@ export async function getStaticProps({ preview = false, params }) {
       preview,
       data: {
         homeData,
-        aboutData,
+        shopData,
         menuData,
         footerData
       }

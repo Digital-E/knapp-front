@@ -51,9 +51,9 @@ export default function Component({ data, mediaCount }) {
         
         switch(slice._type) {
             case 'video':
-            return <SliceWrapper onClick={() => toggleMediaStack(index)} key={slice._key} aspectRatio={slice.width / slice.height}><Video data={slice} hasCaption={true} /></SliceWrapper>
+            return <SliceWrapper onMouseEnter={() => toggleMediaStack(index)} key={slice._key} aspectRatio={slice.width / slice.height}><Video data={slice} hasCaption={true} /></SliceWrapper>
             case 'image':
-            return <SliceWrapper onClick={() => toggleMediaStack(index)} key={slice._key} aspectRatio={slice.asset.metadata.dimensions.aspectRatio}><Image data={slice} hasCaption={true} /></SliceWrapper>
+            return <SliceWrapper onMouseEnter={() => toggleMediaStack(index)} key={slice._key} aspectRatio={slice.asset.metadata.dimensions.aspectRatio}><Image data={slice} hasCaption={true} /></SliceWrapper>
         }
     }    
 
