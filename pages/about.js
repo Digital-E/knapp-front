@@ -16,11 +16,47 @@ const Container = styled.div`
     position: relative;
     display: flex;
     min-height: calc(100vh - 50px);
-    padding: 20px 120px 30px 120px;
+`
+
+let InnerContainer = styled.div`
+  position: absolute;
+  display: flex;
+  height: 100vh;
+  overflow: scroll;
+  z-index: 0;
+`
+
+
+let LeftCol = styled.div`
+  flex-basis: 70%;
+  margin: 0px 0 0 120px;
+  padding-top: 20px;
+  overflow: scroll;
+`
+
+let InnerLeftCol = styled.div`
+  > div:nth-child(1) {
+    width: 65%
+  }
+
+  .media-gallery {
+    width: 75%
+  }
+
+  .text {
+    width: 65%
+  }
+`
+
+let RightCol = styled.div`
+  flex-basis: 30%;
+  margin: 0 40px 0 0;
+  padding-top: 130px;
+  overflow: scroll;
 `
 
 const Text = styled.div`
-  width: 50%;
+  width: 65%;
 
   &.body-large p, &.body-large a {
     font-size: inherit;
@@ -54,9 +90,16 @@ export default function About({ data = {}, preview }) {
           />
         </Head>
         <Container>
-          <Text className='body-large'>
-            <Body content={data?.aboutData?.text} />
-          </Text>
+          <InnerContainer>
+            <LeftCol>
+              <Text className='body-large'>
+                <Body content={data?.aboutData?.text} />
+              </Text>
+            </LeftCol>
+            <RightCol>
+
+            </RightCol>
+          </InnerContainer>
         </Container>
       </Layout>
     </>

@@ -4,8 +4,8 @@ import { gsap } from 'gsap'
 import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin"
 gsap.registerPlugin(ScrollToPlugin)
 
-import Image from "../../image"
-import Video from "../../video-native"
+import Image from "../../media/image"
+import Video from "../../media/video-native"
 
 
 const Container = styled.div`
@@ -40,7 +40,7 @@ export default function Component({ data, mediaCount }) {
     }, [])
 
     let toggleMediaStack = (index) => {
-        let mediaStack =  document.querySelector('#project-page-right-column')
+        let mediaStack =  document.querySelector('#media-stack-right-column')
 
         scrollTo = gsap.to(mediaStack, {duration: 0.3, ease: "power2.inOut", scrollTo: {y: `#media-stack-element-${mediaCountState + index}`, offsetY: 130}, 
         // onComplete: () => killScroll()

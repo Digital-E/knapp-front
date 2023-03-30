@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
-import Image from '../image'
+import Image from '../media/image'
 
 const Container = styled.div`
     position: fixed;
@@ -10,6 +10,10 @@ const Container = styled.div`
     right: 40px;
     width: 25%;
     height: 100%;
+
+    @media(max-width: 989px) {
+        display: none;
+    }
 `
 
 const Thumbnail = styled.div`

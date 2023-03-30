@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
-import Image from "../image"
-import Video from "../video-native"
+import Image from "../media/image"
+import Video from "../media/video-native"
 
 
 const Container = styled.div`

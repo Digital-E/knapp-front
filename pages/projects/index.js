@@ -16,7 +16,11 @@ import List from '../../components/index/list'
 const Container = styled.div`
   position: relative;
   min-height: calc(100vh - 80px);
-  padding: 40px;
+  padding: 30px;
+
+  @media(max-width: 989px) {
+    padding: 20px;
+  }
 `
 
 export default function Index({ data = {}, preview }) {
@@ -33,14 +37,6 @@ export default function Index({ data = {}, preview }) {
     return <ErrorPage statusCode={404} />
   }
 
-  useEffect(() => {
-    // document.querySelector("body").classList.add("body-lock");
-
-    // return () => {
-    //   document.querySelector("body").classList.remove("body-lock");
-    // }
-
-  }, []);
 
 
   return (

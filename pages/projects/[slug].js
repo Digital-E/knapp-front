@@ -39,7 +39,7 @@ let InnerContainer = styled.div`
 let LeftCol = styled.div`
   flex-basis: 70%;
   margin: 0px 0 0 120px;
-  padding-top: 120px;
+  padding-top: 102px;
   overflow: scroll;
 `
 
@@ -53,7 +53,7 @@ let InnerLeftCol = styled.div`
   }
 
   .text {
-    width: 85%
+    width: 65%
   }
 `
 
@@ -86,9 +86,9 @@ export default function Component({ data = {}, preview }) {
   const context = useContext(store);
   const { state, dispatch } = context;
 
-  let [mediaStack, setMediaStack] = useState([])
-
   const router = useRouter()
+
+  let [mediaStack, setMediaStack] = useState([])
 
   const slug = data?.data?.slug
 
@@ -139,7 +139,7 @@ export default function Component({ data = {}, preview }) {
                       </ButtonWrapper>
                     </InnerLeftCol>
                   </LeftCol>
-                  <RightCol id='project-page-right-column'>
+                  <RightCol id='media-stack-right-column'>
                     <MediaStack data={mediaStack} />
                   </RightCol>
                 </InnerContainer>

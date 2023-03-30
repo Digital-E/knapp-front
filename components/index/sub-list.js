@@ -18,7 +18,11 @@ const ListHeader = styled.h3`
 `
 
 const List = styled.div`
-    margin: 30px 0  40px 80px;
+    margin: 30px 0  40px 90px;
+
+    @media(max-width: 989px) {
+        margin: 30px 0  40px 90px;
+    }
 `
 
 

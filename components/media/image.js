@@ -1,5 +1,5 @@
 import sanityClient from '@sanity/client';
-import { sanityConfig } from "../lib/config"
+import { sanityConfig } from "../../lib/config"
 import { useNextSanityImage } from 'next-sanity-image';
 import Img from 'next/image';
 

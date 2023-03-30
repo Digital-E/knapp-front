@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
@@ -9,14 +9,64 @@ import { getClient } from '../lib/sanity.server'
 
 import styled from 'styled-components'
 
-import Body from "../components/body"
+// Components
+
+import Body from '../components/body'
+import Slices from '../components/shop/slices'
+import MediaStack from '../components/projects/media-stack'
+import Notification from '../components/shop/notification'
 
 
 const Container = styled.div`
-    position: relative;
-    display: flex;
-    min-height: calc(100vh - 50px);
-    padding: 20px 120px 30px 120px;
+  position: relative; 
+  min-height: 100vh;
+`
+
+const Constraints = styled.div`
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: calc(100vw - 80px);
+  height: calc(100vh - 60px);
+  transform: translate(-50%, -50%);
+`
+
+
+let InnerContainer = styled.div`
+  position: absolute;
+  display: flex;
+  height: 100vh;
+  overflow: scroll;
+  z-index: 0;
+`
+
+
+let LeftCol = styled.div`
+  flex-basis: 70%;
+  margin: 0px 0 0 120px;
+  padding: 20px 0 30px 0;
+  overflow: scroll;
+`
+
+let InnerLeftCol = styled.div`
+  > div:nth-child(1) {
+    width: 65%
+  }
+
+  .media-gallery {
+    width: 75%
+  }
+
+  .text {
+    width: 65%
+  }
+`
+
+let RightCol = styled.div`
+  flex-basis: 30%;
+  margin: 0 40px 0 0;
+  padding-top: 120px;
+  overflow: scroll;
 `
 
 const Text = styled.div`
@@ -35,7 +85,11 @@ const Text = styled.div`
 
 export default function Shop({ data = {}, preview }) {
 
+  let constraintsRef = useRef();
+
   const router = useRouter()
+
+  let [mediaStack, setMediaStack] = useState([])
 
   const slug = data?.shopData?.slug
 
@@ -43,6 +97,16 @@ export default function Shop({ data = {}, preview }) {
     return <ErrorPage statusCode={404} />
   }
 
+  useEffect(() => {
+    // Create Media Stack Array
+    let array = []
+
+    data.shopData.products.forEach(item => {
+      array.push(...item.media)
+    })
+
+    setMediaStack(array)
+  }, [])
 
   return (
     <>
@@ -55,9 +119,21 @@ export default function Shop({ data = {}, preview }) {
           />
         </Head>
         <Container>
-          <Text className='body-large'>
-            <Body content={data?.shopData?.text} />
-          </Text>
+          <Constraints ref={constraintsRef} />
+          <InnerContainer>
+            <LeftCol>
+              <InnerLeftCol>
+              <Text className='body-large'>
+                <Body content={data?.shopData?.text} />
+              </Text>                
+                <Slices data={data.shopData.products} />
+              </InnerLeftCol>
+            </LeftCol>
+            <RightCol id='media-stack-right-column'>
+              <MediaStack data={mediaStack} />
+            </RightCol>
+          </InnerContainer>  
+          <Notification data={data.shopData.stockists} constraintsRef={constraintsRef} />        
         </Container>
       </Layout>
     </>

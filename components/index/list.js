@@ -5,6 +5,10 @@ import Thumbnails from './thumbnails'
 
 const Container = styled.div`
     margin-top: 170px;
+
+    @media(max-width: 989px) {
+        margin-top: 60px;
+    }
 `
 
 import SubList from './sub-list'
