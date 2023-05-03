@@ -65,7 +65,6 @@ let InnerLeftCol = styled.div`
 let RightCol = styled.div`
   flex-basis: 30%;
   margin: 0 40px 0 0;
-  padding-top: 120px;
   overflow: scroll;
 `
 
@@ -106,6 +105,12 @@ export default function Shop({ data = {}, preview }) {
     })
 
     setMediaStack(array)
+
+    // Set Padding Bottom
+    let shopNotificationHeight = document.querySelector('#shop-notification').getBoundingClientRect().height
+
+    document.querySelector('#shop-left-col').style.paddingBottom = `${shopNotificationHeight + 50}px`
+
   }, [])
 
   return (
@@ -121,7 +126,7 @@ export default function Shop({ data = {}, preview }) {
         <Container>
           <Constraints ref={constraintsRef} />
           <InnerContainer>
-            <LeftCol>
+            <LeftCol id='shop-left-col'>
               <InnerLeftCol>
               <Text className='body-large'>
                 <Body content={data?.shopData?.text} />

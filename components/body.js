@@ -1,4 +1,4 @@
-import { PortableText } from '@portabletext/react'
+let PortableText = require('@portabletext/react').PortableText
 
 import { getFile } from "@sanity/asset-utils";
 import { sanityConfig } from "../lib/config"

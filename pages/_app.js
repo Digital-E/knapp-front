@@ -74,7 +74,9 @@ function MyApp({ Component, pageProps, router }) {
         >
         <Body content={pageProps.data?.menuData.cookietext} />
       </CookieConsent> */} 
-      <AnimatePresence exitBeforeEnter onExitComplete={() => { window.scrollTo(0,0) }}>   
+      <AnimatePresence exitBeforeEnter 
+      onExitComplete={() => { window.scrollTo(0,0) }}
+      >   
         <motion.div key={router.asPath} initial="pageInitial" animate="pageAnimate" exit="pageExit" variants={desktopVariants}>            
           <Component {...pageProps} />
         </motion.div>

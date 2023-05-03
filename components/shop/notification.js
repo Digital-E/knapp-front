@@ -74,19 +74,17 @@ const variants = {
 }
 
 export default function Component({ data, constraintsRef }) {
-    let notificationRef = useRef();
     let [show, setShow] = useState(false);
 
     useEffect(() => {
         setTimeout(() => {
             setShow(true)
         }, 2000)
-
     }, [])
 
     return (
         <Container 
-            ref={notificationRef}
+            id='shop-notification'
             animate={show ? 'show' : 'hide'} 
             drag
             dragConstraints={constraintsRef}

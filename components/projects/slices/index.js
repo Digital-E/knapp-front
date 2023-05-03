@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import styled from "styled-components"
 
+
 import Body from '../../body'
 import MediaGallery from './media-gallery'
 
@@ -11,7 +12,6 @@ const SliceWrapper = styled.div`
 const HideCounter = styled.div`
   display: none;
 `
-
 
 
 export default function Component({ data }) {

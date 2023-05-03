@@ -7,6 +7,8 @@ import { SITE_NAME } from '../../lib/constants'
 import { homeQuery, previewHomeQuery, projectSlugsQuery, projectQuery, previewProjectQuery, menuQuery, footerQuery } from '../../lib/queries'
 import { sanityClient, getClient } from '../../lib/sanity.server'
 
+import { motion } from 'framer-motion'
+
 
 import { store } from "../../store"
 
@@ -31,7 +33,8 @@ let InnerContainer = styled.div`
   position: absolute;
   display: flex;
   height: 100vh;
-  overflow: scroll;
+  width: 100%;
+  overflow: hidden;
   z-index: 0;
 `
 
@@ -41,6 +44,8 @@ let LeftCol = styled.div`
   margin: 0px 0 0 120px;
   padding-top: 102px;
   overflow: scroll;
+  // mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0) 61px, rgba(0, 0, 0, 1) 112px);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 1) 112px);
 `
 
 let InnerLeftCol = styled.div`
@@ -60,8 +65,7 @@ let InnerLeftCol = styled.div`
 let RightCol = styled.div`
   flex-basis: 30%;
   margin: 0 40px 0 0;
-  padding-top: 130px;
-  overflow: scroll;
+  z-index: 1;
 `
 
 let Description = styled.div`
@@ -79,6 +83,32 @@ const ButtonWrapper = styled.div`
   }
 `
 
+const Overlay = styled(motion.div)`
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: var(--background);
+  z-index: 0;
+`
+
+const HeaderWrapper = styled(motion.div)``
+
+
+
+const overlayVariants = {
+  visible: {
+    display: 'block',
+    opacity: 1
+  },
+  hidden: {
+    opacity: 0,
+    transitionEnd: {
+      display: 'none'
+    }
+  }
+}
 
 
 export default function Component({ data = {}, preview }) {
@@ -89,6 +119,7 @@ export default function Component({ data = {}, preview }) {
   const router = useRouter()
 
   let [mediaStack, setMediaStack] = useState([])
+  let [mediaStackExpanded, setMediaStackExpanded] = useState(false)
 
   const slug = data?.data?.slug
 
@@ -110,6 +141,10 @@ export default function Component({ data = {}, preview }) {
     setMediaStack(array)
   }, [])
 
+  let toggleExpand = () => {
+    setMediaStackExpanded(!mediaStackExpanded)
+  }
+
   return (
     <Layout preview={preview}>
         {router.isFallback ? (
@@ -126,7 +161,9 @@ export default function Component({ data = {}, preview }) {
                 />
               </Head>
               <Container>
-                <Header data={data.data} />
+                <HeaderWrapper animate={!mediaStackExpanded ? 'visible' : 'hidden'} variants={overlayVariants}>
+                  <Header data={data.data} />
+                </HeaderWrapper>
                 <InnerContainer>
                   <LeftCol>
                     <InnerLeftCol>
@@ -140,8 +177,9 @@ export default function Component({ data = {}, preview }) {
                     </InnerLeftCol>
                   </LeftCol>
                   <RightCol id='media-stack-right-column'>
-                    <MediaStack data={mediaStack} />
+                    <MediaStack data={mediaStack} toggleExpand={() => toggleExpand()}/>
                   </RightCol>
+                  <Overlay animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={overlayVariants} />
                 </InnerContainer>
               </Container>
           </>

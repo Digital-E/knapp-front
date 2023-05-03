@@ -40,9 +40,9 @@ export default function Component({ data, mediaCount }) {
     }, [])
 
     let toggleMediaStack = (index) => {
-        let mediaStack =  document.querySelector('#media-stack-right-column')
-
-        scrollTo = gsap.to(mediaStack, {duration: 0.3, ease: "power2.inOut", scrollTo: {y: `#media-stack-element-${mediaCountState + index}`, offsetY: 130}, 
+        let mediaStack =  document.querySelector('#media-stack-right-column').children[0]
+        
+        gsap.to(mediaStack, {duration: 0.3, ease: "power2.inOut", scrollTo: {y: `#media-stack-element-${mediaCountState + index}`, offsetY: 130}, 
         // onComplete: () => killScroll()
         })
     }

@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -43,7 +43,7 @@ const InformationWrapper = styled.div`
     align-items: center;
     flex-basis: 70%;
     padding: 30px 0px;
-    background: linear-gradient(-180deg, var(--background), var(--background) 80%,  transparent 100%);
+    // background: linear-gradient(-180deg, var(--background), var(--background) 80%,  transparent 100%);
 `
 
 
@@ -73,12 +73,14 @@ function Component({ data }) {
     return(
         <Container>
             <BackWrapper>
-                <Back onClick={() => router.back()}>
+            <Link href='/projects'>
+                <Back>
                     <svg viewBox="0 0 134.3 240.5" xmlSpace="preserve">
                     <path d="M120.3,240.5c-3.6,0-7.2-1.4-9.9-4.1L4.1,130.2c-5.5-5.5-5.5-14.3,0-19.8L110.4,4.1c5.5-5.5,14.3-5.5,19.8,0
                         c5.5,5.5,5.5,14.3,0,19.8l-96.4,96.4l96.4,96.4c5.5,5.5,5.5,14.3,0,19.8C127.4,239.1,123.8,240.5,120.3,240.5L120.3,240.5z"/>
-                    </svg>                
+                    </svg>               
                 </Back>
+                </Link> 
             </BackWrapper>
             <InformationWrapper>
                 <Title>{data.title}</Title>
