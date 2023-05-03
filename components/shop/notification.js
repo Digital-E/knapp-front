@@ -9,12 +9,13 @@ const Container = styled(motion.div)`
     min-width: 420px;
     min-height: 80px;
     background: var(--background-ternary);
-    bottom: 30px;
-    left: 40px;
+    bottom: 20px;
+    left: 20px;
     padding: 20px;
     border-radius: 10px;
     z-index: 999;
     cursor: grab;
+    z-index: -1;
 
     :active {
         cursor: grabbing;

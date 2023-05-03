@@ -6,8 +6,8 @@ const Container = styled.div`
     position: fixed;
     display: flex;
     align-items: flex-end;
-    bottom: 30px;
-    right: 40px;
+    bottom: 20px;
+    right: 20px;
     width: 25%;
     height: 100%;
 

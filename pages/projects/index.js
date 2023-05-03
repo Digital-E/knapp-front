@@ -15,8 +15,9 @@ import List from '../../components/index/list'
 
 const Container = styled.div`
   position: relative;
-  min-height: calc(100vh - 80px);
-  padding: 30px;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
 
   @media(max-width: 989px) {
     padding: 20px;

@@ -96,6 +96,10 @@ let ListItem = styled.li`
     text-transform: uppercase;
   }
 
+  :last-child {
+    margin-right: 0 !important;
+  }
+
   @media(max-width: 989px) {
     > a > span:nth-child(2) {
       display: none;
@@ -105,6 +109,10 @@ let ListItem = styled.li`
   @media(min-width: 990px) {
     > a > span:nth-child(3) {
       display: none;
+    }
+
+    a {
+      margin: 0;
     }
   }
 `

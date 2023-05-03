@@ -26,8 +26,8 @@ const Constraints = styled.div`
   position: fixed;
   left: 50%;
   top: 50%;
-  width: calc(100vw - 80px);
-  height: calc(100vh - 60px);
+  width: calc(100vw - 40px);
+  height: calc(100vh - 40px);
   transform: translate(-50%, -50%);
 `
 
@@ -36,7 +36,8 @@ let InnerContainer = styled.div`
   position: absolute;
   display: flex;
   height: 100vh;
-  overflow: scroll;
+  width: 100%;
+  overflow: hidden;
   z-index: 0;
 `
 
@@ -44,8 +45,9 @@ let InnerContainer = styled.div`
 let LeftCol = styled.div`
   flex-basis: 70%;
   margin: 0px 0 0 120px;
-  padding: 20px 0 30px 0;
+  padding: 20px 0 20px 0;
   overflow: scroll;
+  z-index: -1;
 `
 
 let InnerLeftCol = styled.div`
@@ -64,8 +66,7 @@ let InnerLeftCol = styled.div`
 
 let RightCol = styled.div`
   flex-basis: 30%;
-  margin: 0 40px 0 0;
-  overflow: scroll;
+  margin: 0 20px 0 0;
 `
 
 const Text = styled.div`
@@ -89,6 +90,8 @@ export default function Shop({ data = {}, preview }) {
   const router = useRouter()
 
   let [mediaStack, setMediaStack] = useState([])
+
+  let [toggleExpand, setToggleExpand] = useState(0)
 
   const slug = data?.shopData?.slug
 
@@ -131,14 +134,14 @@ export default function Shop({ data = {}, preview }) {
               <Text className='body-large'>
                 <Body content={data?.shopData?.text} />
               </Text>                
-                <Slices data={data.shopData.products} />
+                <Slices data={data.shopData.products} toggleExpand={() => setToggleExpand(toggleExpand += 1)} />
               </InnerLeftCol>
             </LeftCol>
             <RightCol id='media-stack-right-column'>
-              <MediaStack data={mediaStack} />
+              <MediaStack data={mediaStack} toggleExpand={toggleExpand} />
             </RightCol>
-          </InnerContainer>  
-          <Notification data={data.shopData.stockists} constraintsRef={constraintsRef} />        
+            <Notification data={data.shopData.stockists} constraintsRef={constraintsRef} />     
+          </InnerContainer>     
         </Container>
       </Layout>
     </>

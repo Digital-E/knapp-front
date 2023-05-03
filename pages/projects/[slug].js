@@ -9,7 +9,6 @@ import { sanityClient, getClient } from '../../lib/sanity.server'
 
 import { motion } from 'framer-motion'
 
-
 import { store } from "../../store"
 
 import styled from "styled-components"
@@ -64,7 +63,7 @@ let InnerLeftCol = styled.div`
 
 let RightCol = styled.div`
   flex-basis: 30%;
-  margin: 0 40px 0 0;
+  margin: 0 20px 0 0;
   z-index: 1;
 `
 
@@ -79,18 +78,8 @@ const ButtonWrapper = styled.div`
   width: 85%;
 
   > div {
-    margin: 0 auto 30px auto;
+    margin: 0 auto 20px auto;
   }
-`
-
-const Overlay = styled(motion.div)`
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  background: var(--background);
-  z-index: 0;
 `
 
 const HeaderWrapper = styled(motion.div)``
@@ -120,6 +109,7 @@ export default function Component({ data = {}, preview }) {
 
   let [mediaStack, setMediaStack] = useState([])
   let [mediaStackExpanded, setMediaStackExpanded] = useState(false)
+  let [toggleExpand, setToggleExpand] = useState(0)
 
   const slug = data?.data?.slug
 
@@ -141,9 +131,6 @@ export default function Component({ data = {}, preview }) {
     setMediaStack(array)
   }, [])
 
-  let toggleExpand = () => {
-    setMediaStackExpanded(!mediaStackExpanded)
-  }
 
   return (
     <Layout preview={preview}>
@@ -161,25 +148,23 @@ export default function Component({ data = {}, preview }) {
                 />
               </Head>
               <Container>
-                <HeaderWrapper animate={!mediaStackExpanded ? 'visible' : 'hidden'} variants={overlayVariants}>
-                  <Header data={data.data} />
-                </HeaderWrapper>
+                <Header data={data.data} />
                 <InnerContainer>
                   <LeftCol>
                     <InnerLeftCol>
                       <Description className='body-large'>
                         <Body content={data.data.description} />
                       </Description>
-                      <Slices data={data.data.slices} />
+                      <Slices data={data.data.slices} toggleExpand={() => setToggleExpand(toggleExpand += 1)} />
                       <ButtonWrapper>
                         <Button>More Projects +</Button>
                       </ButtonWrapper>
                     </InnerLeftCol>
                   </LeftCol>
                   <RightCol id='media-stack-right-column'>
-                    <MediaStack data={mediaStack} toggleExpand={() => toggleExpand()}/>
+                    <MediaStack data={mediaStack} toggleExpand={toggleExpand}/>
                   </RightCol>
-                  <Overlay animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={overlayVariants} />
+                  {/* <Overlay animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={overlayVariants} /> */}
                 </InnerContainer>
               </Container>
           </>

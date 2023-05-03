@@ -25,8 +25,8 @@ const Back = styled.div`
     background-color: var(--background-secondary);
     height: 30px;
     width: 30px;
-    min-height: 20px;
-    min-width: 20px;
+    min-height: 30px;
+    min-width: 30px;
     border-radius: 999px;
     cursor: pointer;
 
@@ -42,7 +42,7 @@ const InformationWrapper = styled.div`
     display: flex;
     align-items: center;
     flex-basis: 70%;
-    padding: 30px 0px;
+    padding: 20px 0px;
     // background: linear-gradient(-180deg, var(--background), var(--background) 80%,  transparent 100%);
 `
 
@@ -71,7 +71,7 @@ function Component({ data }) {
     }
 
     return(
-        <Container>
+        <Container className='hide-on-expand'>
             <BackWrapper>
             <Link href='/projects'>
                 <Back>

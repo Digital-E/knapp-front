@@ -25,7 +25,6 @@ const SliceWrapper = styled.div`
     :hover {
         border: 2px solid var(--primary);
     }
-
 `
 
 
@@ -40,7 +39,7 @@ export default function Component({ data, mediaCount }) {
     }, [])
 
     let toggleMediaStack = (index) => {
-        let mediaStack =  document.querySelector('#media-stack-right-column').children[0]
+        let mediaStack =  document.querySelector('#media-stack-right-column').children[0].children[1]
         
         gsap.to(mediaStack, {duration: 0.3, ease: "power2.inOut", scrollTo: {y: `#media-stack-element-${mediaCountState + index}`, offsetY: 130}, 
         // onComplete: () => killScroll()
@@ -51,9 +50,9 @@ export default function Component({ data, mediaCount }) {
         
         switch(slice._type) {
             case 'video':
-            return <SliceWrapper onMouseEnter={() => toggleMediaStack(index)} key={slice._key} aspectRatio={slice.width / slice.height}><Video data={slice} hasCaption={true} /></SliceWrapper>
+            return <SliceWrapper onMouseEnter={() => toggleMediaStack(index)} key={slice._key} aspectRatio={slice.width / slice.height}><Video data={slice} hasCaption={false} /></SliceWrapper>
             case 'image':
-            return <SliceWrapper onMouseEnter={() => toggleMediaStack(index)} key={slice._key} aspectRatio={slice.asset.metadata.dimensions.aspectRatio}><Image data={slice} hasCaption={true} /></SliceWrapper>
+            return <SliceWrapper onMouseEnter={() => toggleMediaStack(index)} key={slice._key} aspectRatio={slice.asset.metadata.dimensions.aspectRatio}><Image data={slice} hasCaption={false} /></SliceWrapper>
         }
     }    
 
