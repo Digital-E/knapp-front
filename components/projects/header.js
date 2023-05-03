@@ -15,6 +15,11 @@ const BackWrapper = styled.div`
     align-items: center;
     justify-content: center;
     min-width: 120px;
+
+    @media(max-width: 989px) {
+        min-width: auto;
+        margin: 0 20px;
+    }
 `
 
 
@@ -43,7 +48,12 @@ const InformationWrapper = styled.div`
     align-items: center;
     flex-basis: 70%;
     padding: 20px 0px;
-    // background: linear-gradient(-180deg, var(--background), var(--background) 80%,  transparent 100%);
+
+    @media(max-width: 989px) {
+        align-items: flex-start;
+        flex-basis: 100%;
+        padding: 20px 20px 20px 0;
+    }
 `
 
 
@@ -52,11 +62,20 @@ const Title = styled.h3`
 
 const Date = styled.h3`
     margin-left: 150px;
+
+    @media(max-width: 989px) {
+        margin-left: auto;
+    }
+    
 `
 const Div = styled.div`
     flex-basis: 30%;
     width: 100%;
     margin-right: 40px;
+
+    @media(max-width: 989px) {
+        display: none;
+    }
 `
 
 

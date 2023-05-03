@@ -6,6 +6,10 @@ import MediaGallery from '../../projects/slices/media-gallery'
 
 const Container = styled.div`
   margin-top: 100px;
+
+  @media(max-width: 989px) {
+    margin-top: 70px;
+  }
 `
 
 const SliceWrapper = styled.div`

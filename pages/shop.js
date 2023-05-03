@@ -44,10 +44,16 @@ let InnerContainer = styled.div`
 
 let LeftCol = styled.div`
   flex-basis: 70%;
-  margin: 0px 0 0 120px;
-  padding: 20px 0 20px 0;
+  margin: 0 0 0 120px;
+  padding: 20px 0;
   overflow: scroll;
   z-index: -1;
+
+  @media(max-width: 989px) {
+    margin: 0 20px;
+    padding: 20px 0 80px 0;
+    flex-basis: 100%;
+  }
 `
 
 let InnerLeftCol = styled.div`
@@ -62,15 +68,24 @@ let InnerLeftCol = styled.div`
   .text {
     width: 65%
   }
+
+  @media(max-width: 989px) {
+    > div:nth-child(1), .media-gallery, .text {
+      width: 100%;
+    }
+  }
 `
 
 let RightCol = styled.div`
   flex-basis: 30%;
   margin: 0 20px 0 0;
+
+  @media(max-width: 989px) {
+    display: none;
+  }
 `
 
 const Text = styled.div`
-  width: 50%;
 
   &.body-large p, &.body-large a {
     font-size: inherit;
@@ -109,11 +124,6 @@ export default function Shop({ data = {}, preview }) {
 
     setMediaStack(array)
 
-    // Set Padding Bottom
-    let shopNotificationHeight = document.querySelector('#shop-notification').getBoundingClientRect().height
-
-    document.querySelector('#shop-left-col').style.paddingBottom = `${shopNotificationHeight + 50}px`
-
   }, [])
 
   return (
@@ -133,14 +143,15 @@ export default function Shop({ data = {}, preview }) {
               <InnerLeftCol>
               <Text className='body-large'>
                 <Body content={data?.shopData?.text} />
-              </Text>                
-                <Slices data={data.shopData.products} toggleExpand={() => setToggleExpand(toggleExpand += 1)} />
+              </Text>   
+              <Notification data={data.shopData.stockists} constraintsRef={constraintsRef} />         
+
+              <Slices data={data.shopData.products} toggleExpand={() => setToggleExpand(toggleExpand += 1)} />
               </InnerLeftCol>
             </LeftCol>
             <RightCol id='media-stack-right-column'>
               <MediaStack data={mediaStack} toggleExpand={toggleExpand} />
-            </RightCol>
-            <Notification data={data.shopData.stockists} constraintsRef={constraintsRef} />     
+            </RightCol> 
           </InnerContainer>     
         </Container>
       </Layout>

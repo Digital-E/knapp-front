@@ -5,20 +5,27 @@ import { motion } from 'framer-motion'
 import Body from '../body'
 
 const Container = styled(motion.div)`
-    position: fixed;
+    position: relative;
     min-width: 420px;
     min-height: 80px;
+    width: fit-content;
     background: var(--background-ternary);
-    bottom: 20px;
-    left: 20px;
+    // bottom: 20px;
+    // left: 20px;
+    margin-top: 40px;
     padding: 20px;
     border-radius: 10px;
     z-index: 999;
     cursor: grab;
-    z-index: -1;
+    z-index: 0;
 
     :active {
         cursor: grabbing;
+    }
+
+    @media(max-width: 989px) {
+        min-width: 0;
+        width: calc(100vw - 80px)
     }
 `
 
@@ -67,10 +74,10 @@ const Text = styled.div`
 
 const variants = {
     'show': {
-        y: 0
+        opacity: 1
     },
     'hide': {
-        y: 100
+        opacity: 0
     }
 }
 
@@ -80,15 +87,16 @@ export default function Component({ data, constraintsRef }) {
     useEffect(() => {
         setTimeout(() => {
             setShow(true)
-        }, 2000)
+        }, 1000)
     }, [])
 
     return (
         <Container 
             id='shop-notification'
             animate={show ? 'show' : 'hide'} 
-            drag
-            dragConstraints={constraintsRef}
+            variants={variants}
+            // drag
+            // dragConstraints={constraintsRef}
             // whileHover={{
             //     scale: 1.01
             // }}

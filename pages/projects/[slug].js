@@ -43,8 +43,15 @@ let LeftCol = styled.div`
   margin: 0px 0 0 120px;
   padding-top: 102px;
   overflow: scroll;
-  // mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0) 61px, rgba(0, 0, 0, 1) 112px);
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 1) 112px);
+  box-sizing: border-box;
+
+  @media(max-width: 989px) {
+    flex-basis: 100%;
+    margin: 0px 20px;
+    padding-top: 60px;
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 1) 60px);
+  }
 `
 
 let InnerLeftCol = styled.div`
@@ -59,12 +66,22 @@ let InnerLeftCol = styled.div`
   .text {
     width: 65%
   }
+
+  @media(max-width: 989px) {
+    > div:nth-child(1), .media-gallery, .text {
+      width: 100%;
+    }
+  }
 `
 
 let RightCol = styled.div`
   flex-basis: 30%;
   margin: 0 20px 0 0;
   z-index: 1;
+
+  @media(max-width: 989px) {
+    display: none;
+  }
 `
 
 let Description = styled.div`
@@ -80,9 +97,15 @@ const ButtonWrapper = styled.div`
   > div {
     margin: 0 auto 20px auto;
   }
-`
 
-const HeaderWrapper = styled(motion.div)``
+  @media(max-width: 989px) {
+    width: 100%;
+
+    > div {
+      margin: 0 auto 80px auto;
+    }
+  }
+`
 
 
 

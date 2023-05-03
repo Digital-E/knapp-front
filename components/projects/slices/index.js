@@ -6,7 +6,11 @@ import Body from '../../body'
 import MediaGallery from './media-gallery'
 
 const SliceWrapper = styled.div`
-    margin: 70px 0 70px 0;
+    margin: 70px 0;
+
+    @media(max-width: 989px) {
+      margin: 35px 0;
+    }
 `
 
 const HideCounter = styled.div`

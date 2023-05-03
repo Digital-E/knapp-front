@@ -32,19 +32,11 @@ let LeftCol = styled.div`
   margin: 0px 0 0 120px;
   padding-top: 20px;
   overflow: scroll;
-`
+  box-sizing: border-box;
 
-let InnerLeftCol = styled.div`
-  > div:nth-child(1) {
-    width: 65%
-  }
-
-  .media-gallery {
-    width: 75%
-  }
-
-  .text {
-    width: 65%
+  @media(max-width: 989px) {
+    flex-basis: 100%;
+    margin: 0 20px;
   }
 `
 
@@ -53,6 +45,10 @@ let RightCol = styled.div`
   margin: 0 40px 0 0;
   padding-top: 130px;
   overflow: scroll;
+
+  @media(max-width: 989px) {
+    display: none;
+  }
 `
 
 const Text = styled.div`
@@ -64,6 +60,10 @@ const Text = styled.div`
 
   * {
     text-transform: uppercase;
+  }
+
+  @media(max-width: 989px) {
+    width: 100%;
   }
 `
 

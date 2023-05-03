@@ -11,7 +11,9 @@ gsap.registerPlugin(ScrollToPlugin)
 import Image from "../media/image"
 import Video from "../media/video-native"
 
-const Container = styled.div``
+const Container = styled.div`
+    cursor: nwse-resize;
+`
 
 
 const InnerContainer = styled.div`
