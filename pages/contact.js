@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import Layout from '../components/layout'
 import { SITE_NAME } from '../lib/constants'
-import { aboutQuery, previewAboutQuery, menuQuery, footerQuery } from '../lib/queries'
+import { contactQuery, previewContactQuery, menuQuery, footerQuery } from '../lib/queries'
 import { getClient } from '../lib/sanity.server'
 
 import styled from 'styled-components'
@@ -75,7 +75,7 @@ export default function About({ data = {}, preview }) {
 
   const router = useRouter()
 
-  const slug = data?.aboutData?.slug
+  const slug = data?.contactData?.slug
 
   if (!router.isFallback && !slug) {
     return <ErrorPage statusCode={404} />
@@ -85,17 +85,17 @@ export default function About({ data = {}, preview }) {
     <>
       <Layout preview={preview}>
         <Head>
-          <title>{data?.aboutData?.title} | { SITE_NAME }</title>
+          <title>{data?.contactData?.title} | { SITE_NAME }</title>
           <meta
           name="description"
-          content={data?.aboutData?.content}
+          content={data?.contactData?.content}
           />
         </Head>
         <Container>
           <InnerContainer>
             <LeftCol>
               <Text className='body-large'>
-                <Body content={data?.aboutData?.text} />
+                <Body content={data?.contactData?.text} />
               </Text>
             </LeftCol>
             <RightCol>
@@ -110,14 +110,14 @@ export default function About({ data = {}, preview }) {
 
 export async function getStaticProps({ preview = false, params }) {
 
-  let slug = `about`
+  let slug = `contact`
 
-  let aboutData = await getClient(preview).fetch(aboutQuery, {
+  let contactData = await getClient(preview).fetch(contactQuery, {
     slug: slug,
   })
 
   if(preview) {
-    aboutData = await getClient(preview).fetch(previewAboutQuery, {
+    contactData = await getClient(preview).fetch(previewContactQuery, {
       slug: slug,
     })
   }
@@ -132,7 +132,7 @@ export async function getStaticProps({ preview = false, params }) {
     props: {
       preview,
       data: {
-        aboutData,
+        contactData,
         menuData,
         footerData
       }

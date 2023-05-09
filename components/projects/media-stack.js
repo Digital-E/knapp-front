@@ -4,6 +4,8 @@ import styled from "styled-components"
 
 import { motion } from 'framer-motion'
 
+import { useMediaQuery } from 'react-responsive'
+
 import { gsap } from 'gsap'
 import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin"
 gsap.registerPlugin(ScrollToPlugin)
@@ -18,7 +20,7 @@ const Container = styled.div`
 
 const InnerContainer = styled.div`
     height: calc(100vh - 112px);
-    padding-top: 112px;
+    padding: 112px 0 0 0;
     overflow: scroll;
     transition: all 0.5s;
     // transform-origin: left top;
@@ -28,9 +30,42 @@ const InnerContainer = styled.div`
         transform: ${props => `translate(${(props.windowWidth / 2) - props.columnPosX - props.columnWidth / 2}px, ${props.windowHeight * 0.4 - 201.6 + 20}px) scale(1.8)`}
     }
 
+
+    > span, > div {
+        transition: border-radius 0.5s;
+        border-radius: 7px;
+    }
+
+    &.expand > span, &.expand > div {
+        border-radius: 0px;
+    }
+
+    &.expand .caption {
+        opacity: 0;
+    }
+
     &.expand > div:last-child {
-        // margin-bottom: ${props => `${props.windowHeight * 0.41}px`}
         margin-bottom: ${props => `${props.windowHeight * 0.365}px`}
+    }
+
+    @media(max-width: 989px) {
+        height: 100vh;
+        padding: 20px;
+        left: 0;
+        top: 0;
+        box-sizing: border-box;
+
+        &.expand {
+            width: 100%;
+            position: fixed;
+            transform: none;
+            transition: all 0s;
+        }
+
+
+        &.expand > div:last-child {
+            margin-bottom: 0
+        }
     }
 `
 
@@ -41,10 +76,6 @@ const SliceWrapper = styled.div`
 
     :last-child {
         margin-bottom: 20px;
-    }
-
-    span, div {
-        border-radius: 7px;
     }
 `
 
@@ -57,23 +88,6 @@ const Overlay = styled(motion.div)`
   background: var(--background);
   z-index: 0;
 `
-
-const overlayVariants = {
-    visible: {
-      display: 'block',
-      opacity: 1,
-    //   transition: {
-    //     duration: 0.3,
-    //     ease: "linear"
-    //   }
-    },
-    hidden: {
-      opacity: 0,
-      transitionEnd: {
-        display: 'none'
-      }
-    }
-  }
 
 let renderSlice = (slice, index) => {
     
@@ -97,6 +111,10 @@ export default function Component({ data, toggleExpand }) {
     let [columnWidth, setColumnWidth] = useState(0)
 
     let [mediaStackExpanded, setMediaStackExpanded] = useState(false)
+
+    const isDesktop = useMediaQuery({
+        query: '(min-width: 990px)'
+    }) 
 
     let setContainerWidth = () => {
         containerRef.current.style.width = 'initial';
@@ -146,6 +164,25 @@ export default function Component({ data, toggleExpand }) {
             })
         }
     }
+
+    const overlayVariants = {
+        visible: {
+          display: 'block',
+          opacity: 1,
+          transition: {
+            duration: isDesktop ? 0.3 : 0,
+          }
+        },
+        hidden: {
+          opacity: 0,
+          transition: {
+            duration: isDesktop ? 0.3 : 0,
+          },
+          transitionEnd: {
+            display: 'none'
+          }
+        }
+      }
 
     useEffect(() => {
         if(toggleExpand < 1) return

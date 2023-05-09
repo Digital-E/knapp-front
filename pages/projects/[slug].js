@@ -4,8 +4,10 @@ import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import Layout from '../../components/layout'
 import { SITE_NAME } from '../../lib/constants'
-import { homeQuery, previewHomeQuery, projectSlugsQuery, projectQuery, previewProjectQuery, menuQuery, footerQuery } from '../../lib/queries'
+import { allProjectsQuery, projectSlugsQuery, projectQuery, previewProjectQuery, menuQuery, footerQuery } from '../../lib/queries'
 import { sanityClient, getClient } from '../../lib/sanity.server'
+
+import Link from '../../components/link'
 
 import { motion } from 'framer-motion'
 
@@ -80,7 +82,15 @@ let RightCol = styled.div`
   z-index: 1;
 
   @media(max-width: 989px) {
-    display: none;
+    flex-basis: 0;
+    overflow: hidden;
+    // position: fixed;
+    // z-index: 999;
+    // top: 0;
+    // left: 0;
+    // height: 100vh;
+    // width: 100vw;
+    // background: var(--background);
   }
 `
 
@@ -91,11 +101,21 @@ let Description = styled.div`
   }
 `
 
-const ButtonWrapper = styled.div`
+const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: center;
   width: 85%;
 
   > div {
-    margin: 0 auto 20px auto;
+    margin: 0 10px 20px 10px;
+  }
+
+  > div:nth-child(2) {
+    pointer-events: none;
+  }
+
+  a {
+    margin: 0;
   }
 
   @media(max-width: 989px) {
@@ -133,6 +153,10 @@ export default function Component({ data = {}, preview }) {
   let [mediaStack, setMediaStack] = useState([])
   let [mediaStackExpanded, setMediaStackExpanded] = useState(false)
   let [toggleExpand, setToggleExpand] = useState(0)
+  let [prevNextLinks, setPrevNextLinks] = useState({
+    prev: '/',
+    next: '/'
+  })
 
   const slug = data?.data?.slug
 
@@ -145,13 +169,48 @@ export default function Component({ data = {}, preview }) {
     // Create Media Stack Array
     let array = []
 
-    data.data.slices.forEach(item => {
+    data.data?.slices?.forEach(item => {
       if(item._type === 'MediaGallery') {
         array.push(...item.media)
       }
     })
 
     setMediaStack(array)
+  }, [])
+
+  useEffect(() => {
+    let allProjects = data.allProjects
+    let projectSlug = data.data.slug
+    let projectIndex = 0;
+    let allProjectsCount = data.allProjects.length
+
+    let prevNextObj = {
+      prev: '/',
+      next: '/'
+    }
+
+    allProjects.forEach((item, index) => {
+      if(item.slug === projectSlug) {
+        projectIndex = index
+      }
+    })
+
+    let projectIndexNext = projectIndex + 1
+    let projectIndexPrev = projectIndex - 1
+
+    if(projectIndexNext > allProjectsCount - 1) {
+      projectIndexNext = 0
+    }
+
+    if(projectIndexPrev < 0) {
+      projectIndexPrev = allProjectsCount - 1
+    }
+
+    prevNextObj.next = allProjects[projectIndexNext].slug
+    prevNextObj.prev = allProjects[projectIndexPrev].slug
+
+    setPrevNextLinks(prevNextObj)
+
   }, [])
 
 
@@ -179,9 +238,11 @@ export default function Component({ data = {}, preview }) {
                         <Body content={data.data.description} />
                       </Description>
                       <Slices data={data.data.slices} toggleExpand={() => setToggleExpand(toggleExpand += 1)} />
-                      <ButtonWrapper>
-                        <Button>More Projects +</Button>
-                      </ButtonWrapper>
+                      <ButtonsWrapper>
+                        <Link href={prevNextLinks.prev}><Button>{'<'}</Button></Link>
+                        <Button>More Projects</Button>
+                        <Link href={prevNextLinks.next}><Button>{'>'}</Button></Link>
+                      </ButtonsWrapper>
                     </InnerLeftCol>
                   </LeftCol>
                   <RightCol id='media-stack-right-column'>
@@ -200,7 +261,7 @@ export async function getStaticProps({ params, preview = false }) {
 
   let slug = `projects__${params.slug}`
 
-  let homeData = await getClient(preview).fetch(homeQuery)
+  let allProjects = await getClient(preview).fetch(allProjectsQuery)
 
   let data = await getClient(preview).fetch(projectQuery, {
     slug: slug,
@@ -210,8 +271,6 @@ export async function getStaticProps({ params, preview = false }) {
     data = await getClient(preview).fetch(previewProjectQuery, {
       slug: slug,
     })
-
-    homeData = await getClient(preview).fetch(previewHomeQuery) 
   }
 
   // Get Menu And Footer
@@ -226,7 +285,7 @@ export async function getStaticProps({ params, preview = false }) {
       preview,
       data: {
         data,
-        homeData,
+        allProjects,
         menuData,
         footerData
       },

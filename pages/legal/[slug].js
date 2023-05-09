@@ -4,19 +4,25 @@ import styled from "styled-components"
 
 import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
-import Header from '../components/header'
-import Layout from '../components/layout'
-import { SITE_NAME } from '../lib/constants'
-import { legalQuery, previewLegalQuery, menuQuery, footerQuery } from '../lib/queries'
-import { getClient } from '../lib/sanity.server'
+import Header from '../../components/header'
+import Layout from '../../components/layout'
+import { SITE_NAME } from '../../lib/constants'
+import { legalSlugsQuery, legalQuery, previewLegalQuery, menuQuery, footerQuery } from '../../lib/queries'
+import { sanityClient, getClient } from '../../lib/sanity.server'
 
-import Body from "../components/body"
+import splitSlug from "../../lib/splitSlug"
+
+import Body from "../../components/body"
 
 const Container = styled.div`
     position: relative;
     display: flex;
     min-height: calc(100vh - 50px);
     padding: 20px 120px 30px 120px;
+
+    @media(max-width: 989px) {
+      padding: 20px 20px 30px 20px;
+    }
 `
 
 const Text = styled.div`
@@ -28,6 +34,10 @@ const Text = styled.div`
 
   * {
     text-transform: uppercase;
+  }
+
+  @media(max-width: 989px) {
+    width: 100%;
   }
 `
 
@@ -74,7 +84,7 @@ export default function Post({ data = {}, preview }) {
 
 export async function getStaticProps({ params, preview = false }) {
 
-  let slug = `legal`
+  let slug = `legal__${params.slug}`
 
 
   let data = await getClient(preview).fetch(legalQuery, {
@@ -103,5 +113,15 @@ export async function getStaticProps({ params, preview = false }) {
         footerData
       },
     },
+  }
+}
+
+export async function getStaticPaths() {
+  const paths = await sanityClient.fetch(legalSlugsQuery)
+
+  
+  return {
+    paths: paths.map((slug) => ({ params: { slug: splitSlug(slug, 1) } })),
+    fallback: false,
   }
 }
