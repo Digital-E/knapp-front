@@ -47,6 +47,7 @@
     text-rendering: optimizeLegibility;
     overscroll-behavior: none;
     color: var(--primary);
+    -webkit-user-drag: none;
 }
 
 *::-webkit-scrollbar {
@@ -68,7 +69,11 @@ body {
 }
 
 .body-lock {
+    position: absolute;
     overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    overscroll-behavior-x: none;
 }
 
 .active-link {
@@ -93,6 +98,7 @@ a:hover {
     transition: opacity var(--transition-in); */
     color: var(--primary);
     transition: color var(--transition-in);
+    /* filter: drop-shadow(0 0 0.2rem var(--primary)); */
 }
 
 .hide-on-expand {

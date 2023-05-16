@@ -84,13 +84,6 @@ let RightCol = styled.div`
   @media(max-width: 989px) {
     flex-basis: 0;
     overflow: hidden;
-    // position: fixed;
-    // z-index: 999;
-    // top: 0;
-    // left: 0;
-    // height: 100vh;
-    // width: 100vw;
-    // background: var(--background);
   }
 `
 

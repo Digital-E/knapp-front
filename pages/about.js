@@ -30,7 +30,7 @@ let InnerContainer = styled.div`
 
 let LeftCol = styled.div`
   flex-basis: 70%;
-  margin: 0px 0 0 120px;
+  margin: 120px 0 0 120px;
   padding-top: 20px;
   overflow: scroll;
   box-sizing: border-box;

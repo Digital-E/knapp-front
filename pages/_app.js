@@ -16,6 +16,7 @@ import CookieConsent from 'react-cookie-consent'
 
 import Header from '../components/header'
 import Footer from '../components/footer'
+import LogoFloat from '../components/logo-float'
 
 let desktopVariants = {
   pageInitial: {
@@ -74,6 +75,7 @@ function MyApp({ Component, pageProps, router }) {
         >
         <Body content={pageProps.data?.menuData.cookietext} />
       </CookieConsent> */} 
+      <LogoFloat />
       <AnimatePresence exitBeforeEnter 
       onExitComplete={() => { window.scrollTo(0,0) }}
       >   

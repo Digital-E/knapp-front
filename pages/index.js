@@ -10,31 +10,14 @@ import { getClient } from '../lib/sanity.server'
 
 import { store } from "../store"
 
+import Map from '../components/home/map'
 
-const Container = styled.div`
-  position: relative;
-  height: 100vh;
-`
+const Container = styled.div``
 
-// let tags = [
-//   'Audio',
-//   'Text',
-//   'Video',
-//   'Climate',
-//   'Environment',
-//   'London',
-// ]
+const Desktop = styled.div``;
 
-// let key = [
-//   'MA Cities',
-//   'Staff Projects',
-//   'Research',
-//   'Partnerships',
-//   'Network',
-// ]
 
 export default function Index({ data = {}, preview }) {
-
   //Context
   const context = useContext(store);
   const { state, dispatch } = context;
@@ -48,11 +31,11 @@ export default function Index({ data = {}, preview }) {
   }
 
   useEffect(() => {
-    // document.querySelector("body").classList.add("body-lock");
+    document.querySelector("body").classList.add("body-lock");
 
-    // return () => {
-    //   document.querySelector("body").classList.remove("body-lock");
-    // }
+    return () => {
+      document.querySelector("body").classList.remove("body-lock");
+    }
 
   }, []);
 
@@ -67,6 +50,9 @@ export default function Index({ data = {}, preview }) {
           />
         </Head>
         <Container>
+          <Desktop>
+            <Map />        
+          </Desktop>  
         </Container>
       </Layout>
     </>
