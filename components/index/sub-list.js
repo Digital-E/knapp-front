@@ -27,7 +27,13 @@ const List = styled.div`
 
 const Icon = styled.div`
     svg {
-        width: 40px;
+        width: 30px;
+        filter: drop-shadow(0 0 0.3rem var(--primary));
+        transition: filter 0.4s;
+    }
+
+    :hover svg {
+        filter: drop-shadow(0 0 0.1rem var(--primary));
     }
 
     path {

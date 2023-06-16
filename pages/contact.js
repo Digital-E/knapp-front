@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
@@ -31,13 +30,14 @@ let InnerContainer = styled.div`
 let LeftCol = styled.div`
   flex-basis: 70%;
   margin: 120px 0 0 120px;
-  padding-top: 20px;
-  overflow: scroll;
+  padding-top: 30px;
+  // overflow: scroll;
   box-sizing: border-box;
 
   @media(max-width: 989px) {
     flex-basis: 100%;
     margin: 0 20px;
+    padding-top: 20px;
   }
 `
 
@@ -60,12 +60,41 @@ const Text = styled.div`
     font-size: inherit;
   }
 
+  a {
+    display: inline-block;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+
   * {
     text-transform: uppercase;
   }
 
   @media(max-width: 989px) {
     width: 100%;
+  }
+
+  @media(min-width: 990px) {
+    h3 {
+      position: relative;
+      left: -100px;
+      pointer-events: none;
+    }
+
+    p {
+      margin-top: -34px;
+    }
+  }
+`
+
+const MarginTitle = styled.h3`
+  position: absolute;
+  left: 0;
+  top: 148px;
+  padding: 0 20px;
+
+  @media(max-width: 989px) {
+    display: none;
   }
 `
 
@@ -91,7 +120,7 @@ export default function About({ data = {}, preview }) {
           content={data?.contactData?.content}
           />
         </Head>
-        <Container>
+        <Container>     
           <InnerContainer>
             <LeftCol>
               <Text className='body-large'>

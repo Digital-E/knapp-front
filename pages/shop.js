@@ -45,7 +45,7 @@ let InnerContainer = styled.div`
 let LeftCol = styled.div`
   flex-basis: 70%;
   margin: 0 0 0 120px;
-  padding: 20px 0;
+  padding: 100px 0;
   overflow: scroll;
   z-index: -1;
 
@@ -94,6 +94,23 @@ const Text = styled.div`
   * {
     text-transform: uppercase;
   }
+
+  @media(min-width: 990px) {
+    > *:first-child {
+      display: none;
+    }
+  }  
+`
+
+const MarginTitle = styled.h3`
+  position: absolute;
+  left: 0;
+  top: 108px;
+  padding: 0 20px;
+
+  @media(max-width: 989px) {
+    display: none;
+  }
 `
 
 
@@ -137,6 +154,9 @@ export default function Shop({ data = {}, preview }) {
           />
         </Head>
         <Container>
+          <MarginTitle>
+            {data?.shopData?.title}
+          </MarginTitle>          
           <Constraints ref={constraintsRef} />
           <InnerContainer>
             <LeftCol id='shop-left-col'>

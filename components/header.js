@@ -11,8 +11,9 @@ let Container = styled.header`
   padding: 20px;
   z-index: 2;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  // left: 50%;
+  // transform: translateX(-50%);
+  right: 0;
   box-sizing: border-box;
   user-select: none;
 
@@ -31,6 +32,10 @@ let Container = styled.header`
   @media(min-width: 990px) {
     .active-link {
       opacity: 1 !important;
+    }
+
+    .active-link svg {
+      opacity: 0.3;
     }
   }
 
@@ -103,6 +108,7 @@ let ListItem = styled.li`
     width: fit-content;
     text-decoration: none;
     text-transform: uppercase;
+    margin: 20px 0;
   }
 
   @media(max-width: 989px) {
@@ -134,7 +140,7 @@ let Menu = styled.div`
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    width: 220px;
+    width: 230px;
     background: #1A1A1A;
     border-radius: 25px;
     bottom: 20px;
@@ -153,23 +159,16 @@ let Menu = styled.div`
     }
   }
 `
-let Dot = styled.div`
-  height: 5px;
-  width: 5px;
-  min-height: 5px;
-  min-width: 5px;
-  border: 1px solid var(--primary);
-  border-radius: 999px;
-  margin-right: 5px;
 
-  @media(max-width: 989px) {
-    display: none;
-  }
-`
-
-let Icon = styled.div`
+let IconSVG = styled.div`
   svg {
-    width: 40px;
+    width: 30px;
+    filter: drop-shadow(0 0 0.3rem var(--primary));
+    transition: filter 0.4s, opacity 0.3s;
+  }
+
+  :hover svg {
+    filter: drop-shadow(0 0 0.1rem var(--primary));
   }
 
   path {
@@ -177,12 +176,30 @@ let Icon = styled.div`
   }
 `
 
+let IconLabel = styled.div`
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  opacity: 0;
+
+  @media(max-width: 989px) {
+    opacity: 1;
+  }
+`
+
+let Icon = styled.div`
+  position: relative; 
+
+  :hover {
+    ${IconLabel} {
+      opacity: 1;
+    }
+  }
+`
 
 
-let sliceLabel = (label) => {
-  let firstLetter = label.split('').splice(0,1)
-  return firstLetter
-}
+
 
 
 export default function Header({ data }) {
@@ -213,10 +230,10 @@ export default function Header({ data }) {
             return (
               <ListItem key={item._id}  onClick={() => setMenuOpen(false)} >
                 <Link href={item.url} isMenu={true}>
-                  {/* <Dot className='dot' /> */}
-                  <Icon dangerouslySetInnerHTML={{__html: item.icon}} />
-                  {/* <span>{sliceLabel(item.label)}</span>
-                  <span>{item.label}</span> */}
+                  <Icon>
+                    <IconSVG dangerouslySetInnerHTML={{__html: item.icon}} />
+                    <IconLabel>{item.label}</IconLabel>
+                  </Icon>
                 </Link>
               </ListItem>
             )

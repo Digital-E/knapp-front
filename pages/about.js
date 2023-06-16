@@ -73,6 +73,23 @@ const Text = styled.div`
   @media(max-width: 989px) {
     width: 100%;
   }
+
+  @media(min-width: 990px) {
+    > *:first-child {
+      display: none;
+    }
+  }
+`
+
+const MarginTitle = styled.h3`
+  position: absolute;
+  left: 0;
+  top: 148px;
+  padding: 0 20px;
+
+  @media(max-width: 989px) {
+    display: none;
+  }
 `
 
 
@@ -106,6 +123,9 @@ export default function About({ data = {}, preview }) {
           />
         </Head>
         <Container>
+          <MarginTitle>
+            {data?.aboutData?.title}
+          </MarginTitle>
           <InnerContainer>
             <LeftCol>
               <Text className='body-large bio-type'>
