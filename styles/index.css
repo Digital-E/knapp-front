@@ -255,7 +255,7 @@ h6, .h6 {
 }
 
 
-p, .p, a {
+p, .p, a, span {
     font-family: "FT88 Regular";
     /* font-size: 1.3rem; */
     font-size: 0.75rem;

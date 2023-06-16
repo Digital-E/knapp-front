@@ -25,12 +25,26 @@ const List = styled.div`
     }
 `
 
+const Icon = styled.div`
+    svg {
+        width: 40px;
+    }
+
+    path {
+        fill: var(--primary);
+    }
+`
+
+
 
 function Component({ index, data, categoryIndex, currentSelected, toggleProject }) {
 
     return(
         <Container className={currentSelected?.category === index ? 'show' : currentSelected !== null ? 'hide' : 'show'}>
-            <ListHeader>{data.title}</ListHeader>
+            <ListHeader>
+                {/* {data.title} */}
+                <Icon dangerouslySetInnerHTML={{__html: data.icon}} />
+            </ListHeader>
             <List>
                 {
                     data.projects.map((item, index) => (

@@ -11,6 +11,8 @@ import styled from 'styled-components'
 
 import Body from "../components/body"
 
+import Typewriter from '../components/about/typewriter'
+
 
 const Container = styled.div`
     position: relative;
@@ -56,7 +58,11 @@ const Text = styled.div`
   width: 65%;
   margin: 0;
 
-  &.body-large p, &.body-large a {
+  p:nth-child(2) {
+    display: none;
+  }
+
+  &.body-large p, &.body-large a, &.body-large span {
     font-size: inherit;
   }
 
@@ -73,6 +79,8 @@ const Text = styled.div`
 
 export default function About({ data = {}, preview }) {
 
+  let [startType, setStartType] = useState(false)
+
   const router = useRouter()
 
   const slug = data?.aboutData?.slug
@@ -80,6 +88,12 @@ export default function About({ data = {}, preview }) {
   if (!router.isFallback && !slug) {
     return <ErrorPage statusCode={404} />
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+      setStartType(true)
+    }, 1000)
+  }, [])
 
   return (
     <>
@@ -94,8 +108,9 @@ export default function About({ data = {}, preview }) {
         <Container>
           <InnerContainer>
             <LeftCol>
-              <Text className='body-large'>
+              <Text className='body-large bio-type'>
                 <Body content={data?.aboutData?.text} />
+                <Typewriter data={[data?.aboutData?.text[1].children[0].text]} start={startType} />
               </Text>
             </LeftCol>
             <RightCol>

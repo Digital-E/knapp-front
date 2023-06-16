@@ -11,7 +11,8 @@ let Container = styled.header`
   padding: 20px;
   z-index: 2;
   top: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
   box-sizing: border-box;
   user-select: none;
 
@@ -43,7 +44,15 @@ let Container = styled.header`
   background: #252525;
   font-family: FT88 Regular;
   text-transform: uppercase;
-  font-size: 0.875rem;
+  font-size: 0.875rem !important;
+}
+
+.nav-mobile-burger span {
+  font-size: 0.875rem !important;
+  margin: 0;
+  padding: 0;
+  letter-spacing: 0;
+  color: var(--primary);
 }
 
 .nav-mobile-burger > span:nth-child(1) {
@@ -96,10 +105,6 @@ let ListItem = styled.li`
     text-transform: uppercase;
   }
 
-  :last-child {
-    margin-right: 0 !important;
-  }
-
   @media(max-width: 989px) {
     > a > span:nth-child(2) {
       display: none;
@@ -120,7 +125,7 @@ let ListItem = styled.li`
 let Menu = styled.div`
   
   ${ListItem} {
-    margin-right: 20px;
+    margin: 0 10px;
   }
 
   @media(max-width: 989px) {
@@ -162,6 +167,17 @@ let Dot = styled.div`
   }
 `
 
+let Icon = styled.div`
+  svg {
+    width: 40px;
+  }
+
+  path {
+    fill: var(--primary);
+  }
+`
+
+
 
 let sliceLabel = (label) => {
   let firstLetter = label.split('').splice(0,1)
@@ -197,9 +213,10 @@ export default function Header({ data }) {
             return (
               <ListItem key={item._id}  onClick={() => setMenuOpen(false)} >
                 <Link href={item.url} isMenu={true}>
-                  <Dot className='dot' />
-                  <span>{sliceLabel(item.label)}</span>
-                  <span>{item.label}</span>
+                  {/* <Dot className='dot' /> */}
+                  <Icon dangerouslySetInnerHTML={{__html: item.icon}} />
+                  {/* <span>{sliceLabel(item.label)}</span>
+                  <span>{item.label}</span> */}
                 </Link>
               </ListItem>
             )

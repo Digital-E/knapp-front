@@ -56,6 +56,8 @@ function MyApp({ Component, pageProps, router }) {
     setTimeout(() => {
       document.querySelector("#__next").style.opacity = 1
     }, 250)
+
+    document.documentElement.style.setProperty('--primary', `${pageProps.data?.menuData.colour}`);
   },[])
 
   return (
