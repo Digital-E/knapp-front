@@ -47,7 +47,7 @@ const InformationWrapper = styled.div`
     display: flex;
     align-items: center;
     flex-basis: 70%;
-    padding: 20px 0px;
+    padding: 30px 0px;
 
     @media(max-width: 989px) {
         align-items: flex-start;
