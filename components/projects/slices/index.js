@@ -18,7 +18,7 @@ const HideCounter = styled.div`
 `
 
 
-export default function Component({ data, toggleExpand }) {
+export default function Component({ data, toggleZoom }) {
 
   let mediaCount = useRef(0);
 
@@ -27,7 +27,7 @@ export default function Component({ data, toggleExpand }) {
             case 'MediaGallery':
             return (
               <>
-              <SliceWrapper onClick={() => toggleExpand()} key={slice._key} className='media-gallery'><MediaGallery data={slice.media} mediaCount={mediaCount.current} /></SliceWrapper>
+              <SliceWrapper key={slice._key} className='media-gallery'><MediaGallery data={slice.media} mediaCount={mediaCount.current} toggleZoom={(index) => toggleZoom(index)} /></SliceWrapper>
               <HideCounter>{mediaCount.current += slice.media.length}</HideCounter>
               </>
             )

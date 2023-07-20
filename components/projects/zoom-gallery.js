@@ -13,6 +13,8 @@ gsap.registerPlugin(ScrollToPlugin)
 import Image from "../media/image"
 import Video from "../media/video-native"
 
+import Button from '../button'
+
 const Container = styled(motion.div)`
 
 `
@@ -24,7 +26,7 @@ const InnerContainer = styled.div`
     height: 100vh;
     padding: 0;
     overflow: scroll;
-    transition: all 0.5s;
+    transition: all 0.3s;
     scroll-snap-type: y mandatory;
 
     &.expand .caption {
@@ -64,7 +66,7 @@ const SliceWrapper = styled.div`
     position: relative;
     overflow: hidden;
     margin: 0px auto;
-    transition: all 0.5s;
+    transition: all 0.3s;
 
     &.placement {
         transition: all 0s !important;
@@ -82,19 +84,35 @@ const Overlay = styled(motion.div)`
   cursor: nwse-resize;
 `
 
+const CloseButton = styled(motion.div)`
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    z-index: 999;
+`
+
+
 let mediaStackExpandedVar = false
 
-let mediaStackMediaPositionXInit = 0
-let mediaStackMediaPositionYInit = 0
-let mediaStackMediaWidthInit = 0
-let mediaStackMediaHeightInit = 0
+let mediaStackMediaPositionX = 0
+let mediaStackMediaPositionY = 0
+let mediaStackMediaWidth = 0
+let mediaStackMediaHeight = 0
+let mediaStackMediaZoomWidth = 0
+let mediaStackMediaZoomHeight = 0
 
-
-let mediaStackMediaZoomWidthInit = 0
-let mediaStackMediaZoomHeightInit = 0
 
 let hasClickedTimeout = null;
 let hasClicked = false;
+
+let zoomIndex = 0;
+
+let scrollCount = 0;
+
+let scrollTimeout = null;
+let isScrolling = false;
 
 export default function Component({ data, toggleZoomState, toggleZoom }) {
     let containerRef = useRef();
@@ -106,18 +124,39 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         query: '(min-width: 990px)'
     }) 
 
+    useEffect(() => {
+        zoomIndex = toggleZoomState
+    }, [toggleZoomState])
+
     let resize = () => {
+        mediaStackMediaPositionX = document.querySelector(`#media-stack-element-${zoomIndex}`)?.getBoundingClientRect().x
+        mediaStackMediaPositionY = document.querySelector(`#media-stack-element-${zoomIndex}`)?.getBoundingClientRect().y
+        mediaStackMediaWidth = document.querySelector(`#media-stack-element-${zoomIndex}`)?.getBoundingClientRect().width
+        mediaStackMediaHeight = document.querySelector(`#media-stack-element-${zoomIndex}`)?.getBoundingClientRect().height
+        mediaStackMediaZoomWidth = document.querySelector(`#media-stack-zoom-element-${zoomIndex}`)?.getBoundingClientRect().width
+        mediaStackMediaZoomHeight = document.querySelector(`#media-stack-zoom-element-${zoomIndex}`)?.getBoundingClientRect().height
+        
         Array.from(innerContainerRef.current.children).forEach(item => {
             item.children[0].style.width = `${(window.innerHeight - 200) * (item.children[0].getBoundingClientRect().width / item.children[0].getBoundingClientRect().height )}px`
         });
     }
 
-    let onScroll = () => {
+    let onScroll = (e) => {
+        clearTimeout(scrollTimeout)
+
+        isScrolling = true
+
+        scrollTimeout = setTimeout(() => {
+            isScrolling = false
+        }, 0)
+
+        scrollCount += 1;
+
+        if(scrollCount < 1) return
+        
         document.querySelectorAll('.media-stack-zoom-element').forEach((item, index) => {
-            if(item.getBoundingClientRect().y > 0 && item.getBoundingClientRect().y < window.innerHeight) {
-                setTimeout(() => {
-                    gsap.to(document.querySelector('.media-stack-inner-container'), {duration: 0, scrollTo: {y: `#media-stack-element-${index}`, offsetY: 100}})
-                }, 500)
+            if(item.getBoundingClientRect().y === 100 && mediaStackExpandedVar) {
+                gsap.to(document.querySelector('.media-stack-inner-container'), {duration: 0, scrollTo: {y: `#media-stack-element-${index}`, offsetY: 100}})
             }
         })
     }
@@ -150,6 +189,19 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
     }    
 
     let positionMediaOpen = () => {
+
+        if(hasClicked) return;
+
+        scrollCount = 0;
+
+        clearTimeout(hasClickedTimeout)
+
+        hasClicked = true
+
+        hasClickedTimeout = setTimeout(() => {
+            hasClicked = false;
+        }, 300);
+
         setMediaStackExpanded(!mediaStackExpanded)
         mediaStackExpandedVar = !mediaStackExpandedVar 
         
@@ -163,32 +215,22 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         // Place Media
         gsap.to(innerContainerRef.current, {duration: 0, ease: "power2.inOut", scrollTo: {y: `#media-stack-zoom-element-${toggleZoomState}`, offsetY: 100}})
 
-        if(!hasClicked) {
-            mediaStackMediaPositionXInit = document.querySelector(`#media-stack-element-${toggleZoomState}`).getBoundingClientRect().x
-            mediaStackMediaPositionYInit = document.querySelector(`#media-stack-element-${toggleZoomState}`).getBoundingClientRect().y
-            mediaStackMediaWidthInit = document.querySelector(`#media-stack-element-${toggleZoomState}`).getBoundingClientRect().width
-            mediaStackMediaHeightInit = document.querySelector(`#media-stack-element-${toggleZoomState}`).getBoundingClientRect().height
+        mediaStackMediaPositionX = document.querySelector(`#media-stack-element-${toggleZoomState}`)?.getBoundingClientRect().x
+        mediaStackMediaPositionY = document.querySelector(`#media-stack-element-${toggleZoomState}`)?.getBoundingClientRect().y
+        mediaStackMediaWidth = document.querySelector(`#media-stack-element-${toggleZoomState}`)?.getBoundingClientRect().width
+        mediaStackMediaHeight = document.querySelector(`#media-stack-element-${toggleZoomState}`)?.getBoundingClientRect().height
+        mediaStackMediaZoomWidth = document.querySelector(`#media-stack-zoom-element-${toggleZoomState}`)?.getBoundingClientRect().width
+        mediaStackMediaZoomHeight = document.querySelector(`#media-stack-zoom-element-${toggleZoomState}`)?.getBoundingClientRect().height
 
 
-            mediaStackMediaZoomWidthInit = document.querySelector(`#media-stack-zoom-element-${toggleZoomState}`).getBoundingClientRect().width
-            mediaStackMediaZoomHeightInit = document.querySelector(`#media-stack-zoom-element-${toggleZoomState}`).getBoundingClientRect().height
-        }
+        let scale = mediaStackMediaWidth / mediaStackMediaZoomWidth
+        let scaleHeight = mediaStackMediaHeight / mediaStackMediaZoomHeight
 
-        // hasClicked = true;
-        
-        // hasClickedTimeout = setTimeout(() => {
-        //     hasClicked = false
-        // }, 500)
+        let newLeft = (window.innerWidth - (mediaStackMediaZoomWidth * scale)) / 2
+        let left = mediaStackMediaPositionX - newLeft
 
-
-        let scale = mediaStackMediaWidthInit / mediaStackMediaZoomWidthInit
-        let scaleHeight = mediaStackMediaHeightInit / mediaStackMediaZoomHeightInit
-
-        let newLeft = (window.innerWidth - (mediaStackMediaZoomWidthInit * scale)) / 2
-        let left = mediaStackMediaPositionXInit - newLeft
-
-        let newTop = (window.innerHeight - (mediaStackMediaZoomHeightInit * scaleHeight)) / 2
-        let top = mediaStackMediaPositionYInit - newTop
+        let newTop = (window.innerHeight - (mediaStackMediaZoomHeight * scaleHeight)) / 2
+        let top = mediaStackMediaPositionY - newTop
 
         document.querySelector(`#media-stack-zoom-element-${toggleZoomState}`).style.transform = `translate(${left}px, ${top}px) scale(${scale})`
 
@@ -210,10 +252,20 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
     }
 
     let positionMediaClose = () => {
+        if(hasClicked || isScrolling) return;
+
+        clearTimeout(hasClickedTimeout)
+
+        hasClicked = true
+
+        hasClickedTimeout = setTimeout(() => {
+            hasClicked = false;
+        }, 300);
+
         let currentIndex = 0
 
         document.querySelectorAll('.media-stack-zoom-element').forEach((item, index) => {
-            if(item.getBoundingClientRect().y === 100) {
+            if(item.getBoundingClientRect().y >= 0 && item.getBoundingClientRect().y <= window.innerHeight) {
                 currentIndex = index
             }
         })
@@ -230,13 +282,13 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
             }
         })
 
-        let mediaStackMediaPositionX = document.querySelector(`#media-stack-element-${toggleZoomState}`).getBoundingClientRect().x
-        let mediaStackMediaPositionY = document.querySelector(`#media-stack-element-${toggleZoomState}`).getBoundingClientRect().y
-        let mediaStackMediaWidth = document.querySelector(`#media-stack-element-${toggleZoomState}`).getBoundingClientRect().width
-        let mediaStackMediaHeight = document.querySelector(`#media-stack-element-${toggleZoomState}`).getBoundingClientRect().height
-
-        let mediaStackMediaZoomWidth = document.querySelector(`#media-stack-zoom-element-${toggleZoomState}`).getBoundingClientRect().width
-        let mediaStackMediaZoomHeight = document.querySelector(`#media-stack-zoom-element-${toggleZoomState}`).getBoundingClientRect().height
+        mediaStackMediaPositionX = document.querySelector(`#media-stack-element-${toggleZoomState}`)?.getBoundingClientRect().x
+        mediaStackMediaPositionY = document.querySelector(`#media-stack-element-${toggleZoomState}`)?.getBoundingClientRect().y
+        mediaStackMediaWidth = document.querySelector(`#media-stack-element-${toggleZoomState}`)?.getBoundingClientRect().width
+        mediaStackMediaHeight = document.querySelector(`#media-stack-element-${toggleZoomState}`)?.getBoundingClientRect().height
+        mediaStackMediaZoomWidth = document.querySelector(`#media-stack-zoom-element-${toggleZoomState}`)?.getBoundingClientRect().width
+        mediaStackMediaZoomHeight = document.querySelector(`#media-stack-zoom-element-${toggleZoomState}`)?.getBoundingClientRect().height
+        
 
         let scale = mediaStackMediaWidth / mediaStackMediaZoomWidth
         let scaleHeight = mediaStackMediaHeight / mediaStackMediaZoomHeight
@@ -250,7 +302,9 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         // Shrink Media
         document.querySelector(`#media-stack-zoom-element-${toggleZoomState}`).classList.remove('placement')   
         
-        document.querySelector(`#media-stack-zoom-element-${toggleZoomState}`).style.transform = `translate(${left}px, ${top}px) scale(${scale})`    
+        if(!isScrolling) {
+            document.querySelector(`#media-stack-zoom-element-${toggleZoomState}`).style.transform = `translate(${left}px, ${top}px) scale(${scale})`  
+        }  
 
         // Show HUD elements
 
@@ -267,12 +321,11 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
             document.querySelector(`#media-stack-element-${toggleZoomState}`).classList.remove('hide');            
 
             toggleZoom(null)         
-        }, 500)
+        }, 300)
           
     }
 
     let expandMediaStack = (action) => {
-
         if(action !== 'close') {
             positionMediaOpen()
         } else {
@@ -315,10 +368,30 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
             pointerEvents: 'none',
             transition: {
                 duration: 0,
-                delay: 0.5
+                pointerEvents: {
+                    delay: 0
+                },
+                opacity: {
+                    delay: 0.3
+                }
             }
         }
-      }      
+      }  
+      
+      const closeButtonVariants = {
+        visible: {
+            opacity: 1,
+            transition: {
+                duration: 0.3
+            }
+        },
+        hidden: {
+            opacity: 0,
+            transition: {
+                duration: 0.1,
+            }
+        }
+      }   
 
     useEffect(() => {
         if(toggleZoomState !== null) {
@@ -329,14 +402,13 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
     return (
         <Container ref={containerRef} 
         animate={mediaStackExpanded ? 'visible' : 'hidden'} 
+        initial={'hidden'}
         variants={zoomGalleryVariants}>
             <Overlay animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={overlayVariants}  />
-            <InnerContainer 
-                ref={innerContainerRef} 
-                onClick={() => expandMediaStack('close')}
-                >
+            <InnerContainer ref={innerContainerRef}>
                 {(data !== null && data !== undefined) ? data.map((slice, index) => renderSlice(slice, index)) : null}
             </InnerContainer>
+            <CloseButton animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={closeButtonVariants}onClick={() => expandMediaStack('close')}><Button>Close</Button></CloseButton>
         </Container>
     )
 }

@@ -231,7 +231,7 @@ export default function Component({ data = {}, preview }) {
                       <Description className='body-large'>
                         <Body content={data.data.description} />
                       </Description>
-                      <Slices data={data.data.slices} toggleExpand={() => setToggleExpand(toggleExpand += 1)} />
+                      <Slices data={data.data.slices} toggleZoom={(e) => setToggleZoomState(e)}/>
                       <ButtonsWrapper>
                         <Link href={prevNextLinks.prev}><Button>{'<'}</Button></Link>
                         <Button>More Projects</Button>

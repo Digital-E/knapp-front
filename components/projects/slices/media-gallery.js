@@ -30,7 +30,7 @@ const SliceWrapper = styled.div`
 
 
 
-export default function Component({ data, mediaCount }) {
+export default function Component({ data, mediaCount, toggleZoom }) {
 
     let [mediaCountState, setMediaCountState] = useState(0)
 
@@ -49,9 +49,9 @@ export default function Component({ data, mediaCount }) {
         
         switch(slice._type) {
             case 'video':
-            return <SliceWrapper onMouseEnter={() => toggleMediaStack(index)} key={slice._key} aspectRatio={slice.width / slice.height}><Video data={slice} hasCaption={false} /></SliceWrapper>
+            return <SliceWrapper onMouseEnter={() => toggleMediaStack(index)} key={slice._key} aspectRatio={slice.width / slice.height} onClick={() => toggleZoom(mediaCountState + index)}><Video data={slice} hasCaption={false} /></SliceWrapper>
             case 'image':
-            return <SliceWrapper onMouseEnter={() => toggleMediaStack(index)} key={slice._key} aspectRatio={slice.asset.metadata.dimensions.aspectRatio}><Image data={slice} hasCaption={false} /></SliceWrapper>
+            return <SliceWrapper onMouseEnter={() => toggleMediaStack(index)} key={slice._key} aspectRatio={slice.asset.metadata.dimensions.aspectRatio} onClick={() => toggleZoom(mediaCountState + index)}><Image data={slice} hasCaption={false} /></SliceWrapper>
         }
     }    
 
