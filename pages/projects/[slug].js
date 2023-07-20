@@ -24,6 +24,7 @@ import Header from '../../components/projects/header'
 import Body from '../../components/body'
 import Slices from '../../components/projects/slices'
 import MediaStack from '../../components/projects/media-stack'
+import ZoomGallery from '../../components/projects/zoom-gallery'
 
 let Container = styled.div`
   position: relative; 
@@ -144,7 +145,7 @@ export default function Component({ data = {}, preview }) {
   const router = useRouter()
 
   let [mediaStack, setMediaStack] = useState([])
-  let [mediaStackExpanded, setMediaStackExpanded] = useState(false)
+  let [toggleZoomState, setToggleZoomState] = useState(null)
   let [toggleExpand, setToggleExpand] = useState(0)
   let [prevNextLinks, setPrevNextLinks] = useState({
     prev: '/',
@@ -239,10 +240,11 @@ export default function Component({ data = {}, preview }) {
                     </InnerLeftCol>
                   </LeftCol>
                   <RightCol id='media-stack-right-column'>
-                    <MediaStack data={mediaStack} toggleExpand={toggleExpand}/>
+                    <MediaStack data={mediaStack} toggleExpand={toggleExpand} toggleZoom={(e) => setToggleZoomState(e)}/>
                   </RightCol>
                   {/* <Overlay animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={overlayVariants} /> */}
                 </InnerContainer>
+                <ZoomGallery data={mediaStack} toggleZoomState={toggleZoomState} toggleZoom={(e) => setToggleZoomState(e)}/>
               </Container>
           </>
         )}

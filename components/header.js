@@ -134,6 +134,10 @@ let Menu = styled.div`
     margin: 0 10px;
   }
 
+  ${ListItem}:last-child {
+    margin-right: 0;
+  }
+
   @media(max-width: 989px) {
     display: none;
     flex-direction: column;
@@ -178,7 +182,7 @@ let IconSVG = styled.div`
 
 let IconLabel = styled.div`
   position: absolute;
-  bottom: -10px;
+  bottom: -12px;
   left: 50%;
   transform: translate(-50%, 0);
   opacity: 0;
@@ -210,7 +214,7 @@ export default function Header({ data }) {
 
 
   return (
-    <Container className={menuOpen ? "nav--open" : ""}>
+    <Container className={menuOpen ? "nav--open hide-on-expand" : "hide-on-expand"}>
       {/* <div
         onClick={() => {setMenuOpen(false);}}>
           <Button>
