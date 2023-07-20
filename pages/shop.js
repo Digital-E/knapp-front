@@ -14,6 +14,7 @@ import styled from 'styled-components'
 import Body from '../components/body'
 import Slices from '../components/shop/slices'
 import MediaStack from '../components/projects/media-stack'
+import ZoomGallery from '../components/projects/zoom-gallery'
 import Notification from '../components/shop/notification'
 
 
@@ -122,8 +123,7 @@ export default function Shop({ data = {}, preview }) {
   const router = useRouter()
 
   let [mediaStack, setMediaStack] = useState([])
-
-  let [toggleExpand, setToggleExpand] = useState(0)
+  let [toggleZoomState, setToggleZoomState] = useState(null)
 
   const slug = data?.shopData?.slug
 
@@ -165,14 +165,14 @@ export default function Shop({ data = {}, preview }) {
                 <Body content={data?.shopData?.text} />
               </Text>   
               <Notification data={data.shopData.stockists} constraintsRef={constraintsRef} />         
-
-              <Slices data={data.shopData.products} toggleExpand={() => setToggleExpand(toggleExpand += 1)} />
+              <Slices data={data.shopData.products} toggleZoom={(e) => setToggleZoomState(e)} />
               </InnerLeftCol>
             </LeftCol>
             <RightCol id='media-stack-right-column'>
-              <MediaStack data={mediaStack} toggleExpand={toggleExpand} />
+              <MediaStack data={mediaStack} toggleZoom={(e) => setToggleZoomState(e)} />
             </RightCol> 
-          </InnerContainer>     
+          </InnerContainer> 
+          <ZoomGallery data={mediaStack} toggleZoomState={toggleZoomState} toggleZoom={(e) => setToggleZoomState(e)}/>    
         </Container>
       </Layout>
     </>

@@ -49,7 +49,7 @@ export default function Component({ data, mediaCount, toggleZoom }) {
         
         switch(slice._type) {
             case 'video':
-            return <SliceWrapper onMouseEnter={() => toggleMediaStack(index)} key={slice._key} aspectRatio={slice.width / slice.height} onClick={() => toggleZoom(mediaCountState + index)}><Video data={slice} hasCaption={false} /></SliceWrapper>
+            return <SliceWrapper onMouseEnter={() => toggleMediaStack(index)} key={slice._key} aspectRatio={slice.width / slice.height} onClick={() => toggleZoom(mediaCountState + index)}><Video data={slice} hasCaption={false} autoPlay={true} /></SliceWrapper>
             case 'image':
             return <SliceWrapper onMouseEnter={() => toggleMediaStack(index)} key={slice._key} aspectRatio={slice.asset.metadata.dimensions.aspectRatio} onClick={() => toggleZoom(mediaCountState + index)}><Image data={slice} hasCaption={false} /></SliceWrapper>
         }

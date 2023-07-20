@@ -14,12 +14,12 @@ const Container = styled.div`
 `
 
 
-export default function Component({ data, id }) {
+export default function Component({ data, autoPlay, controls }) {
 
     return (
         <>
             <Container width={data.width} height={data.height}>
-                <video width={data.width} height={data.height} autoPlay muted loop playsInline>
+                <video width={data.width} height={data.height} autoPlay={autoPlay} muted loop playsInline controls={controls}>
                     <source src={data.asset.url} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>

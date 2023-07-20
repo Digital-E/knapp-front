@@ -29,7 +29,7 @@ const InnerContainer = styled.div`
     transition: all 0.3s;
     scroll-snap-type: y mandatory;
 
-    &.expand .caption {
+    .caption {
         opacity: 0;
     }
 
@@ -39,18 +39,6 @@ const InnerContainer = styled.div`
         left: 0;
         top: 0;
         box-sizing: border-box;
-
-        &.expand {
-            width: 100%;
-            position: fixed;
-            transform: none;
-            transition: all 0s;
-        }
-
-
-        &.expand > div:last-child {
-            margin-bottom: 0
-        }
     }
 `
 
@@ -174,7 +162,7 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
 
         return () => {
             window.removeEventListener('resize', resize)
-            innerContainerRef.current.removeEventListener('scroll', onScroll)
+            innerContainerRef.current?.removeEventListener('scroll', onScroll)
         }
     }, [])
 
@@ -182,7 +170,7 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         
         switch(slice._type) {
             case 'video':
-            return <SliceOuter><SliceWrapper key={slice._key} id={`media-stack-zoom-element-${index}`} className='placement media-stack-zoom-element'><Video data={slice} hasCaption={true} /></SliceWrapper></SliceOuter>
+            return <SliceOuter><SliceWrapper key={slice._key} id={`media-stack-zoom-element-${index}`} className='placement media-stack-zoom-element'><Video data={slice} hasCaption={true} controls={true} autoplay={false} /></SliceWrapper></SliceOuter>
             case 'image':
             return <SliceOuter><SliceWrapper key={slice._key} id={`media-stack-zoom-element-${index}`} className='placement media-stack-zoom-element'><Image data={slice} hasCaption={true} /></SliceWrapper></SliceOuter>
         }
@@ -241,14 +229,15 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         })
 
 
-        // Hide Clicked Media
-        document.querySelector(`#media-stack-element-${toggleZoomState}`).classList.add('hide');
 
         // Enlarge Media
         setTimeout(() => {
+            // Hide Clicked Media
+            document.querySelector(`#media-stack-element-${toggleZoomState}`).classList.add('hide');
+
             document.querySelector(`#media-stack-zoom-element-${toggleZoomState}`).classList.remove('placement')
             document.querySelector(`#media-stack-zoom-element-${toggleZoomState}`).style.transform = 'scale(1)';
-        }, 10)        
+        }, 100)        
     }
 
     let positionMediaClose = () => {
@@ -360,7 +349,7 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
             pointerEvents: 'all',
             opacity: 1,
             transition: {
-                duration: 0
+                duration: 0.1
             }
         },
         hidden: {

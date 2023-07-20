@@ -2,7 +2,9 @@ import { useEffect, useRef } from "react"
 import styled from "styled-components"
 import gsap from 'gsap'
 
-const Container = styled.div`
+import { motion } from 'framer-motion'
+
+const Container = styled(motion.div)`
     position: fixed;
     cursor: pointer;
     z-index: 999;
@@ -60,6 +62,7 @@ const Container = styled.div`
 export default function Component({}) {
     let logoRef = useRef()
     let innerLogoRef = useRef()
+    let moveAnimation;
 
 
     let moveLogo = () => {
@@ -90,7 +93,7 @@ export default function Component({}) {
         const distance = Math.sqrt(vertDiff*vertDiff + horizDiff*horizDiff);
 
 
-        gsap.to(logoRef.current, {x: targetCenter.x, y: targetCenter.y, duration: distance / 10, ease: 'linear', onComplete: moveLogo})  
+        moveAnimation = gsap.to(logoRef.current, {x: targetCenter.x, y: targetCenter.y, duration: distance / 10, ease: 'linear', onComplete: moveLogo})  
     }
 
     let levitate = () => {
@@ -105,7 +108,26 @@ export default function Component({}) {
     }, [])
 
   return (
-    <Container ref={logoRef}>
+    <Container 
+      ref={logoRef}
+      // drag
+      // onDragStart={
+      //   () => moveAnimation.kill()
+      // }
+      // onDragEnd={
+      //   () => moveLogo()
+      // }
+            // dragConstraints={constraintsRef}
+            // whileHover={{
+            //     scale: 1.01
+            // }}
+            // whileDrag={{ scale: 0.98 }}
+            // whileHover={{
+            //     scale: 1,
+            //     transition: { duration: 0.3 },
+            //   }}
+            dragMomentum={false}
+    >
         <div ref={innerLogoRef}>
             <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1682.000000 2948.000000"

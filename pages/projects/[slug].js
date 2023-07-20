@@ -122,21 +122,6 @@ const ButtonsWrapper = styled.div`
 `
 
 
-
-const overlayVariants = {
-  visible: {
-    display: 'block',
-    opacity: 1
-  },
-  hidden: {
-    opacity: 0,
-    transitionEnd: {
-      display: 'none'
-    }
-  }
-}
-
-
 export default function Component({ data = {}, preview }) {
   //Context
   const context = useContext(store);
@@ -146,7 +131,6 @@ export default function Component({ data = {}, preview }) {
 
   let [mediaStack, setMediaStack] = useState([])
   let [toggleZoomState, setToggleZoomState] = useState(null)
-  let [toggleExpand, setToggleExpand] = useState(0)
   let [prevNextLinks, setPrevNextLinks] = useState({
     prev: '/',
     next: '/'
@@ -231,7 +215,7 @@ export default function Component({ data = {}, preview }) {
                       <Description className='body-large'>
                         <Body content={data.data.description} />
                       </Description>
-                      <Slices data={data.data.slices} toggleZoom={(e) => setToggleZoomState(e)}/>
+                      <Slices data={data.data.slices} toggleZoom={(e) => setToggleZoomState(e)} />
                       <ButtonsWrapper>
                         <Link href={prevNextLinks.prev}><Button>{'<'}</Button></Link>
                         <Button>More Projects</Button>
@@ -240,9 +224,8 @@ export default function Component({ data = {}, preview }) {
                     </InnerLeftCol>
                   </LeftCol>
                   <RightCol id='media-stack-right-column'>
-                    <MediaStack data={mediaStack} toggleExpand={toggleExpand} toggleZoom={(e) => setToggleZoomState(e)}/>
+                    <MediaStack data={mediaStack} toggleZoom={(e) => setToggleZoomState(e)}/>
                   </RightCol>
-                  {/* <Overlay animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={overlayVariants} /> */}
                 </InnerContainer>
                 <ZoomGallery data={mediaStack} toggleZoomState={toggleZoomState} toggleZoom={(e) => setToggleZoomState(e)}/>
               </Container>

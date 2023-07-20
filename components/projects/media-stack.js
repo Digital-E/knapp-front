@@ -1,14 +1,5 @@
-import { useRef, useEffect, useState } from 'react'
-import { Portal } from 'react-portal';
+import { useRef } from 'react'
 import styled from "styled-components"
-
-import { motion } from 'framer-motion'
-
-import { useMediaQuery } from 'react-responsive'
-
-import { gsap } from 'gsap'
-import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin"
-gsap.registerPlugin(ScrollToPlugin)
 
 import Image from "../media/image"
 import Video from "../media/video-native"
@@ -70,17 +61,7 @@ const SliceWrapper = styled.div`
     }
 `
 
-const Overlay = styled(motion.div)`
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  background: var(--background);
-  z-index: 0;
-`
-
-export default function Component({ data, toggleExpand, toggleZoom }) {
+export default function Component({ data, toggleZoom }) {
     let containerRef = useRef();
     let innerContainerRef = useRef();
 
@@ -88,7 +69,7 @@ export default function Component({ data, toggleExpand, toggleZoom }) {
         
         switch(slice._type) {
             case 'video':
-            return <SliceWrapper key={slice._key} id={`media-stack-element-${index}`} onClick={() => toggleZoom(index)}><Video data={slice} hasCaption={true} /></SliceWrapper>
+            return <SliceWrapper key={slice._key} id={`media-stack-element-${index}`} onClick={() => toggleZoom(index)}><Video data={slice} hasCaption={true} autoPlay={true} /></SliceWrapper>
             case 'image':
             return <SliceWrapper key={slice._key} id={`media-stack-element-${index}`} onClick={() => toggleZoom(index)}><Image data={slice} hasCaption={true} /></SliceWrapper>
         }

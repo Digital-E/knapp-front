@@ -10,6 +10,7 @@ const Container = styled(motion.div)`
     text-transform: uppercase;
     font-family: ProFontWindows;
     font-size: 0.875rem;
+    user-select: none;
 
     span {
         position: relative;
