@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 const Container = styled.div`
     position: relative;
-    padding-bottom: ${props => props.height / props.width * 100}%;
+    padding-bottom: ${props => props.className ? 'auto' : props.height / props.width * 100}%;
 
     > video {
         position: absolute;
@@ -14,12 +14,12 @@ const Container = styled.div`
 `
 
 
-export default function Component({ data, autoPlay, controls }) {
+export default function Component({ data, autoPlay, controls, className }) {
 
     return (
         <>
-            <Container width={data.width} height={data.height}>
-                <video width={data.width} height={data.height} autoPlay={autoPlay} muted loop playsInline controls={controls}>
+            <Container width={data.width} height={data.height} className={className}>
+                <video className={className} width={data.width} height={data.height} autoPlay={autoPlay} muted loop playsInline controls={controls}>
                     <source src={data.asset.url} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>

@@ -70,8 +70,12 @@ let InnerLeftCol = styled.div`
     width: 65%
   }
 
+  .audio {
+    width: 65%
+  }
+
   @media(max-width: 989px) {
-    > div:nth-child(1), .media-gallery, .text {
+    > div:nth-child(1), .media-gallery, .text, .audio {
       width: 100%;
     }
   }
@@ -83,6 +87,7 @@ let RightCol = styled.div`
   z-index: 1;
 
   @media(max-width: 989px) {
+    display: none;
     flex-basis: 0;
     overflow: hidden;
   }
@@ -137,7 +142,6 @@ export default function Component({ data = {}, preview }) {
   })
 
   const slug = data?.data?.slug
-
 
   if (!router.isFallback && !slug) {
     return <ErrorPage statusCode={404} />

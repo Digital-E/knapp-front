@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
-import { Portal } from 'react-portal';
 import styled from "styled-components"
+import Plyr from 'plyr';
 
 import { motion } from 'framer-motion'
 
@@ -16,9 +16,7 @@ import Video from "../media/video-native"
 import Button from '../button'
 
 const Container = styled(motion.div)`
-
 `
-
 
 const InnerContainer = styled.div`
     position: relative;
@@ -47,6 +45,12 @@ const SliceOuter = styled.div`
     padding: 100px 0;
     box-sizing: border-box;
     scroll-snap-align: center;
+
+    @media(max-width: 989px) {
+        display: flex;
+        align-items: center;
+        padding: 0;
+    }
 `
 
 
@@ -58,6 +62,10 @@ const SliceWrapper = styled.div`
 
     &.placement {
         transition: all 0s !important;
+    }
+
+    @media(max-width: 989px) {
+        width: 100% !important;
     }
 `
 
@@ -79,6 +87,11 @@ const CloseButton = styled(motion.div)`
     transform: translateX(-50%);
     cursor: pointer;
     z-index: 999;
+
+    @media(max-width: 989px) {
+        bottom: auto;
+        top: 20px;
+    }
 `
 
 
@@ -101,6 +114,8 @@ let scrollCount = 0;
 
 let scrollTimeout = null;
 let isScrolling = false;
+
+let players = null;
 
 export default function Component({ data, toggleZoomState, toggleZoom }) {
     let containerRef = useRef();
@@ -159,7 +174,15 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         }, 100)
 
         window.addEventListener('resize', resize)
-
+        
+        // Add players
+        setTimeout(() => {
+            players = Plyr.setup('.player', {
+                controls: ['play', 'progress', 'current-time', 'mute', 'fullscreen'],
+                fullscreen: {iosNative: true}
+            }); 
+        }, 0)
+    
         return () => {
             window.removeEventListener('resize', resize)
             innerContainerRef.current?.removeEventListener('scroll', onScroll)
@@ -170,7 +193,7 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         
         switch(slice._type) {
             case 'video':
-            return <SliceOuter><SliceWrapper key={slice._key} id={`media-stack-zoom-element-${index}`} className='placement media-stack-zoom-element'><Video data={slice} hasCaption={true} controls={true} autoplay={false} /></SliceWrapper></SliceOuter>
+            return <SliceOuter><SliceWrapper key={slice._key} id={`media-stack-zoom-element-${index}`} className='placement media-stack-zoom-element'><Video data={slice} hasCaption={true} controls={true} autoplay={false} className='player' /></SliceWrapper></SliceOuter>
             case 'image':
             return <SliceOuter><SliceWrapper key={slice._key} id={`media-stack-zoom-element-${index}`} className='placement media-stack-zoom-element'><Image data={slice} hasCaption={true} /></SliceWrapper></SliceOuter>
         }
@@ -203,6 +226,14 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         // Place Media
         gsap.to(innerContainerRef.current, {duration: 0, ease: "power2.inOut", scrollTo: {y: `#media-stack-zoom-element-${toggleZoomState}`, offsetY: 100}})
 
+        // Hide HUD elements
+
+        document.querySelectorAll('.hide-on-expand').forEach(item => {
+            item.classList.add('hide-on-expand--expanded')
+        })        
+
+        if(window.innerWidth < 990) return
+
         mediaStackMediaPositionX = document.querySelector(`#media-stack-element-${toggleZoomState}`)?.getBoundingClientRect().x
         mediaStackMediaPositionY = document.querySelector(`#media-stack-element-${toggleZoomState}`)?.getBoundingClientRect().y
         mediaStackMediaWidth = document.querySelector(`#media-stack-element-${toggleZoomState}`)?.getBoundingClientRect().width
@@ -221,14 +252,6 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         let top = mediaStackMediaPositionY - newTop
 
         document.querySelector(`#media-stack-zoom-element-${toggleZoomState}`).style.transform = `translate(${left}px, ${top}px) scale(${scale})`
-
-        // Hide HUD elements
-
-        document.querySelectorAll('.hide-on-expand').forEach(item => {
-            item.classList.add('hide-on-expand--expanded')
-        })
-
-
 
         // Enlarge Media
         setTimeout(() => {
@@ -271,6 +294,20 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
             }
         })
 
+        setMediaStackExpanded(!mediaStackExpanded)
+        mediaStackExpandedVar = !mediaStackExpandedVar
+
+        // Show HUD elements
+
+        document.querySelectorAll('.hide-on-expand').forEach(item => {
+            item.classList.remove('hide-on-expand--expanded')
+        })      
+        
+        // Pause all players
+        players.forEach(item => item.pause())
+
+        if(window.innerWidth < 990) return toggleZoom(null)
+
         mediaStackMediaPositionX = document.querySelector(`#media-stack-element-${toggleZoomState}`)?.getBoundingClientRect().x
         mediaStackMediaPositionY = document.querySelector(`#media-stack-element-${toggleZoomState}`)?.getBoundingClientRect().y
         mediaStackMediaWidth = document.querySelector(`#media-stack-element-${toggleZoomState}`)?.getBoundingClientRect().width
@@ -295,15 +332,6 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
             document.querySelector(`#media-stack-zoom-element-${toggleZoomState}`).style.transform = `translate(${left}px, ${top}px) scale(${scale})`  
         }  
 
-        // Show HUD elements
-
-        document.querySelectorAll('.hide-on-expand').forEach(item => {
-            item.classList.remove('hide-on-expand--expanded')
-        }) 
-
-
-        setMediaStackExpanded(!mediaStackExpanded)
-        mediaStackExpandedVar = !mediaStackExpandedVar
 
         setTimeout(() => {
             // Show Clicked Media
@@ -349,19 +377,19 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
             pointerEvents: 'all',
             opacity: 1,
             transition: {
-                duration: 0.1
+                duration: isDesktop ? 0.1 : 0,
             }
         },
         hidden: {
             opacity: 0,
             pointerEvents: 'none',
             transition: {
-                duration: 0,
                 pointerEvents: {
                     delay: 0
                 },
                 opacity: {
-                    delay: 0.3
+                    duration: isDesktop ? 0.3 : 0,
+                    delay: isDesktop ? 0.3 : 0
                 }
             }
         }
