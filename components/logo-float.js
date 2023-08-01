@@ -1,8 +1,10 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useContext } from "react"
 import styled from "styled-components"
 import gsap from 'gsap'
 
 import { motion } from 'framer-motion'
+
+import { store } from '../store'
 
 const Container = styled(motion.div)`
     position: fixed;
@@ -64,6 +66,10 @@ export default function Component({}) {
     let innerLogoRef = useRef()
     let moveAnimation;
 
+    //Context
+    const context = useContext(store);
+    const { state, dispatch } = context;    
+
 
     let moveLogo = () => {
         let targetCenter = {
@@ -107,8 +113,13 @@ export default function Component({}) {
 
     }, [])
 
+    let toggleMeditationMode = () => {
+      dispatch({type: "toggle meditation mode", value: true})
+    }
+
   return (
     <Container 
+      onClick={() => toggleMeditationMode()}
       ref={logoRef}
       // drag
       // onDragStart={

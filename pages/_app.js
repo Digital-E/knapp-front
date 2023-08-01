@@ -13,10 +13,13 @@ import { StateProvider } from '../store'
 import Body from '../components/body'
 import CookieConsent from 'react-cookie-consent'
 
+import Script from 'next/script'
+
 
 import Header from '../components/header'
 import Footer from '../components/footer'
 import LogoFloat from '../components/logo-float'
+import MeditationMode from '../components/meditation-mode'
 
 let desktopVariants = {
   pageInitial: {
@@ -77,7 +80,9 @@ function MyApp({ Component, pageProps, router }) {
         >
         <Body content={pageProps.data?.menuData.cookietext} />
       </CookieConsent> */} 
+      <Script src='https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js' strategy='beforeInteractive'/>
       <LogoFloat />
+      <MeditationMode />
       <AnimatePresence exitBeforeEnter 
       onExitComplete={() => { window.scrollTo(0,0) }}
       >   

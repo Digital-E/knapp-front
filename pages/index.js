@@ -51,7 +51,7 @@ export default function Index({ data = {}, preview }) {
         </Head>
         <Container>
           <Desktop>
-            <Map />        
+            {/* <Map />         */}
           </Desktop>  
         </Container>
       </Layout>

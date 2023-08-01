@@ -1,7 +1,7 @@
 import React, { useReducer, createContext } from "react";
 
 const initialState = {
-  sidePanelOpen: false,
+  meditationModeActive: false,
 };
 
 const store = createContext(initialState);
@@ -11,10 +11,10 @@ const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
     const newState = state;
     switch (action.type) {
-      case "sidepanel open":
+      case "toggle meditation mode":
         return {
           ...newState,
-          sidepanelOpen: action.value
+          meditationModeActive: action.value
         };                    
       default:
         throw new Error();
