@@ -32,7 +32,7 @@ let InnerContainer = styled.div`
 
 let LeftCol = styled.div`
   flex-basis: 70%;
-  margin: 120px 0 0 120px;
+  margin: 80px 0 0 80px;
   padding-top: 20px;
   overflow: scroll;
   box-sizing: border-box;
@@ -84,7 +84,7 @@ const Text = styled.div`
 const MarginTitle = styled.h3`
   position: absolute;
   left: 0;
-  top: 148px;
+  top: 108px;
   padding: 0 20px;
 
   @media(max-width: 989px) {

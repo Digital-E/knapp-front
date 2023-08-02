@@ -181,6 +181,8 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
                 controls: ['play', 'progress', 'current-time', 'mute', 'fullscreen'],
                 fullscreen: {iosNative: true}
             }); 
+
+            players?.forEach(item => item.on('canplay', resize))
         }, 0)
     
         return () => {
@@ -304,7 +306,7 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         })      
         
         // Pause all players
-        players.forEach(item => item.pause())
+        players?.forEach(item => item.pause())
 
         if(window.innerWidth < 990) return toggleZoom(null)
 
