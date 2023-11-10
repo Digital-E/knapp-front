@@ -18,7 +18,7 @@ const InnerContainer = styled.div`
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 150vw;
+    width: 200vw;
 
     > img {
         position: relative;
