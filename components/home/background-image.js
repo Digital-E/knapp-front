@@ -40,7 +40,7 @@ const Component = ({ hasLoaded, loadProgress }) => {
         Image.prototype.completedPercentage = 0;
 
         img = new Image();
-        img.load(`${window.location.origin}/map/map04.jpg`)
+        img.load(`${window.location.origin}/map/TK_MAP_opti.jpg`)
 
       }, []);
     

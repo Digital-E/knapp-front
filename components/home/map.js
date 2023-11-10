@@ -153,9 +153,9 @@ export default function Component() {
         <Container className="container">
             <InnerContainer id="map">
                 {/* Gems */}
-                <Gem x={70} y={80} index={0} sizeRatio={1.1} liftClick={() => hasClicked(0)} />
+                {/* <Gem x={70} y={80} index={0} sizeRatio={1.1} liftClick={() => hasClicked(0)} />
                 <Gem x={80} y={85} index={0} sizeRatio={0.8} liftClick={() => hasClicked(0)} />
-                <Gem x={85} y={70} index={0} sizeRatio={1} liftClick={() => hasClicked(0)} />  
+                <Gem x={85} y={70} index={0} sizeRatio={1} liftClick={() => hasClicked(0)} />   */}
                               
                 <BackgroundImage
                 hasLoaded={() => setHasLoaded(true)}
