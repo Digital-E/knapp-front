@@ -9,8 +9,6 @@ import { sanityClient, getClient } from '../../lib/sanity.server'
 
 import Link from '../../components/link'
 
-import { motion } from 'framer-motion'
-
 import { store } from "../../store"
 
 import styled from "styled-components"
@@ -277,7 +275,6 @@ export async function getStaticProps({ params, preview = false }) {
 
 export async function getStaticPaths() {
   const paths = await sanityClient.fetch(projectSlugsQuery)
-
   
   return {
     paths: paths.map((slug) => ({ params: { slug: splitSlug(slug, 1) } })),

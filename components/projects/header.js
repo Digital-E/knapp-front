@@ -84,7 +84,9 @@ function Component({ data }) {
     let router = useRouter()
 
     let getYear = (date) => {
-        let split = date.split('-')
+        let split = date?.split('-')
+
+        if(split === undefined) return null
 
         return split[0]
     }

@@ -6,12 +6,14 @@ let Container = styled.div`
   left: 50%;
   transform: translateX(-50%);
   z-index: 9999;
-  background: white;
-  border: 1px solid black;
-  padding: 15px 20px;
+  background: var(--background-secondary);
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--primary);
+  color: var(--primary);
 
   a {
-    color: red;
+    color: var(--primary);
   }
 `
 
@@ -21,6 +23,7 @@ export default function Alert({ preview }) {
     <div>
           {preview ? (
             <Container>
+              <p>
               This page is a preview.{' '}
               <a
                 href="/api/exit-preview"
@@ -28,6 +31,7 @@ export default function Alert({ preview }) {
                 Click here
               </a>{' '}
               to exit preview mode.
+              </p>
             </Container>
           ) : null}
     </div>
