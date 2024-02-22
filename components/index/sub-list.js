@@ -12,9 +12,20 @@ const Container = styled.div`
         opacity: 1;
         transition: opacity 0.7s;
     }
+
+    &.show > div:nth-child(1) > h3 {
+        opacity: 1;
+    }
 `
 
-const ListHeader = styled.h3`
+const ListHeader = styled.div`
+    display: flex;
+    align-items: center;
+
+    > h3 {
+        opacity: 0;
+        margin-left: 5px;
+    }
 `
 
 const List = styled.div`
@@ -48,12 +59,12 @@ function Component({ index, data, categoryIndex, currentSelected, toggleProject 
     return(
         <Container className={currentSelected?.category === index ? 'show' : currentSelected !== null ? 'hide' : 'show'}>
             <ListHeader>
-                {/* {data.title} */}
                 <Icon dangerouslySetInnerHTML={{__html: data.icon}} />
+                <h3>{data.title}</h3>
             </ListHeader>
             <List>
                 {
-                    data.projects.map((item, index) => (
+                    data?.projects?.map((item, index) => (
                         <ListItem data={item} currentSelected={currentSelected} categoryIndex={categoryIndex} projectIndex={index} toggleProject={(currentProject) => toggleProject(currentProject)}/>
                     ))
                 }
