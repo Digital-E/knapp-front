@@ -34,6 +34,9 @@ export default function Component() {
     let [loadProgress, setLoadProgress] = useState(0);
     let [hasLoaded, setHasLoaded] = useState(false);
 
+    let isSwiping;
+    let isDragging;
+
     useEffect(() => {
         if (!hasLoaded) return;
 
@@ -54,35 +57,116 @@ export default function Component() {
         let translateX = 0;
         let translateY = 0;
 
-        let mousePosition = e => {
+        let mousePosition = (e, initMousePosition) => {
             currentCursorPos = {
             x: e.clientX,
             y: e.clientY,
             };
 
-            if (currentCursorPos.x > window.innerWidth / 2) {
-            incrementAmount.x = window.innerWidth / 2 - currentCursorPos.x;
-            } else if (currentCursorPos.x < window.innerWidth / 2) {
-            incrementAmount.x = window.innerWidth / 2 - currentCursorPos.x;
-            }
 
-            if (currentCursorPos.y > window.innerHeight / 2) {
-            incrementAmount.y = window.innerHeight / 2 - currentCursorPos.y;
-            } else if (currentCursorPos.y < window.innerHeight / 2) {
-            incrementAmount.y = window.innerHeight / 2 - currentCursorPos.y;
-            }
+            incrementAmount.x = (e.clientX - initMousePosition.x) * 5
+            incrementAmount.y = (e.clientY - initMousePosition.y) * 5
+
+        
+
+            // if (currentCursorPos.x > window.innerWidth / 2) {
+            // incrementAmount.x = window.innerWidth / 2 - currentCursorPos.x;
+            // } else if (currentCursorPos.x < window.innerWidth / 2) {
+            // incrementAmount.x = window.innerWidth / 2 - currentCursorPos.x;
+            // }
+
+            // if (currentCursorPos.y > window.innerHeight / 2) {
+            // incrementAmount.y = window.innerHeight / 2 - currentCursorPos.y;
+            // } else if (currentCursorPos.y < window.innerHeight / 2) {
+            // incrementAmount.y = window.innerHeight / 2 - currentCursorPos.y;
+            // }
         };
 
-        document
-            .querySelector(".container")
-            .addEventListener("mousemove", e => mousePosition(e));
+        let isTrackPad = e => {
+            const { deltaY } = e;
+            if (deltaY && !Number.isInteger(deltaY)) {
+                return false;
+            }
+            return true;
+        }
 
-        document.body.addEventListener("mouseleave", () => {
-            gsap.to(incrementAmount, { duration: 1, x: 0 });
-            gsap.to(incrementAmount, { duration: 1, y: 0 });
+        let trackpadAction = e => {
+
+            let isTrackPadVar = isTrackPad(e);
+
+            if(!isTrackPadVar) return
+
+            isSwiping = true;
+
+            clearTimeout(isSwipingTimeoutFunction)
+
+            let isSwipingTimeoutFunction = setTimeout(function(){
+                isSwiping = false
+            }, 500);
+
+            incrementAmount.x = e.wheelDeltaX * 12
+            incrementAmount.y = e.wheelDeltaY * 12
+
+
+        };
+
+        // document
+        //     .querySelector(".container")
+        //     .addEventListener("mousemove", e => mousePosition(e));
+
+        document.querySelector(".container").addEventListener("mousewheel", e => trackpadAction(e));  
+            
+        let mouseDown = false;
+        let initMousePosition = {x: 0, y: 0};
+
+        document.addEventListener('mousedown', (e) => {
+            mouseDown = true
+            initMousePosition = {
+                x: e.clientX,
+                y: e.clientY,
+            }
         });
 
+
+ 
+        // document.addEventListener('mousemove', (e) => {
+        //     if(mouseDown) {
+        //         isDraggingFunc(e, initMousePosition);
+        //         isDragging = true;
+        //     }
+        // });
+     
+
+        document.addEventListener('mouseup', (e) => {
+            mouseDown = false;
+            isDragging = false;
+
+            // clearTimeout(isDraggingTimeoutFunction)
+            // let isDraggingTimeoutFunction = setTimeout(function(){
+            //     isDragging = false
+            // }, 500);   
+
+            incrementAmount.x = 0;
+            incrementAmount.y = 0;
+
+        });
+
+        let isDraggingFunc = (e, initMousePosition) => {
+            if(mouseDown === true) {
+                mousePosition(e, initMousePosition)
+            }
+        }
+ 
+
+
+        // document.body.addEventListener("mouseleave", () => {
+        //     gsap.to(incrementAmount, { duration: 1, x: 0 });
+        //     gsap.to(incrementAmount, { duration: 1, y: 0 });
+        // });
+
         const animate = () => {
+
+            if(isSwiping || isDragging) {
             // X Axis Easing
             let ratioX = 0;
 
@@ -132,16 +216,17 @@ export default function Component() {
             ratioY = 1;
             }
 
-            translateY += incrementAmount.y * ratioY * 0.02;
+            translateY += incrementAmount.y * ratioY * 0.01;
 
             translateY = Math.max(0, translateY);
 
             translateY = Math.min(-containerPosTop, translateY);
 
-            if (document.querySelector("#map")) {
-            document.querySelector(
-                "#map"
-            ).style.transform = `translate3d(${translateX}px, ${translateY}px, 0)`;
+                if (document.querySelector("#map")) {
+                document.querySelector(
+                    "#map"
+                ).style.transform = `translate3d(${translateX}px, ${translateY}px, 0)`;
+                }
             }
             window.requestAnimationFrame(animate);
         };

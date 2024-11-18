@@ -11,8 +11,15 @@ import { getClient } from '../lib/sanity.server'
 import { store } from "../store"
 
 import Map from '../components/home/map'
+import PopupIndex from '../components/home/popup-index'
 
-const Container = styled.div``
+const Container = styled.div`
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+`;
 
 const Desktop = styled.div``;
 
@@ -21,6 +28,7 @@ export default function Index({ data = {}, preview }) {
   //Context
   const context = useContext(store);
   const { state, dispatch } = context;
+  let [popupOpen, setPopupOpen] = useState(false);
 
   const router = useRouter()
 
@@ -39,6 +47,12 @@ export default function Index({ data = {}, preview }) {
 
   }, []);
 
+  let togglePopup = () => {
+    setPopupOpen(false)
+  }
+
+  console.log(data.allProjectsData)
+
   return (
     <>
       <Layout preview={preview}>
@@ -50,7 +64,8 @@ export default function Index({ data = {}, preview }) {
           />
         </Head>
         <Container>
-          <Desktop>
+          <PopupIndex popupOpen={popupOpen} togglePopup={() => togglePopup()} data={data.allProjectsData} />
+          <Desktop onClick={() => setPopupOpen(true)}>
             <Map />        
           </Desktop>  
         </Container>
