@@ -158,15 +158,14 @@ const overlayVariants = {
     }
 }
 
-const Component = ({ data, togglePopup, popupOpen }) => {
+const Component = ({ data, togglePopup, popupOpen, currentCategoryIndex }) => {
     
-    console.log(data)
     return (
         <>
         <Overlay onClick={() => togglePopup()} animate={popupOpen? "visible" : "hidden"} variants={overlayVariants}/>
         <PopUp initial={"hidden"} animate={popupOpen ? "visible" : "hidden"} variants={popUpVariants}>
             <Category>
-                <p>FASHION</p>
+                <p>{data.categories[currentCategoryIndex].title}</p>
             </Category>
             <CloseButton onClick={() => togglePopup()}>
                 <p>CLOSE</p>
@@ -175,11 +174,11 @@ const Component = ({ data, togglePopup, popupOpen }) => {
             </svg>                  */}
             </CloseButton>
             <List>
-                {data.map(item =>
+                {data.categories[currentCategoryIndex].projects.map(item =>
                     <ListItem>
-                        <Link href={item.slug}>
-                            <Thumbnail><Image data={item.thumbnail}/></Thumbnail>
-                            <Title>{item.title}</Title>
+                        <Link href={item.project.slug.current}>
+                            <Thumbnail><Image data={item.project.thumbnail}/></Thumbnail>
+                            <Title>{item.project.title}</Title>
                         </Link>                        
                     </ListItem>
                 )}

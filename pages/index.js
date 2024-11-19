@@ -5,7 +5,7 @@ import ErrorPage from 'next/error'
 import styled from 'styled-components'
 import Layout from '../components/layout'
 import { SITE_NAME } from '../lib/constants'
-import { homeQuery, previewHomeQuery, allProjectsQuery, previewAllProjectsQuery, menuQuery, footerQuery } from '../lib/queries'
+import { homeQuery, previewHomeQuery, indexQuery, previewIndexQuery, allProjectsQuery, previewAllProjectsQuery, menuQuery, footerQuery } from '../lib/queries'
 import { getClient } from '../lib/sanity.server'
 
 import { store } from "../store"
@@ -29,6 +29,7 @@ export default function Index({ data = {}, preview }) {
   const context = useContext(store);
   const { state, dispatch } = context;
   let [popupOpen, setPopupOpen] = useState(false);
+  let [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
 
   const router = useRouter()
 
@@ -51,8 +52,6 @@ export default function Index({ data = {}, preview }) {
     setPopupOpen(false)
   }
 
-  console.log(data.allProjectsData)
-
   return (
     <>
       <Layout preview={preview}>
@@ -64,7 +63,7 @@ export default function Index({ data = {}, preview }) {
           />
         </Head>
         <Container>
-          <PopupIndex popupOpen={popupOpen} togglePopup={() => togglePopup()} data={data.allProjectsData} />
+          <PopupIndex popupOpen={popupOpen} togglePopup={() => togglePopup()} data={data.indexData} currentCategoryIndex={currentCategoryIndex} />
           <Desktop onClick={() => setPopupOpen(true)}>
             <Map />        
           </Desktop>  
@@ -80,10 +79,14 @@ export async function getStaticProps({ preview = false, params }) {
 
   let allProjectsData = await getClient(preview).fetch(allProjectsQuery)
 
+  let indexData = await getClient(preview).fetch(indexQuery)
+
   if(preview) {
     homeData = await getClient(preview).fetch(previewHomeQuery) 
 
     allProjectsData = await getClient(preview).fetch(previewAllProjectsQuery)
+
+    indexData = await getClient(preview).fetch(previewIndexQuery)
   }
 
 
@@ -101,6 +104,7 @@ export async function getStaticProps({ preview = false, params }) {
       data: {
         homeData,
         allProjectsData,
+        indexData,
         menuData,
         // footerData
       }
