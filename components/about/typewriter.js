@@ -22,8 +22,8 @@ const Text = styled.p`
     position: relative;
     width: 100%;
     user-select: none;
-    line-height: 1.2;
-    margin: 9px 0;
+    line-height: 1.4;
+    margin: 8px 0;
 
 
     .letter {

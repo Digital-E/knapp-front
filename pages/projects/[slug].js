@@ -40,11 +40,11 @@ let InnerContainer = styled.div`
 
 
 let LeftCol = styled.div`
-  flex-basis: 70%;
-  margin: 0px 0 0 120px;
-  padding-top: 102px;
+  flex-basis: 65%;
+  margin: 140px 0 0 120px;
+  // padding-top: 102px;
   overflow: scroll;
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 1) 112px);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 1) 72px);
   box-sizing: border-box;
 
   @media(max-width: 989px) {
@@ -57,15 +57,15 @@ let LeftCol = styled.div`
 
 let InnerLeftCol = styled.div`
   > div:nth-child(1) {
-    width: 65%
-  }
-
-  .media-gallery {
     width: 75%
   }
 
+  .media-gallery {
+    width: 70%
+  }
+
   .text {
-    width: 65%
+    width: 75%
   }
 
   .audio {
@@ -80,8 +80,9 @@ let InnerLeftCol = styled.div`
 `
 
 let RightCol = styled.div`
-  flex-basis: 30%;
-  margin: 0 20px 0 0;
+  flex-basis: 35%;
+  // margin: 0 20px 0 0;
+  margin: 0 80px 0 0;
   z-index: 1;
 
   @media(max-width: 989px) {

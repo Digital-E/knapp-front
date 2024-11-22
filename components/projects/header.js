@@ -8,6 +8,10 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     z-index: 1;
+
+    @media(min-width: 990px) {
+        top: 82px;
+    }
 `
 
 const BackWrapper = styled.div`

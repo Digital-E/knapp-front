@@ -82,9 +82,11 @@ const Overlay = styled(motion.div)`
 
 const CloseButton = styled(motion.div)`
     position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    // bottom: 20px;
+    // left: 50%;
+    // transform: translateX(-50%);
+    top: 20px;
+    right: 20px;
     cursor: pointer;
     z-index: 999;
 

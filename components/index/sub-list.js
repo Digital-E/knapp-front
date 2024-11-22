@@ -38,7 +38,7 @@ const List = styled.div`
 
 const Icon = styled.div`
     svg {
-        width: 35px;
+        width: 40px;
         filter: drop-shadow(0 0 0.3rem var(--primary));
         transition: filter 0.4s;
     }

@@ -8,6 +8,7 @@ let Container = styled.header`
   width: fit-content;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 20px;
   z-index: 2;
   top: 0;
@@ -16,6 +17,7 @@ let Container = styled.header`
   right: 0;
   box-sizing: border-box;
   user-select: none;
+  pointer-events: none;
 
   > div:nth-child(1) {
     z-index: 1;
@@ -50,6 +52,7 @@ let Container = styled.header`
   font-family: FT88 Regular;
   text-transform: uppercase;
   font-size: 0.875rem !important;
+  pointer-events: all;
 }
 
 .nav-mobile-burger span {
@@ -90,11 +93,17 @@ let Container = styled.header`
   }
 }
 
+@media(min-width: 990px) {
+  width: 100%;
+}
+
 `
 
 let List = styled.ul`
+  position: relative;
   display: flex;
   margin-top: 5px;
+  pointer-events: all;
 
   @media(max-width: 989px) {
     align-items: center;
@@ -134,7 +143,8 @@ let ListItem = styled.li`
 `
 
 let Menu = styled.div`
-  
+  pointer-events: all;
+
   ${ListItem} {
     margin: 0 10px;
   }
@@ -167,11 +177,15 @@ let Menu = styled.div`
       display: flex;
     }
   }
+
+  @media(min-width: 990px) {
+    margin-right: 60px;
+  }
 `
 
 let IconSVG = styled.div`
   svg {
-    width: 30px;
+    width: 35px;
     filter: drop-shadow(0 0 0.3rem var(--primary));
     transition: filter 0.4s, opacity 0.3s;
   }
@@ -208,8 +222,10 @@ let Icon = styled.div`
 `
 
 let Logo = styled.div`
+  position: relative;
   width: auto;
   height: 25px;
+  pointer-events: all;
 
   svg {
     height: 100%;
@@ -261,13 +277,8 @@ export default function Header({ data }) {
             </Link>
           </Button>
       </div> */}
-      <div class="nav-mobile-burger" onClick={() => setMenuOpen(!menuOpen)}>
-        <span>Menu</span>
-        <span>Close</span>
-      </div>
-      <Menu className={menuOpen ? "nav--open" : ""}>
-        <BackgroundBlur></BackgroundBlur>
         <Logo>
+          <BackgroundBlur></BackgroundBlur>  
           <Link href="/">
           <svg x="0px" y="0px"
             viewBox="0 0 2304.3 232.7">
@@ -292,8 +303,14 @@ export default function Header({ data }) {
             c-2,33,0,78-5,105C436.3,158.1,422.3,167.1,401.3,170.1z"/>
           </svg> 
           </Link>       
-        </Logo>        
+        </Logo>       
+      <div class="nav-mobile-burger" onClick={() => setMenuOpen(!menuOpen)}>
+        <span>Menu</span>
+        <span>Close</span>
+      </div>
+      <Menu className={menuOpen ? "nav--open" : ""}>    
         <List>
+        <BackgroundBlur></BackgroundBlur>   
           {
           data?.menuItems?.map((item, index) => {
             return (

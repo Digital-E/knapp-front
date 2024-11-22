@@ -44,7 +44,7 @@ let InnerContainer = styled.div`
 
 
 let LeftCol = styled.div`
-  flex-basis: 70%;
+  flex-basis: 65%;
   margin: 0 0 0 120px;
   padding: 100px 0;
   overflow: scroll;
@@ -59,15 +59,15 @@ let LeftCol = styled.div`
 
 let InnerLeftCol = styled.div`
   > div:nth-child(1) {
-    width: 65%
-  }
-
-  .media-gallery {
     width: 75%
   }
 
+  .media-gallery {
+    width: 70%
+  }
+
   .text {
-    width: 65%
+    width: 75%
   }
 
   @media(max-width: 989px) {
@@ -78,8 +78,8 @@ let InnerLeftCol = styled.div`
 `
 
 let RightCol = styled.div`
-  flex-basis: 30%;
-  margin: 0 20px 0 0;
+  flex-basis: 35%;
+  margin: 0 80px 0 0;
 
   @media(max-width: 989px) {
     display: none;

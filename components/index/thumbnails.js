@@ -7,8 +7,8 @@ const Container = styled.div`
     display: flex;
     align-items: flex-end;
     bottom: 20px;
-    right: 20px;
-    width: 25%;
+    right: 80px;
+    width: 30%;
     height: 100%;
 
     @media(max-width: 989px) {
