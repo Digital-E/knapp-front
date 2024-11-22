@@ -42,7 +42,7 @@ const InnerContainer = styled.div`
 
 const SliceOuter = styled.div`
     height: 100vh;
-    padding: 100px 0;
+    padding: ${props => props.margin / 2}px 0;
     box-sizing: border-box;
     scroll-snap-align: center;
 
@@ -104,6 +104,8 @@ let mediaStackMediaHeight = 0
 let mediaStackMediaZoomWidth = 0
 let mediaStackMediaZoomHeight = 0
 
+let mediaStackMediazoomMargin = 50
+
 
 let hasClickedTimeout = null;
 let hasClicked = false;
@@ -140,7 +142,7 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         mediaStackMediaZoomHeight = document.querySelector(`#media-stack-zoom-element-${zoomIndex}`)?.getBoundingClientRect().height
         
         Array.from(innerContainerRef.current.children).forEach(item => {
-            item.children[0].style.width = `${(window.innerHeight - 200) * (item.children[0].getBoundingClientRect().width / item.children[0].getBoundingClientRect().height )}px`
+            item.children[0].style.width = `${(window.innerHeight - mediaStackMediazoomMargin) * (item.children[0].getBoundingClientRect().width / item.children[0].getBoundingClientRect().height )}px`
         });
     }
 
@@ -158,10 +160,17 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         if(scrollCount < 1) return
         
         document.querySelectorAll('.media-stack-zoom-element').forEach((item, index) => {
-            if(item.getBoundingClientRect().y === 100 && mediaStackExpandedVar) {
+            if(item.getBoundingClientRect().y === mediaStackMediazoomMargin / 2 && mediaStackExpandedVar) {
                 gsap.to(document.querySelector('.media-stack-inner-container'), {duration: 0, scrollTo: {y: `#media-stack-element-${index}`, offsetY: 100}})
+                zoomIndex = index
             }
         })
+    }
+
+    let clickZoomGallery = () => {
+        console.log(zoomIndex)
+        zoomIndex += 1;
+        gsap.to(innerContainerRef.current, {duration: 0, ease: "power2.inOut", scrollTo: {y: `#media-stack-zoom-element-${zoomIndex}`, offsetY: 100}})
     }
 
     useEffect(() => {
@@ -195,9 +204,9 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         
         switch(slice._type) {
             case 'video':
-            return <SliceOuter><SliceWrapper key={slice._key} id={`media-stack-zoom-element-${index}`} className='placement media-stack-zoom-element'><Video data={slice} hasCaption={true} controls={true} autoplay={false} className='player' /></SliceWrapper></SliceOuter>
+            return <SliceOuter margin={mediaStackMediazoomMargin}><SliceWrapper key={slice._key} id={`media-stack-zoom-element-${index}`} className='placement media-stack-zoom-element'><Video data={slice} hasCaption={true} controls={true} autoplay={false} className='player' /></SliceWrapper></SliceOuter>
             case 'image':
-            return <SliceOuter><SliceWrapper key={slice._key} id={`media-stack-zoom-element-${index}`} className='placement media-stack-zoom-element'><Image data={slice} hasCaption={true} /></SliceWrapper></SliceOuter>
+            return <SliceOuter margin={mediaStackMediazoomMargin}><SliceWrapper key={slice._key} id={`media-stack-zoom-element-${index}`} className='placement media-stack-zoom-element'><Image data={slice} hasCaption={true} /></SliceWrapper></SliceOuter>
         }
     }    
 
@@ -423,8 +432,9 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         animate={mediaStackExpanded ? 'visible' : 'hidden'} 
         initial={'hidden'}
         variants={zoomGalleryVariants}>
-            <Overlay animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={overlayVariants}  />
-            <InnerContainer ref={innerContainerRef}>
+            <Overlay animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={overlayVariants} onClick={() => clickZoomGallery()}/>
+            <InnerContainer ref={innerContainerRef}
+                    onClick={() => clickZoomGallery()}>
                 {(data !== null && data !== undefined) ? data.map((slice, index) => renderSlice(slice, index)) : null}
             </InnerContainer>
             <CloseButton animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={closeButtonVariants}onClick={() => expandMediaStack('close')}><Button>Close</Button></CloseButton>
