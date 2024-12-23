@@ -23,10 +23,10 @@ const PopUp = styled(motion.div)`
 const CloseButton = styled.div`
     position: absolute;
     right: 20px;
-    top: 20px;
+    top: 27px;
     cursor: pointer;
 
-    p {
+    p {
         margin: 0;
         // color: var(--primary)
     }
@@ -45,6 +45,8 @@ const Overlay = styled(motion.div)`
 
 const Category = styled.div`
     position: absolute;
+    display: flex;
+    align-items: center;
     left: 20px;
     top: 20px;
 
@@ -158,13 +160,25 @@ const overlayVariants = {
     }
 }
 
+let Icon = styled.div`
+    svg {
+        height: 25px;
+        margin-right: 5px;
+        fill: var(--primary);
+    }
+`
+
+
 const Component = ({ data, togglePopup, popupOpen, currentCategoryIndex }) => {
-    
+    console.log(data)
     return (
         <>
         <Overlay onClick={() => togglePopup()} animate={popupOpen? "visible" : "hidden"} variants={overlayVariants}/>
         <PopUp initial={"hidden"} animate={popupOpen ? "visible" : "hidden"} variants={popUpVariants}>
             <Category>
+                <Icon 
+                    dangerouslySetInnerHTML={{__html: data.categories[currentCategoryIndex].icon}}
+                />
                 <p>{data.categories[currentCategoryIndex].title}</p>
             </Category>
             <CloseButton onClick={() => togglePopup()}>

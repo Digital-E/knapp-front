@@ -7,6 +7,8 @@ import { gsap } from 'gsap'
 
 import Gem from './gem'
 
+import HoverSymbol from './hover-symbol'
+
 const Container = styled.div`
     position: fixed;
     height: 100vh;
@@ -27,10 +29,11 @@ const InnerContainer = styled.div`
     }
 `
 
+
 let containerPosRight = null;
 let containerPosTop = null;
 
-export default function Component() {
+export default function Component({ hasClickedSymbol }) {
     let [loadProgress, setLoadProgress] = useState(0);
     let [hasLoaded, setHasLoaded] = useState(false);
 
@@ -57,15 +60,20 @@ export default function Component() {
         let translateX = 0;
         let translateY = 0;
 
+        let translateXInit = 0;
+        let translateYInit = 0;
+
         let mousePosition = (e, initMousePosition) => {
+            
             currentCursorPos = {
-            x: e.clientX,
-            y: e.clientY,
+                x: e.clientX,
+                y: e.clientY,
             };
 
 
-            incrementAmount.x = (e.clientX - initMousePosition.x) * 5
-            incrementAmount.y = (e.clientY - initMousePosition.y) * 5
+            incrementAmount.x = (e.clientX - initMousePosition.x) 
+            incrementAmount.y = (e.clientY - initMousePosition.y)
+
 
         
 
@@ -121,20 +129,23 @@ export default function Component() {
 
         document.addEventListener('mousedown', (e) => {
             mouseDown = true
+
+            translateXInit = translateX;
+            translateYInit = translateY;
+
             initMousePosition = {
                 x: e.clientX,
                 y: e.clientY,
             }
         });
 
-
  
-        // document.addEventListener('mousemove', (e) => {
-        //     if(mouseDown) {
-        //         isDraggingFunc(e, initMousePosition);
-        //         isDragging = true;
-        //     }
-        // });
+        document.addEventListener('mousemove', (e) => {
+            if(mouseDown) {
+                isDraggingFunc(e, initMousePosition);
+                isDragging = true;
+            }
+        });
      
 
         document.addEventListener('mouseup', (e) => {
@@ -144,10 +155,10 @@ export default function Component() {
             // clearTimeout(isDraggingTimeoutFunction)
             // let isDraggingTimeoutFunction = setTimeout(function(){
             //     isDragging = false
-            // }, 500);   
+            // }, 500);
 
-            incrementAmount.x = 0;
-            incrementAmount.y = 0;
+            // incrementAmount.x = 0;
+            // incrementAmount.y = 0;
 
         });
 
@@ -189,7 +200,11 @@ export default function Component() {
             ratioX = 1;
             }
 
-            translateX += incrementAmount.x * ratioX * 0.01;
+            if(isDragging) {
+                translateX = translateXInit + incrementAmount.x;
+            } else {
+                translateX += incrementAmount.x * ratioX * 0.01;
+            }
 
             translateX = Math.max(containerPosRight, translateX);
 
@@ -216,7 +231,11 @@ export default function Component() {
             ratioY = 1;
             }
 
-            translateY += incrementAmount.y * ratioY * 0.01;
+            if(isDragging) {
+                translateY = translateYInit + incrementAmount.y
+            } else {
+                translateY += incrementAmount.y * ratioY * 0.01;
+            }
 
             translateY = Math.max(0, translateY);
 
@@ -232,7 +251,7 @@ export default function Component() {
         };
 
     animate();
-    }, [hasLoaded]);    
+    }, [hasLoaded]);  
 
     return (
         <Container className="container">
@@ -241,7 +260,7 @@ export default function Component() {
                 {/* <Gem x={70} y={80} index={0} sizeRatio={1.1} liftClick={() => hasClicked(0)} />
                 <Gem x={80} y={85} index={0} sizeRatio={0.8} liftClick={() => hasClicked(0)} />
                 <Gem x={85} y={70} index={0} sizeRatio={1} liftClick={() => hasClicked(0)} />   */}
-                              
+                <HoverSymbol click={() => hasClickedSymbol(0)} />
                 <BackgroundImage
                 hasLoaded={() => setHasLoaded(true)}
                 loadProgress={val => setLoadProgress(val)}

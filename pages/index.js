@@ -52,6 +52,11 @@ export default function Index({ data = {}, preview }) {
     setPopupOpen(false)
   }
 
+  let hasClickedSymbolFunc = (index) => {
+    setCurrentCategoryIndex(index)
+    setPopupOpen(true)
+  }
+
   return (
     <>
       <Layout preview={preview}>
@@ -64,8 +69,8 @@ export default function Index({ data = {}, preview }) {
         </Head>
         <Container>
           <PopupIndex popupOpen={popupOpen} togglePopup={() => togglePopup()} data={data.indexData} currentCategoryIndex={currentCategoryIndex} />
-          <Desktop onClick={() => setPopupOpen(true)}>
-            <Map />        
+          <Desktop>
+            <Map hasClickedSymbol={(index) => hasClickedSymbolFunc(index)} />    
           </Desktop>  
         </Container>
       </Layout>
