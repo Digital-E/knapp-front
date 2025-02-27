@@ -164,13 +164,16 @@ let Icon = styled.div`
     svg {
         height: 25px;
         margin-right: 5px;
-        fill: var(--primary);
+    }
+
+    path {
+        fill: var(--primary) !important;
     }
 `
 
 
 const Component = ({ data, togglePopup, popupOpen, currentCategoryIndex }) => {
-    console.log(data)
+
     return (
         <>
         <Overlay onClick={() => togglePopup()} animate={popupOpen? "visible" : "hidden"} variants={overlayVariants}/>
