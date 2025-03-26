@@ -44,29 +44,41 @@ const Container = styled.div`
         fill: transparent;
         stroke: var(--primary);
         cursor: pointer;
+        // pointer-events: all;
+    }
+
+    .hoverOneActivate {
+        display: none;
+        pointer-events: none;
+    }
+
+    ellipse {
         pointer-events: all;
+        opacity: 0;
+        cursor: pointer;
     }
 `
 
 
-const HoverSymbol = ({ click, backgroundImagePath, hoverLineViewbox, hoverLineD }) => {
+const HoverSymbol = ({ click, backgroundImagePath, hoverLineViewbox, hoverLineD, hoverActivation }) => {
 
     let hoverOneFullRef = useRef();
     let hoverOneGlowRef = useRef();
+    let hoverOneActivateRef = useRef();
     
 
     useEffect(() => {
-        hoverOneFullRef.current.addEventListener("mouseenter", () => {
+        hoverOneActivateRef.current.addEventListener("mouseenter", () => {
             hoverOneFullRef.current.style.opacity = 1
             hoverOneGlowRef.current.style.opacity = 1
         })
 
-        hoverOneFullRef.current.addEventListener("mouseleave", () => {
+        hoverOneActivateRef.current.addEventListener("mouseleave", () => {
             hoverOneFullRef.current.style.opacity = 0
             hoverOneGlowRef.current.style.opacity = 0
         })
 
-        hoverOneFullRef.current.addEventListener("mousedown", () => {
+        hoverOneActivateRef.current.addEventListener("mousedown", () => {
             click();
         })
     }, [])
@@ -76,7 +88,20 @@ const HoverSymbol = ({ click, backgroundImagePath, hoverLineViewbox, hoverLineD 
         <Container>
                 {/* <svg id="hoverOneLine" viewBox={hoverLineViewbox}><defs><style>{`.hoverOneLine{fill:none;stroke:#fff;stroke-miterlimit:10;stroke-width:.8px;}`}</style></defs><path class="hoverOneLine" d={hoverLineD} /></svg> */}
                 <svg id="hoverOneFull" viewBox={hoverLineViewbox}><path ref={hoverOneFullRef} class="hoverOneFull" style={{opacity: 0}} d={hoverLineD} /></svg>
-                <img id="hoverOneGlow" ref={hoverOneGlowRef} src={backgroundImagePath} />           
+                <img id="hoverOneGlow" ref={hoverOneGlowRef} src={backgroundImagePath} />  
+                <svg id="hoverOneActivate" viewBox="0 0 2458.3 3100.9">
+                <defs>
+                    {/* <style>
+                    .st0 {
+                        fill: #fff;
+                        stroke: #000;
+                        stroke-miterlimit: 10;
+                    }
+                    </style> */}
+                    
+                </defs>
+                <ellipse ref={hoverOneActivateRef} class="st0" cx={hoverActivation.cx} cy={hoverActivation.cy} rx={hoverActivation.rx} ry={hoverActivation.ry} />
+                </svg>         
         </Container>
     )
 }
