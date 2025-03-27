@@ -26,7 +26,24 @@ import ZoomGallery from '../../components/projects/zoom-gallery'
 
 let Container = styled.div`
   position: relative; 
-  min-height: 100vh;
+
+  @media(min-width: 990px) {
+    min-height: 100vh;
+  }
+
+  @media(max-width: 989px) {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  @supports(-webkit-touch-callout: none) {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    min-height: initial;
+  }
 `
 
 let InnerContainer = styled.div`
@@ -36,6 +53,14 @@ let InnerContainer = styled.div`
   width: 100%;
   overflow: hidden;
   z-index: 0;
+
+  @media(max-width: 989px) {
+    // height: 100%;
+  }
+
+  @supports(-webkit-touch-callout: none) {
+    height: 100%;
+  }
 `
 
 
@@ -44,7 +69,7 @@ let LeftCol = styled.div`
   margin: 140px 0 0 120px;
   // padding-top: 102px;
   overflow: scroll;
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 1) 72px);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 1) 10px);
   box-sizing: border-box;
 
   @media(max-width: 989px) {
@@ -118,9 +143,10 @@ const ButtonsWrapper = styled.div`
 
   @media(max-width: 989px) {
     width: 100%;
+    margin-bottom: 90px;
 
     > div {
-      margin: 0 auto 80px auto;
+      margin: 0 auto;
     }
   }
 `

@@ -16,7 +16,7 @@ const PopUp = styled(motion.div)`
     background: var(--background);
 
     @media(max-width: 989px) {
-        width: calc(100% - 40px);
+        width: calc(100% - 60px);
     }
 `
 

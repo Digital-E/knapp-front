@@ -13,6 +13,10 @@ const Container = styled.div`
     position: fixed;
     height: 100vh;
     width: 100vw;
+
+    @media(max-width: 989px) {
+        overflow: scroll;
+    }
 `
 
 
@@ -26,6 +30,10 @@ const InnerContainer = styled.div`
         position: relative;
         margin-bottom: -5px;
         width: 100%;
+    }
+
+    @media(max-width: 989px) {
+        position: relative;
     }
 `
 

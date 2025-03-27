@@ -24,7 +24,7 @@ const ListHeader = styled.div`
 
     > h3 {
         opacity: 0;
-        margin-left: 5px;
+        margin-left: 3px;
     }
 `
 
@@ -32,13 +32,13 @@ const List = styled.div`
     margin: 30px 0  40px 100px;
 
     @media(max-width: 989px) {
-        margin: 30px 0  40px 90px;
+        margin: 30px 0 40px 0;
     }
 `
 
 const Icon = styled.div`
     svg {
-        width: 40px;
+        width: 35px;
         filter: drop-shadow(0 0 0.3rem var(--primary));
         transition: filter 0.4s;
     }

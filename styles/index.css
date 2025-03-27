@@ -88,7 +88,7 @@ body {
 }
 
 .body-lock {
-    position: absolute;
+    position: fixed;
     overflow: hidden;
     height: 100vh;
     width: 100vw;
@@ -126,6 +126,11 @@ a:hover {
 
 .hide-on-expand--expanded {
     opacity: 0;
+    pointer-events: none;
+}
+
+.hide-on-expand--expanded a {
+    pointer-events: none !important;
 }
 
 @media(max-width: 989px) {

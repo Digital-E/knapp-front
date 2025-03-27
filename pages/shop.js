@@ -20,7 +20,24 @@ import Notification from '../components/shop/notification'
 
 const Container = styled.div`
   position: relative; 
-  min-height: 100vh;
+
+  @media(min-width: 990px) {
+    min-height: 100vh;
+  }
+
+  @media(max-width: 989px) {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  @supports(-webkit-touch-callout: none) {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    min-height: initial;
+  }
 `
 
 const Constraints = styled.div`
@@ -40,6 +57,10 @@ let InnerContainer = styled.div`
   width: 100%;
   overflow: hidden;
   z-index: 0;
+
+  @media(max-width: 989px) {
+    height: 100%;
+  }
 `
 
 

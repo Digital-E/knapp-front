@@ -16,6 +16,9 @@ import Video from "../media/video-native"
 import Button from '../button'
 
 const Container = styled(motion.div)`
+    @media(max-width: 989px) {
+        height: 100%;
+    }
 `
 
 const InnerContainer = styled.div`
@@ -32,11 +35,12 @@ const InnerContainer = styled.div`
     }
 
     @media(max-width: 989px) {
-        height: 100vh;
+        height: 100%;
         padding: 20px;
         left: 0;
         top: 0;
         box-sizing: border-box;
+        overflow: hidden;
     }
 `
 
@@ -50,6 +54,7 @@ const SliceOuter = styled.div`
         display: flex;
         align-items: center;
         padding: 0;
+        height: 100%;
     }
 `
 
@@ -70,7 +75,7 @@ const SliceWrapper = styled.div`
 `
 
 const Overlay = styled(motion.div)`
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
   height: 100%;
@@ -169,9 +174,25 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         })
     }
 
-    let clickZoomGallery = () => {
-        console.log(zoomIndex)
-        zoomIndex += 1;
+    let clickZoomGallery = (e) => {
+
+        let windowWidth = window.innerWidth;
+        let mousePositionX = e.clientX;
+
+        if(mousePositionX / windowWidth > 0.5) {
+            if(zoomIndex === data.length - 1) {
+                zoomIndex = 0;
+            } else {
+                zoomIndex += 1;
+            }
+        } else if (mousePositionX / windowWidth <= 0.5) {
+            if(zoomIndex === 0) {
+                zoomIndex = data.length -1;
+            } else {
+                zoomIndex -= 1;
+            }
+        }
+
         gsap.to(innerContainerRef.current, {duration: 0, ease: "power2.inOut", scrollTo: {y: `#media-stack-zoom-element-${zoomIndex}`, offsetY: 100}})
     }
 
@@ -434,9 +455,9 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         animate={mediaStackExpanded ? 'visible' : 'hidden'} 
         initial={'hidden'}
         variants={zoomGalleryVariants}>
-            <Overlay animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={overlayVariants} onClick={() => clickZoomGallery()}/>
+            <Overlay animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={overlayVariants} onClick={(e) => clickZoomGallery(e)}/>
             <InnerContainer ref={innerContainerRef}
-                    onClick={() => clickZoomGallery()}>
+                    onClick={(e) => clickZoomGallery(e)}>
                 {(data !== null && data !== undefined) ? data.map((slice, index) => renderSlice(slice, index)) : null}
             </InnerContainer>
             <CloseButton animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={closeButtonVariants}onClick={() => expandMediaStack('close')}><Button>Close</Button></CloseButton>

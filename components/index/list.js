@@ -4,7 +4,9 @@ import styled from 'styled-components'
 import Thumbnails from './thumbnails'
 
 const Container = styled.div`
-
+    @media(max-width: 989px) {
+        height: 100%;
+    }
 `
 
 const InnerContainer = styled.div`
@@ -12,12 +14,19 @@ const InnerContainer = styled.div`
     overflow: scroll;
 
     @media(max-width: 989px) {
-        padding-top: 60px;
-        padding-bottom: 30px;
+        height: 100%;
+        padding-top: 0;
+
+        > div:nth-child(1) {
+            padding-top: 20px
+        }
+        > div:last-child {
+            padding-bottom: 50px
+        }
     }
 
     @media(min-width: 990px) {
-        height: calc(100vh - 210px);
+        height: calc(100vh - 190px);
     }
 `
 
