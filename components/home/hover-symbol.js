@@ -60,14 +60,48 @@ const Container = styled.div`
 `
 
 
-const HoverSymbol = ({ click, backgroundImagePath, hoverLineViewbox, hoverLineD, hoverActivation }) => {
+const HoverSymbol = ({ click, backgroundImagePath, hoverLineViewbox, hoverLineD, hoverActivation, forceGlow }) => {
 
     let hoverOneFullRef = useRef();
     let hoverOneGlowRef = useRef();
     let hoverOneActivateRef = useRef();
+
+    let glowOn = false;
+
+    // useEffect(() => {
+    //     console.log(forceGlow)
+    //     if(forceGlow) {
+    //         funcGlowOn();
+    //     }
+    // }, [forceGlow])
     
+    let funcGlowOn = () => {
+        hoverOneFullRef.current.style.opacity = 1
+        hoverOneGlowRef.current.style.opacity = 1
+
+        setTimeout(() => {
+            funcGlowOff();
+        }, 1000);
+    }
+
+    let funcGlowOff = () => {
+        hoverOneFullRef.current.style.opacity = 0
+        hoverOneGlowRef.current.style.opacity = 0
+    }
 
     useEffect(() => {
+
+        setTimeout(() => {
+            // glowOn = !glowOn
+
+            // if(glowOn) {
+            //     funcGlowOff()
+            // } else {
+            //     funcGlowOn();
+            // }
+            funcGlowOn();
+        }, 1500);
+
         hoverOneActivateRef.current.addEventListener("mouseenter", () => {
             hoverOneFullRef.current.style.opacity = 1
             hoverOneGlowRef.current.style.opacity = 1

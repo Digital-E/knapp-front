@@ -71,7 +71,7 @@ export default function Index({ data = {}, preview }) {
           <PopupIndex popupOpen={popupOpen} togglePopup={() => togglePopup()} data={data.indexData} currentCategoryIndex={currentCategoryIndex} />
           <Desktop>
             <Map hasClickedSymbol={(index) => hasClickedSymbolFunc(index)} />    
-          </Desktop>  
+          </Desktop>
         </Container>
       </Layout>
     </>

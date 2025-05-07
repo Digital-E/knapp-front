@@ -44,6 +44,7 @@ let containerPosTop = null;
 export default function Component({ hasClickedSymbol }) {
     let [loadProgress, setLoadProgress] = useState(0);
     let [hasLoaded, setHasLoaded] = useState(false);
+    let [forceGlowArray, setForceGlowArray] = useState(0)
 
     let isSwiping;
     let isDragging;
@@ -169,6 +170,12 @@ export default function Component({ hasClickedSymbol }) {
             // incrementAmount.y = 0;
 
         });
+
+        window.addEventListener('resize', () => {
+            containerPosRight = window.innerWidth - map.getBoundingClientRect().width;
+            containerPosTop = window.innerHeight - map.getBoundingClientRect().height;
+            isSwiping = true;
+        })
 
         let isDraggingFunc = (e, initMousePosition) => {
             if(mouseDown === true) {
@@ -301,6 +308,26 @@ export default function Component({ hasClickedSymbol }) {
         ry: 178.2
     }
 
+    useEffect(() => {
+        // let arrayInit = [
+        //     false,
+        //     false,
+        //     false,
+        //     false
+        // ]
+
+        // setInterval(() => {
+        //     let newArray = [...arrayInit]
+
+        //     newArray[Math.floor(Math.random() * 3)] = true;
+
+        //     setForceGlowArray([...newArray]);
+
+        // }, 1000);
+
+
+    }, [])
+
     return (
         <Container className="container">
             <InnerContainer id="map">
@@ -315,6 +342,7 @@ export default function Component({ hasClickedSymbol }) {
                     hoverLineViewbox = {hoverLineViewboxFashion}
                     hoverLineD = {hoverLineDFashion}
                     hoverActivation = {hoverActivationFashion}
+                    forceGlow={forceGlowArray[0]}
                     /> 
                 {/* Sound */}
                 <HoverSymbol 
@@ -323,6 +351,7 @@ export default function Component({ hasClickedSymbol }) {
                     hoverLineViewbox = {hoverLineViewboxSound}
                     hoverLineD = {hoverLineDSound}
                     hoverActivation = {hoverActivationSound}
+                    forceGlow={forceGlowArray[1]}
                     /> 
                 {/* Art */}
                 <HoverSymbol 
@@ -331,6 +360,7 @@ export default function Component({ hasClickedSymbol }) {
                     hoverLineViewbox = {hoverLineViewboxArt}
                     hoverLineD = {hoverLineDArt}
                     hoverActivation = {hoverActivationArt}
+                    forceGlow={forceGlowArray[2]}
                     />                                                                   
                 {/* Text */}
                 <HoverSymbol 
@@ -339,6 +369,7 @@ export default function Component({ hasClickedSymbol }) {
                     hoverLineViewbox = {hoverLineViewboxText}
                     hoverLineD = {hoverLineDText}
                     hoverActivation = {hoverActivationText}
+                    forceGlow={forceGlowArray[3]}
                     />                 
                 <BackgroundImage
                 hasLoaded={() => setHasLoaded(true)}
