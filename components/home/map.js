@@ -124,8 +124,6 @@ export default function Component({ hasClickedSymbol }) {
 
             incrementAmount.x = e.wheelDeltaX * 12
             incrementAmount.y = e.wheelDeltaY * 12
-
-
         };
 
         // document
@@ -265,7 +263,7 @@ export default function Component({ hasClickedSymbol }) {
         };
 
     animate();
-    }, [hasLoaded]); 
+    }, [hasLoaded]);
 
     let backgroundImagePathSound = `/map/hover-sound/SOUND_ROLLOVER_.png`
     let hoverLineViewboxSound = `0 0 2458.33 3100.89`
