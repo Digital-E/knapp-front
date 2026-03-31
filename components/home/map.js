@@ -25,6 +25,7 @@ const InnerContainer = styled.div`
     bottom: 0;
     left: 0;
     width: 200vw;
+    will-change: transform;
 
     > img {
         position: relative;
@@ -131,7 +132,7 @@ export default function Component({ hasClickedSymbol }) {
         //     .querySelector(".container")
         //     .addEventListener("mousemove", e => mousePosition(e));
 
-        document.querySelector(".container").addEventListener("mousewheel", e => trackpadAction(e));  
+        document.querySelector(".container").addEventListener("wheel", e => trackpadAction(e), { passive: true });
             
         let mouseDown = false;
         let initMousePosition = {x: 0, y: 0};
@@ -150,11 +151,11 @@ export default function Component({ hasClickedSymbol }) {
 
  
         document.addEventListener('mousemove', (e) => {
-            if(mouseDown) {
+            if(mouseDown) {
                 isDraggingFunc(e, initMousePosition);
                 isDragging = true;
             }
-        });
+        }, { passive: true });
      
 
         document.addEventListener('mouseup', (e) => {
@@ -256,10 +257,8 @@ export default function Component({ hasClickedSymbol }) {
 
             translateY = Math.min(-containerPosTop, translateY);
 
-                if (document.querySelector("#map")) {
-                document.querySelector(
-                    "#map"
-                ).style.transform = `translate3d(${translateX}px, ${translateY}px, 0)`;
+                if (map) {
+                    map.style.transform = `translate3d(${translateX}px, ${translateY}px, 0)`;
                 }
             }
             window.requestAnimationFrame(animate);

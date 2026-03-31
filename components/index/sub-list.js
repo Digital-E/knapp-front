@@ -13,7 +13,14 @@ const Container = styled.div`
         transition: opacity 0.7s;
     }
 
+    &.hide > div:nth-child(1) > h3 {
+        transition: opacity 0.3s;
+        opacity: 0;
+    }
+
+
     &.show > div:nth-child(1) > h3 {
+        transition: opacity 0.3s;
         opacity: 1;
     }
 `

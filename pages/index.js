@@ -12,6 +12,7 @@ import { store } from "../store"
 
 import Map from '../components/home/map'
 import PopupIndex from '../components/home/popup-index'
+import ShopNotification from '../components/home/shop-notification'
 
 const Container = styled.div`
   position: relative;
@@ -70,8 +71,9 @@ export default function Index({ data = {}, preview }) {
         <Container>
           <PopupIndex popupOpen={popupOpen} togglePopup={() => togglePopup()} data={data.indexData} currentCategoryIndex={currentCategoryIndex} />
           <Desktop>
-            <Map hasClickedSymbol={(index) => hasClickedSymbolFunc(index)} />    
+            <Map hasClickedSymbol={(index) => hasClickedSymbolFunc(index)} />
           </Desktop>
+          <ShopNotification />
         </Container>
       </Layout>
     </>

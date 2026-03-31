@@ -31,7 +31,7 @@ export default function Component({ data, toggleZoom }) {
             return (
               <Container>
               <Title>{slice.title}</Title>
-              <SliceWrapper key={slice._key} className='media-gallery'><MediaGallery data={slice.media} mediaCount={mediaCount.current} toggleZoom={(index) => toggleZoom(index)} /></SliceWrapper>
+              <SliceWrapper key={slice._key} className='media-gallery'><MediaGallery data={slice.media} mediaCount={mediaCount.current} toggleZoom={(index) => toggleZoom(index)} staticOpacity /></SliceWrapper>
               <Description className='text'><Body content={slice.description} /></Description>
               <HideCounter>{mediaCount.current += slice.media.length}</HideCounter>
               </Container>

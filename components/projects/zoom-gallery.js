@@ -49,6 +49,7 @@ const SliceOuter = styled.div`
     padding: ${props => props.margin / 2}px 0;
     box-sizing: border-box;
     scroll-snap-align: center;
+    pointer-events: none;
 
     @media(max-width: 989px) {
         display: flex;
@@ -457,6 +458,7 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         variants={zoomGalleryVariants}>
             <Overlay animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={overlayVariants} onClick={(e) => clickZoomGallery(e)}/>
             <InnerContainer ref={innerContainerRef}
+                    style={{ pointerEvents: mediaStackExpanded ? 'auto' : 'none' }}
                     onClick={(e) => clickZoomGallery(e)}>
                 {(data !== null && data !== undefined) ? data.map((slice, index) => renderSlice(slice, index)) : null}
             </InnerContainer>

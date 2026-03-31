@@ -51,6 +51,8 @@ const InnerContainer = styled.div`
 const SliceWrapper = styled.div`
     overflow: hidden;
     margin-bottom: 10px;
+    // pointer-events: none;
+    // pointer-events: clickable;
 
     &.hide {
         opacity: 0;

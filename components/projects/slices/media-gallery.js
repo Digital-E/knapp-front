@@ -11,6 +11,12 @@ import Video from "../../media/video-native"
 const Container = styled.div`
     display: flex;
     flex-wrap: wrap;
+    opacity: ${props => props.staticOpacity ? 1 : 0.5};
+    transition: opacity 0.5s ease;
+
+    :hover {
+        opacity: 1;
+    }
 `
 
 const SliceWrapper = styled.div`
@@ -30,7 +36,7 @@ const SliceWrapper = styled.div`
 
 
 
-export default function Component({ data, mediaCount, toggleZoom }) {
+export default function Component({ data, mediaCount, toggleZoom, staticOpacity }) {
 
     let [mediaCountState, setMediaCountState] = useState(0)
 
@@ -55,5 +61,5 @@ export default function Component({ data, mediaCount, toggleZoom }) {
         }
     }    
 
-    return <Container>{(data !== null && data !== undefined) ? data.map((slice, index) => renderSlice(slice, index)) : null}</Container>
+    return <Container staticOpacity={staticOpacity}>{(data !== null && data !== undefined) ? data.map((slice, index) => renderSlice(slice, index)) : null}</Container>
 }

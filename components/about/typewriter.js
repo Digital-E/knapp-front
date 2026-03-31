@@ -316,7 +316,7 @@ export default function Component({ data, start, toggleFinishedFunc }) {
         interval.current = setInterval(() => {
             if(newSentenceTimeout.current !== null) return
             typeText();
-        }, 20);
+        }, 10);
     }
 
     useEffect(() => {

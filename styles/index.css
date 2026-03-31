@@ -64,7 +64,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    overscroll-behavior: none;
+    /* overscroll-behavior: none; */
     color: var(--primary);
     -webkit-user-drag: none;
 }
@@ -85,6 +85,10 @@ html {
 body {
     position: relative;
     background: var(--background);
+}
+
+html, body{
+    overscroll-behavior: none;
 }
 
 .body-lock {
