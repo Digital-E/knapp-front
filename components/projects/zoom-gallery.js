@@ -49,7 +49,7 @@ const SliceOuter = styled.div`
     padding: ${props => props.margin / 2}px 0;
     box-sizing: border-box;
     scroll-snap-align: center;
-    pointer-events: none;
+    // pointer-events: none;
 
     @media(max-width: 989px) {
         display: flex;
