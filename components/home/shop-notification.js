@@ -13,7 +13,7 @@ const Container = styled.div`
     border-radius: 10px;
 
     @media(max-width: 989px) {
-        position: fixed;
+        position: absolute;
         min-width: 0;
         width: fit-content;
         padding: 7px 10px 5px 10px;
@@ -91,10 +91,16 @@ const ContainerWrapper = styled(motion.div)`
     position: fixed;
     bottom: 20px;
     right: 20px;
-    z-index: 999;
+    z-index: 1;
 
     :hover ${CloseButton} {
         opacity: 1;
+    }
+
+    @media(max-width: 989px) {
+        // position: absolute;
+        bottom: 0;
+        right: 0;
     }
 `
 
@@ -128,7 +134,7 @@ export default function Component() {
     }, [])
 
     const inner = (
-        <ContainerWrapper animate={show ? 'show' : 'hide'} variants={variants} initial='initial'>
+        <ContainerWrapper className="hide-on-expand" animate={show ? 'show' : 'hide'} variants={variants} initial='initial'>
             <CloseButton onClick={() => setShow(false)}><svg width="10" height="10" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.4 14L0 12.6L5.6 7L0 1.4L1.4 0L7 5.6L12.6 0L14 1.4L8.4 7L14 12.6L12.6 14L7 8.4L1.4 14Z" fill="currentColor"/></svg></CloseButton>
             <Container>
                 <TitleWrapper><Title>Shop</Title><Dot /></TitleWrapper>
