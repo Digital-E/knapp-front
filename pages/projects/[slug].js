@@ -38,12 +38,12 @@ let Container = styled.div`
     min-height: 100vh;
   }
 
-  @supports(-webkit-touch-callout: none) {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    min-height: initial;
-  }
+  // @supports(-webkit-touch-callout: none) {
+  //   position: fixed;
+  //   height: 100%;
+  //   width: 100%;
+  //   min-height: initial;
+  // }
 `
 
 let InnerContainer = styled.div`
@@ -143,7 +143,7 @@ const ButtonsWrapper = styled.div`
 
   @media(max-width: 989px) {
     width: 100%;
-    margin-bottom: 90px;
+    margin-bottom: 130px;
 
     > div {
       margin: 0 auto;

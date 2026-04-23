@@ -2,6 +2,7 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import Link from './link'
 import styled from "styled-components"
+import ShopNotification from '../components/home/shop-notification'
 
 let Container = styled.header`
   position: fixed;
@@ -87,7 +88,7 @@ let Container = styled.header`
   padding: 35px;
   transform: translateX(-50%);
   justify-content: space-between;
-  
+
   .nav-mobile-burger {
     display: flex;
   }
@@ -268,6 +269,8 @@ export default function Header({ data }) {
 
 
   return (
+    <>
+    <ShopNotification />
     <Container className={menuOpen ? "nav--open hide-on-expand" : "hide-on-expand"}>
       {/* <div
         onClick={() => {setMenuOpen(false);}}>
@@ -328,5 +331,6 @@ export default function Header({ data }) {
         </List>
       </Menu>
     </Container>
+    </>
   )
 }

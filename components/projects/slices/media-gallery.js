@@ -17,6 +17,10 @@ const Container = styled.div`
     :hover {
         opacity: 1;
     }
+
+    @media(max-width: 989px) {
+        opacity: 1;
+    }
 `
 
 const SliceWrapper = styled.div`

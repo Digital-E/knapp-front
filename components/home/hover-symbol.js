@@ -75,30 +75,27 @@ const HoverSymbol = ({ click, backgroundImagePath, hoverLineViewbox, hoverLineD,
     //     }
     // }, [forceGlow])
     
+    let glowOffTimeout = useRef(null);
+
     let funcGlowOn = () => {
+        if (!hoverOneFullRef.current || !hoverOneGlowRef.current) return
         hoverOneFullRef.current.style.opacity = 1
         hoverOneGlowRef.current.style.opacity = 1
 
-        setTimeout(() => {
+        glowOffTimeout.current = setTimeout(() => {
             funcGlowOff();
         }, 1000);
     }
 
     let funcGlowOff = () => {
+        if (!hoverOneFullRef.current || !hoverOneGlowRef.current) return
         hoverOneFullRef.current.style.opacity = 0
         hoverOneGlowRef.current.style.opacity = 0
     }
 
     useEffect(() => {
 
-        setTimeout(() => {
-            // glowOn = !glowOn
-
-            // if(glowOn) {
-            //     funcGlowOff()
-            // } else {
-            //     funcGlowOn();
-            // }
+        const glowOnTimeout = setTimeout(() => {
             funcGlowOn();
         }, 1500);
 
@@ -115,6 +112,11 @@ const HoverSymbol = ({ click, backgroundImagePath, hoverLineViewbox, hoverLineD,
         hoverOneActivateRef.current.addEventListener("mousedown", () => {
             click();
         })
+
+        return () => {
+            clearTimeout(glowOnTimeout);
+            clearTimeout(glowOffTimeout.current);
+        }
     }, [])
 
 

@@ -114,38 +114,40 @@ export default function Component({}) {
     useEffect(() => {
 
         let mobileOrTablet = mobileAndTabletCheck();
-        if(mobileOrTablet) return;
 
-        let audio = document.querySelector('#meditation-audio')
+        if(!mobileOrTablet) {
+            let audio = document.querySelector('#meditation-audio')
+            if(isOpen) {
+                audio.currentTime = 0
+                audio.volume = 0
+
+                clearInterval(audioVolumeInterval)
+
+                audio.play()
+
+                audioVolumeInterval = setInterval(() => {
+                    if(audio.volume > 0.99) return clearInterval(audioVolumeInterval)
+
+                    audio.volume = audio.volume + 0.01
+                }, 100)
+            } else {
+                clearInterval(audioVolumeInterval)
+
+                audioVolumeInterval = setInterval(() => {
+                    if(audio.volume < 0.01) {
+                        audio.pause()
+                        return clearInterval(audioVolumeInterval)
+                    }
+
+                    audio.volume = audio.volume - 0.01
+                }, 50)
+            }
+        }
+
         if(isOpen) {
-            audio.currentTime = 0
-            audio.volume = 0
-
-            clearInterval(audioVolumeInterval)
-
-            audio.play()
-
-            audioVolumeInterval = setInterval(() => {
-                if(audio.volume > 0.99) return clearInterval(audioVolumeInterval)
-
-                audio.volume = audio.volume + 0.01
-            }, 100)
-
             triggerSentence();
         } else {
-
             hideSentence();
-
-            clearInterval(audioVolumeInterval)
-
-            audioVolumeInterval = setInterval(() => {
-                if(audio.volume < 0.01) {
-                    audio.pause()
-                    return clearInterval(audioVolumeInterval)
-                }
-
-                audio.volume = audio.volume - 0.01
-            }, 50)
         }
     }, [isOpen])
 

@@ -67,11 +67,21 @@ export default function Component({ hasClickedSymbol }) {
         containerPosRight = window.innerWidth - map.getBoundingClientRect().width;
         containerPosTop = window.innerHeight - map.getBoundingClientRect().height;
 
-        let translateX = 0;
-        let translateY = 0;
+        const isMobile = window.innerWidth <= 989;
 
-        let translateXInit = 0;
-        let translateYInit = 0;
+        let translateX = isMobile ? 0 : containerPosRight / 2;
+        let translateY = isMobile ? 0 : -containerPosTop / 2;
+
+        if (isMobile) {
+            const container = document.querySelector('.container');
+            container.scrollLeft = -containerPosRight / 2;
+            container.scrollTop = -containerPosTop / 2;
+        } else {
+            map.style.transform = `translate3d(${translateX}px, ${translateY}px, 0)`;
+        }
+
+        let translateXInit = translateX;
+        let translateYInit = translateY;
 
         let mousePosition = (e, initMousePosition) => {
             

@@ -32,12 +32,12 @@ const Container = styled.div`
     min-height: 100vh;
   }
 
-  @supports(-webkit-touch-callout: none) {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    min-height: initial;
-  }
+  // @supports(-webkit-touch-callout: none) {
+  //   position: fixed;
+  //   height: 100%;
+  //   width: 100%;
+  //   min-height: initial;
+  // }
 `
 
 const Constraints = styled.div`

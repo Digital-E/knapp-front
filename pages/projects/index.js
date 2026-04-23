@@ -26,11 +26,11 @@ const Container = styled.div`
     min-height: 100vh;
   }
 
-  @supports(-webkit-touch-callout: none) {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-  }
+  // @supports(-webkit-touch-callout: none) {
+  //   position: fixed;
+  //   height: 100%;
+  //   width: 100%;
+  // }
 `
 
 export default function Index({ data = {}, preview }) {
