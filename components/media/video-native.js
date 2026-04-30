@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -10,16 +11,19 @@ const Container = styled.div`
         width: 100%;
         left: 0;
         top: 0;
+        opacity: ${props => props.loaded ? 1 : 0};
+        transition: opacity 0.4s ease;
     }
 `
 
 
 export default function Component({ data, autoPlay, controls, className }) {
+    const [loaded, setLoaded] = useState(false)
 
     return (
         <>
-            <Container width={data.width} height={data.height} className={className}>
-                <video className={className} width={data.width} height={data.height} autoPlay={autoPlay} muted loop playsInline controls={controls}>
+            <Container width={data.width} height={data.height} className={className} loaded={loaded ? 1 : 0}>
+                <video className={className} width={data.width} height={data.height} autoPlay={autoPlay} muted loop playsInline controls={controls} onCanPlay={() => setLoaded(true)}>
                     <source src={data.asset.url} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
