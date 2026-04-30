@@ -178,7 +178,9 @@ export default function Component({ data = {}, preview }) {
 
     data.data?.slices?.forEach(item => {
       if(item._type === 'MediaGallery') {
-        array.push(...item.media)
+        if(item !== null && item.media !== null && item.media !== undefined) {
+          array.push(...item.media)
+        }
       }
     })
 

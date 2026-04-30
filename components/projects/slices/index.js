@@ -36,7 +36,7 @@ export default function Component({ data, toggleZoom }) {
             return (
               <>
               <SliceWrapper key={slice._key} className='media-gallery'><MediaGallery data={slice.media} mediaCount={mediaCount.current} toggleZoom={(index) => toggleZoom(index)} /></SliceWrapper>
-              <HideCounter>{mediaCount.current += slice.media.length}</HideCounter>
+              <HideCounter>{mediaCount.current += slice?.media?.length}</HideCounter>
               </>
             )
             case 'textObject':
