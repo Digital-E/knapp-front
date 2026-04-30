@@ -35,18 +35,21 @@ const InnerContainer = styled.div`
     }
 
     @media(max-width: 989px) {
-        height: 100%;
+        height: 100vh;
         padding: 20px;
         left: 0;
         top: 0;
         box-sizing: border-box;
-        overflow: hidden;
+        overflow-y: scroll;
     }
 `
 
 const SliceOuter = styled.div`
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
     height: 100vh;
-    padding: ${props => props.margin / 2}px 0;
+    padding: ${props => props.margin / 2}px;
     box-sizing: border-box;
     scroll-snap-align: center;
     // pointer-events: none;
@@ -55,7 +58,7 @@ const SliceOuter = styled.div`
         display: flex;
         align-items: center;
         padding: 0;
-        height: 100%;
+        height: 100vh;
     }
 `
 
@@ -71,7 +74,7 @@ const SliceWrapper = styled.div`
     }
 
     @media(max-width: 989px) {
-        width: 100% !important;
+        max-width: calc(100% - 40px) !important;
     }
 `
 
@@ -148,9 +151,21 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
         mediaStackMediaHeight = document.querySelector(`#media-stack-element-${zoomIndex}`)?.getBoundingClientRect().height
         mediaStackMediaZoomWidth = document.querySelector(`#media-stack-zoom-element-${zoomIndex}`)?.getBoundingClientRect().width
         mediaStackMediaZoomHeight = document.querySelector(`#media-stack-zoom-element-${zoomIndex}`)?.getBoundingClientRect().height
-        
+
+        const isMobile = window.innerWidth < 990
+        const padding = isMobile ? 40 : mediaStackMediazoomMargin
+        const maxWidth = window.innerWidth - padding
+
         Array.from(innerContainerRef.current.children).forEach(item => {
-            item.children[0].style.width = `${(window.innerHeight - mediaStackMediazoomMargin) * (item.children[0].getBoundingClientRect().width / item.children[0].getBoundingClientRect().height )}px`
+            const el = item.children[0]
+            const rect = el.getBoundingClientRect()
+            if (rect.height === 0) return
+            const aspectRatio = rect.width / rect.height
+            const availableHeight = window.innerHeight - mediaStackMediazoomMargin
+            const actualWidth = Math.min(availableHeight * aspectRatio, maxWidth)
+            const actualHeight = actualWidth / aspectRatio
+            el.style.width = `${actualWidth}px`
+            el.style.marginTop = `${Math.max(0, (availableHeight - actualHeight) / 2)}px`
         });
     }
 

@@ -56,7 +56,6 @@ export default function Component({ data, mediaCount, toggleZoom, staticOpacity 
     }
 
     let renderSlice = (slice, index) => {
-        console.log(slice)
         switch(slice._type) {
             case 'video':
             return <SliceWrapper onMouseEnter={() => toggleMediaStack(index)} key={slice._key} aspectRatio={slice?.width / slice?.height} onClick={() => toggleZoom(mediaCountState + index)}><Video data={slice} hasCaption={false} autoPlay={true} /></SliceWrapper>
