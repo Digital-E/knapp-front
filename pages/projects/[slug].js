@@ -129,12 +129,8 @@ const ButtonsWrapper = styled.div`
   justify-content: center;
   width: 85%;
 
-  > div {
+  > a:nth-child(2) {
     margin: 0 10px 20px 10px;
-  }
-
-  > div:nth-child(2) {
-    pointer-events: none;
   }
 
   a {
@@ -145,7 +141,7 @@ const ButtonsWrapper = styled.div`
     width: 100%;
     margin-bottom: 130px;
 
-    > div {
+    > a:nth-child(2) {
       margin: 0 auto;
     }
   }
@@ -249,7 +245,7 @@ export default function Component({ data = {}, preview }) {
                       <Slices data={data.data.slices} toggleZoom={(e) => setToggleZoomState(e)} />
                       <ButtonsWrapper>
                         <Link href={prevNextLinks.prev}><Button>{'<'}</Button></Link>
-                        <Button>More Projects</Button>
+                        <Link href="/projects"><Button>More Projects</Button></Link>
                         <Link href={prevNextLinks.next}><Button>{'>'}</Button></Link>
                       </ButtonsWrapper>
                     </InnerLeftCol>

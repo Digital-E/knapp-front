@@ -143,7 +143,7 @@ const popUpVariants = {
     },
     hidden: {
         opacity: 0,
-        scale: 0.9,
+        scale: 1.1,
         y: "-50%",
         x: "-50%",
         left: "50%",

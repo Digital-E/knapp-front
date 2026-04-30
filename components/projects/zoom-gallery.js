@@ -17,7 +17,12 @@ import Button from '../button'
 
 const Container = styled(motion.div)`
     @media(max-width: 989px) {
-        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        z-index: 999;
     }
 `
 
@@ -45,20 +50,16 @@ const InnerContainer = styled.div`
 `
 
 const SliceOuter = styled.div`
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
     height: 100vh;
     padding: ${props => props.margin / 2}px;
     box-sizing: border-box;
     scroll-snap-align: center;
-    // pointer-events: none;
 
     @media(max-width: 989px) {
         display: flex;
         align-items: center;
+        justify-content: center;
         padding: 0;
-        height: 100vh;
     }
 `
 
@@ -74,7 +75,8 @@ const SliceWrapper = styled.div`
     }
 
     @media(max-width: 989px) {
-        max-width: calc(100% - 40px) !important;
+        width: calc(100vw - 40px);
+        max-width: calc(100vw - 40px);
     }
 `
 
@@ -165,7 +167,9 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
             const actualWidth = Math.min(availableHeight * aspectRatio, maxWidth)
             const actualHeight = actualWidth / aspectRatio
             el.style.width = `${actualWidth}px`
-            el.style.marginTop = `${Math.max(0, (availableHeight - actualHeight) / 2)}px`
+            if (!isMobile) {
+                el.style.marginTop = `${Math.max(0, (availableHeight - actualHeight) / 2)}px`
+            }
         });
     }
 
