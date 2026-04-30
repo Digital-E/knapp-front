@@ -168,32 +168,39 @@ export default function Component({}) {
                 const speed = Math.sqrt(vx * vx + vy * vy)
 
                 if (speed > 0.05) {
-                    const currentX = parseFloat(gsap.getProperty(logoRef.current, "x")) || 0
-                    const currentY = parseFloat(gsap.getProperty(logoRef.current, "y")) || 0
-                    const duration = clamp(speed * 0.4, 0.2, 1.2)
+                    let posX = parseFloat(gsap.getProperty(logoRef.current, "x")) || 0
+                    let posY = parseFloat(gsap.getProperty(logoRef.current, "y")) || 0
+                    let velX = vx * 20
+                    let velY = vy * 20
+                    const minX = -w * 0.8
+                    const minY = -h * 0.8
+                    const maxX = window.innerWidth - w * 0.2
+                    const maxY = window.innerHeight - h * 0.2
 
-                    const rawX = currentX + vx * 300
-                    const rawY = currentY + vy * 300
-                    const wallX = clamp(rawX, 0, window.innerWidth - w)
-                    const wallY = clamp(rawY, 0, window.innerHeight - h)
+                    let tickerFn
+                    const stopPhysics = () => gsap.ticker.remove(tickerFn)
 
-                    const hitsWallX = rawX < 0 || rawX > window.innerWidth - w
-                    const hitsWallY = rawY < 0 || rawY > window.innerHeight - h
-                    const hitsWall = hitsWallX || hitsWallY
+                    tickerFn = () => {
+                        velX *= 0.95
+                        velY *= 0.95
+                        posX += velX
+                        posY += velY
 
-                    const tl = gsap.timeline({ onComplete: moveLogo })
-                    tl.to(logoRef.current, { x: wallX, y: wallY, duration, ease: 'power2.out' })
+                        if (posX < minX) { posX = minX; velX =  Math.abs(velX) * 0.35 }
+                        if (posX > maxX) { posX = maxX; velX = -Math.abs(velX) * 0.35 }
+                        if (posY < minY) { posY = minY; velY =  Math.abs(velY) * 0.35 }
+                        if (posY > maxY) { posY = maxY; velY = -Math.abs(velY) * 0.35 }
 
-                    if (hitsWall) {
-                        // Reflect velocity off hit walls, keep 50% energy
-                        const reflectedVX = hitsWallX ? -vx * 0.5 : vx * 0.1
-                        const reflectedVY = hitsWallY ? -vy * 0.5 : vy * 0.1
-                        const bounceX = clamp(wallX + reflectedVX * 250, 0, window.innerWidth - w)
-                        const bounceY = clamp(wallY + reflectedVY * 250, 0, window.innerHeight - h)
-                        tl.to(logoRef.current, { x: bounceX, y: bounceY, duration: 0.5, ease: 'power2.out' })
+                        gsap.set(logoRef.current, { x: posX, y: posY })
+
+                        if (Math.abs(velX) < 0.5 && Math.abs(velY) < 0.5) {
+                            stopPhysics()
+                            moveLogo()
+                        }
                     }
 
-                    moveAnimation.current = tl
+                    gsap.ticker.add(tickerFn)
+                    moveAnimation.current = { kill: stopPhysics }
                     return
                 }
             }
