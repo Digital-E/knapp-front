@@ -2,14 +2,19 @@ import { useEffect, useRef, useContext } from "react"
 import styled from "styled-components"
 import gsap from 'gsap'
 
-import { motion } from 'framer-motion'
-
 import { store } from '../store'
 
-const Container = styled(motion.div)`
+const Container = styled.div`
     position: fixed;
-    cursor: pointer;
+    cursor: grab;
     z-index: 999;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-drag: none;
+
+    &:active {
+        cursor: grabbing;
+    }
 
     animation: border-flicker 2s linear infinite;
 
@@ -29,7 +34,7 @@ const Container = styled(motion.div)`
           -webkit-filter: drop-shadow (0px 0px 10px 5px rgba(16,134,232,0.73));
           filter: drop-shadow(0 0 0.3rem darkgreen);
         }
-        
+
         8% {
           opacity:1;
           -webkit-filter: drop-shadow (0px 0px 10px 5px rgba(16,134,232,0.73));
@@ -62,82 +67,149 @@ const Container = styled(motion.div)`
 
 
 export default function Component({}) {
-    let logoRef = useRef()
-    let innerLogoRef = useRef()
-    let moveAnimation;
+    const logoRef = useRef()
+    const innerLogoRef = useRef()
+    const moveAnimation = useRef(null)
+    const isDragging = useRef(false)
+    const hasDragged = useRef(false)
+    const dragOffset = useRef({ x: 0, y: 0 })
+    const lastPositions = useRef([])
 
-    //Context
     const context = useContext(store);
-    const { state, dispatch } = context;    
+    const { state, dispatch } = context;
 
+    const clamp = (val, min, max) => Math.max(min, Math.min(max, val))
 
-    let moveLogo = () => {
-        let targetCenter = {
-            x: Math.random() * window.innerWidth, 
-            y: Math.random() * window.innerHeight 
-        };
+    const getLogoSize = () => ({
+        w: logoRef.current?.offsetWidth || 50,
+        h: logoRef.current?.offsetHeight || 50,
+    })
 
-        do {
-            targetCenter.x = Math.random() * window.innerWidth
-        } while (targetCenter.x > window.innerWidth)
+    const moveLogo = () => {
+        const { w, h } = getLogoSize()
+        const targetX = Math.random() * (window.innerWidth - w)
+        const targetY = Math.random() * (window.innerHeight - h)
 
+        const currentX = parseFloat(gsap.getProperty(logoRef.current, "x")) || 0
+        const currentY = parseFloat(gsap.getProperty(logoRef.current, "y")) || 0
 
-        do {
-            targetCenter.y = Math.random() * window.innerHeight
-        } while (targetCenter.y > window.innerHeight)
-        
-        const boxRect = logoRef.current.getBoundingClientRect();
+        const distance = Math.sqrt((targetX - currentX) ** 2 + (targetY - currentY) ** 2)
 
-        const boxCenter = {
-          x: boxRect.left, 
-          y: boxRect.top 
-        };
-        
-        
-        const vertDiff = targetCenter.y - boxCenter.y;
-        const horizDiff = targetCenter.x - boxCenter.x;
-        const distance = Math.sqrt(vertDiff*vertDiff + horizDiff*horizDiff);
-
-
-        moveAnimation = gsap.to(logoRef.current, {x: targetCenter.x, y: targetCenter.y, duration: distance / 10, ease: 'linear', onComplete: moveLogo})  
+        moveAnimation.current = gsap.to(logoRef.current, {
+            x: targetX,
+            y: targetY,
+            duration: distance / 10,
+            ease: 'linear',
+            onComplete: moveLogo,
+        })
     }
 
-    let levitate = () => {
-        gsap.to(innerLogoRef.current, {y: 5, duration: 2, yoyo: true, repeat: -1, ease: "sine.inOut"})
+    const levitate = () => {
+        gsap.to(innerLogoRef.current, { y: 5, duration: 2, yoyo: true, repeat: -1, ease: "sine.inOut" })
     }
 
     useEffect(() => {
-
         levitate()
         moveLogo()
-
     }, [])
 
-    let toggleMeditationMode = () => {
-      dispatch({type: "toggle meditation mode", value: true})
+    const toggleMeditationMode = () => {
+        dispatch({ type: "toggle meditation mode", value: true })
+    }
+
+    const onPointerDown = (e) => {
+        moveAnimation.current?.kill()
+
+        const currentX = parseFloat(gsap.getProperty(logoRef.current, "x")) || 0
+        const currentY = parseFloat(gsap.getProperty(logoRef.current, "y")) || 0
+
+        isDragging.current = true
+        hasDragged.current = false
+        dragOffset.current = { x: e.clientX - currentX, y: e.clientY - currentY }
+        lastPositions.current = [{ x: e.clientX, y: e.clientY, t: Date.now() }]
+
+        logoRef.current.setPointerCapture(e.pointerId)
+    }
+
+    const onPointerMove = (e) => {
+        if (!isDragging.current) return
+        hasDragged.current = true
+
+        const { w, h } = getLogoSize()
+        const newX = clamp(e.clientX - dragOffset.current.x, 0, window.innerWidth - w)
+        const newY = clamp(e.clientY - dragOffset.current.y, 0, window.innerHeight - h)
+
+        gsap.set(logoRef.current, { x: newX, y: newY })
+
+        lastPositions.current.push({ x: e.clientX, y: e.clientY, t: Date.now() })
+        if (lastPositions.current.length > 5) lastPositions.current.shift()
+    }
+
+    const onPointerUp = () => {
+        if (!isDragging.current) return
+        isDragging.current = false
+
+        if (!hasDragged.current) {
+            toggleMeditationMode()
+            return
+        }
+
+        const { w, h } = getLogoSize()
+        const positions = lastPositions.current
+
+        if (positions.length >= 2) {
+            const last = positions[positions.length - 1]
+            const prev = positions[0]
+            const dt = last.t - prev.t
+
+            if (dt > 0 && dt < 150) {
+                const vx = (last.x - prev.x) / dt // px/ms
+                const vy = (last.y - prev.y) / dt
+                const speed = Math.sqrt(vx * vx + vy * vy)
+
+                if (speed > 0.05) {
+                    const currentX = parseFloat(gsap.getProperty(logoRef.current, "x")) || 0
+                    const currentY = parseFloat(gsap.getProperty(logoRef.current, "y")) || 0
+                    const duration = clamp(speed * 0.4, 0.2, 1.2)
+
+                    const rawX = currentX + vx * 300
+                    const rawY = currentY + vy * 300
+                    const wallX = clamp(rawX, 0, window.innerWidth - w)
+                    const wallY = clamp(rawY, 0, window.innerHeight - h)
+
+                    const hitsWallX = rawX < 0 || rawX > window.innerWidth - w
+                    const hitsWallY = rawY < 0 || rawY > window.innerHeight - h
+                    const hitsWall = hitsWallX || hitsWallY
+
+                    const tl = gsap.timeline({ onComplete: moveLogo })
+                    tl.to(logoRef.current, { x: wallX, y: wallY, duration, ease: 'power2.out' })
+
+                    if (hitsWall) {
+                        // Reflect velocity off hit walls, keep 50% energy
+                        const reflectedVX = hitsWallX ? -vx * 0.5 : vx * 0.1
+                        const reflectedVY = hitsWallY ? -vy * 0.5 : vy * 0.1
+                        const bounceX = clamp(wallX + reflectedVX * 250, 0, window.innerWidth - w)
+                        const bounceY = clamp(wallY + reflectedVY * 250, 0, window.innerHeight - h)
+                        tl.to(logoRef.current, { x: bounceX, y: bounceY, duration: 0.5, ease: 'power2.out' })
+                    }
+
+                    moveAnimation.current = tl
+                    return
+                }
+            }
+        }
+
+        moveLogo()
     }
 
   return (
-    <Container 
-      onClick={() => toggleMeditationMode()}
+    <Container
       ref={logoRef}
-      // drag
-      // onDragStart={
-      //   () => moveAnimation.kill()
-      // }
-      // onDragEnd={
-      //   () => moveLogo()
-      // }
-            // dragConstraints={constraintsRef}
-            // whileHover={{
-            //     scale: 1.01
-            // }}
-            // whileDrag={{ scale: 0.98 }}
-            // whileHover={{
-            //     scale: 1,
-            //     transition: { duration: 0.3 },
-            //   }}
-            dragMomentum={false}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
+      onMouseDown={e => e.stopPropagation()}
     >
         <div ref={innerLogoRef}>
             <svg version="1.0" xmlns="http://www.w3.org/2000/svg"

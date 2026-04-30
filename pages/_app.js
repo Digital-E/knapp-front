@@ -82,7 +82,7 @@ function MyApp({ Component, pageProps, router }) {
       </CookieConsent> */} 
       <Script src='https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js' strategy='beforeInteractive'/>
       <LogoFloat />
-      <MeditationMode />
+      <MeditationMode quotes={pageProps.data?.menuData?.meditationQuotes} />
       <AnimatePresence exitBeforeEnter 
       onExitComplete={() => { window.scrollTo(0,0) }}
       >   

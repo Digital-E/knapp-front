@@ -77,16 +77,16 @@ const containerVariants = {
 let audioVolumeInterval = null
 let animeTl = null
 
-let sentences = [
-    "La vie elle-même est ton professeur, et tu es dans un état d'apprentissage permanent.",
-    "Ne crains pas l'échec. Ce n'est pas l'échec, mais le manque d'ambition qui est un crime. Avec des objectifs élevés, l'échec peut être glorieux.",
+const fallbackSentences = [
+    "La vie elle-même est ton professeur, et tu es dans un état d’apprentissage permanent.",
+    "Ne crains pas l’échec. Ce n’est pas l’échec, mais le manque d’ambition qui est un crime. Avec des objectifs élevés, l’échec peut être glorieux.",
     "Je ne crains pas l’homme qui a pratiqué 10.000 coups une fois, mais je crains l’homme qui a pratiqué un coup 10.000 fois.",
     "Toute forme de connaissance, au bout du compte, est une connaissance de soi-même."
 ]
 
-let sentencesArray = sentences.slice();
-
-export default function Component({}) {
+export default function Component({ quotes }) {
+    let sentences = (quotes && quotes.length > 0) ? quotes.map(q => q.quote) : fallbackSentences;
+    const sentencesPool = useRef(sentences.slice());
     //Context
     const context = useContext(store);
     const { state, dispatch } = context;
@@ -156,13 +156,13 @@ export default function Component({}) {
         // Wrap every letter in a span
         var textWrapper = document.querySelector('.ml13');
 
-        if(sentencesArray.length === 0) sentencesArray = sentences.slice()
+        if(sentencesPool.current.length === 0) sentencesPool.current = sentences.slice()
 
-        let index = Math.round(Math.random() * (sentencesArray.length - 1))
+        let index = Math.round(Math.random() * (sentencesPool.current.length - 1))
 
-        textWrapper.innerHTML = sentencesArray[index]
+        textWrapper.innerHTML = sentencesPool.current[index]
 
-        sentencesArray.splice(index, 1)
+        sentencesPool.current.splice(index, 1)
 
         textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");           
         
