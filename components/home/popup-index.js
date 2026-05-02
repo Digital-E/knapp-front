@@ -138,6 +138,7 @@ const popUpVariants = {
     initial: {
         opacity: 0,
         scale: 1.1,
+        filter: "blur(100px)",
         display: "none",
         y: "-50%",
         x: "-50%",
@@ -147,6 +148,7 @@ const popUpVariants = {
     hidden: {
         opacity: 0,
         scale: 1.1,
+        filter: "blur(100px)",
         y: "-50%",
         x: "-50%",
         left: "50%",
@@ -164,6 +166,7 @@ const popUpVariants = {
     visible: {
         opacity: 1,
         scale: 1,
+        filter: "blur(0px)",
         display: "block",
         y: "-50%",
         x: "-50%",

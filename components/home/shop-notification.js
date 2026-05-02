@@ -108,17 +108,20 @@ const variants = {
     initial: {
         opacity: 0,
         scale: 1.1,
+        filter: "blur(100px)",
         display: "none",
     },
     show: {
         opacity: 1,
         scale: 1,
+        filter: "blur(0px)",
         display: "block",
         transition: { duration: 1, type: 'spring', ease: "easeInOut" }
     },
     hide: {
         opacity: 0,
         scale: 0.9,
+        filter: "blur(100px)",
         transition: { duration: 0.7, type: 'spring', ease: "easeInOut" },
         transitionEnd: { scale: 1.1, display: "none" }
     }
