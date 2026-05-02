@@ -4,7 +4,7 @@ import '../styles/index.css'
 
 import '../styles/flickity.css';
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -52,8 +52,23 @@ let desktopVariants = {
   }
 }
 
+let mobileVariants = {
+  pageInitial: { opacity: 1 },
+  pageAnimate: { opacity: 1 },
+  pageExit: { opacity: 1 }
+}
+
 
 function MyApp({ Component, pageProps, router }) {
+
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 990)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   useEffect(() => {
     setTimeout(() => {
@@ -86,7 +101,7 @@ function MyApp({ Component, pageProps, router }) {
       <AnimatePresence exitBeforeEnter 
       onExitComplete={() => { window.scrollTo(0,0) }}
       >   
-        <motion.div key={router.asPath} initial="pageInitial" animate="pageAnimate" exit="pageExit" variants={desktopVariants}>            
+        <motion.div key={router.asPath} initial="pageInitial" animate="pageAnimate" exit="pageExit" variants={isMobile ? mobileVariants : desktopVariants}>
           <Component {...pageProps} />
         </motion.div>
       </AnimatePresence>

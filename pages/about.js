@@ -72,7 +72,7 @@ const Text = styled.div`
 
   @media(max-width: 989px) {
     width: 100%;
-    margin-top: 70px;
+    margin-top: 50px;
     margin-bottom: 140px;
   }
 `
