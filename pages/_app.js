@@ -91,7 +91,7 @@ function MyApp({ Component, pageProps, router }) {
       </CookieConsent> */} 
       <Script src='https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js' strategy='beforeInteractive'/>
       <LogoFloat />
-      <MeditationMode quotes={pageProps.data?.menuData?.meditationQuotes} />
+      <MeditationMode quotes={pageProps.data?.menuData?.meditationQuotes} audio={pageProps.data?.menuData?.meditationAudio?.asset?.url} />
       {isMobile ? (
         <Component {...pageProps} />
       ) : (

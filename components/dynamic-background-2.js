@@ -168,7 +168,7 @@ class ParticleSystem {
 			attractorPower: 30,
 			attractorSize: 12,
 			attractorColor: "rgba(10,10,10,0.4)",
-			maxAttractors: 12
+			maxAttractors: 0
 		});
 		this.render();
 	}

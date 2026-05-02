@@ -84,7 +84,7 @@ const fallbackSentences = [
     "Toute forme de connaissance, au bout du compte, est une connaissance de soi-même."
 ]
 
-export default function Component({ quotes }) {
+export default function Component({ quotes, audio }) {
     let sentences = (quotes && quotes.length > 0) ? quotes.map(q => q.quote) : fallbackSentences;
     const sentencesPool = useRef(sentences.slice());
     //Context
@@ -197,7 +197,7 @@ export default function Component({ quotes }) {
   return (
     <>
         {/* <Overlay animate={isOpen ? 'visible' : 'hidden'} variants={overlayVariants} onClick={() => toggleMeditationMode()} /> */}
-        <audio id="meditation-audio" src="/sounds/meditation.mp3" />
+        <audio id="meditation-audio" src={audio || "/sounds/meditation.mp3"} />
         <Container animate={isOpen ? 'visible' : 'hidden'} variants={containerVariants} onClick={() => toggleMeditationMode()}>
             <InnerContainer>
                 <h1 class="ml13"></h1>
