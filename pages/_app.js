@@ -52,12 +52,6 @@ let desktopVariants = {
   }
 }
 
-let mobileVariants = {
-  pageInitial: { opacity: 1 },
-  pageAnimate: { opacity: 1 },
-  pageExit: { opacity: 1 }
-}
-
 
 function MyApp({ Component, pageProps, router }) {
 
@@ -98,13 +92,15 @@ function MyApp({ Component, pageProps, router }) {
       <Script src='https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js' strategy='beforeInteractive'/>
       <LogoFloat />
       <MeditationMode quotes={pageProps.data?.menuData?.meditationQuotes} />
-      <AnimatePresence exitBeforeEnter 
-      onExitComplete={() => { window.scrollTo(0,0) }}
-      >   
-        <motion.div key={router.asPath} initial="pageInitial" animate="pageAnimate" exit="pageExit" variants={isMobile ? mobileVariants : desktopVariants}>
-          <Component {...pageProps} />
-        </motion.div>
-      </AnimatePresence>
+      {isMobile ? (
+        <Component {...pageProps} />
+      ) : (
+        <AnimatePresence exitBeforeEnter onExitComplete={() => { window.scrollTo(0,0) }}>
+          <motion.div key={router.asPath} initial="pageInitial" animate="pageAnimate" exit="pageExit" variants={desktopVariants}>
+            <Component {...pageProps} />
+          </motion.div>
+        </AnimatePresence>
+      )}
       {/* <Footer data={pageProps.data?.footerData}/> */}
     </StateProvider>
   )

@@ -35,12 +35,15 @@ const PopUp = styled(motion.div)`
     max-width: 480px;
     background: var(--background);
 
-    :hover ${CloseButton} {
-        opacity: 1;
-    }
 
     @media(max-width: 989px) {
         width: calc(100% - 60px);
+    }
+
+    @media(min-width: 990px) {
+        &:hover ${CloseButton} {
+            opacity: 1;
+        }
     }
 `
 
