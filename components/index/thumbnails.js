@@ -49,6 +49,7 @@ function Component({ data, currentSelected }) {
 
         allDataArray.forEach((itemOne, indexOne) => {
             itemOne.projects?.forEach((itemTwo, indexTwo) => {
+                if(!itemTwo.project) return
                 newAllDataArray[indexOne].projects[indexTwo].project.index = count.current
                 count.current += 1
             })
@@ -61,6 +62,7 @@ function Component({ data, currentSelected }) {
         data.categories.forEach(item => {
     
             item.projects?.forEach(item => {
+                if(!item.project) return
                 allThumbnailsArray.push(item.project.thumbnail)
             })
     

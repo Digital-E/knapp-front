@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import Link from '../link'
+import { da } from 'date-fns/locale'
 
 const Container = styled.div`
     margin-bottom: 15px;
@@ -37,9 +38,11 @@ function Component({ data, currentSelected, categoryIndex, projectIndex, toggleP
         }
     }, [currentSelected])
 
+    if(!data.project) return null
+
     return(
         <Container onMouseOver={() => toggleProject(currentProject)} className={isSelected ? 'highlight' : ''}>
-            <Link href={data.project.slug.current}>
+            <Link href={data.project?.slug?.current}>
                 {data.project.title}
             </Link>
         </Container>
