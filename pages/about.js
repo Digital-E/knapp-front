@@ -58,9 +58,9 @@ const Text = styled.div`
   width: 65%;
   margin: 0;
 
-  p:nth-child(2) {
-    display: none;
-  }
+  // p:nth-child(2) {
+  //   display: none;
+  // }
 
   &.body-large p, &.body-large a, &.body-large span {
     font-size: inherit;
@@ -72,12 +72,20 @@ const Text = styled.div`
 
   @media(max-width: 989px) {
     width: 100%;
+    margin-top: 70px;
+    margin-bottom: 140px;
   }
+`
 
+const MobileOnly = styled.div`
   @media(min-width: 990px) {
-    > *:first-child {
-      display: none;
-    }
+    display: none;
+  }
+`
+
+const DesktopOnly = styled.div`
+  @media(max-width: 989px) {
+    display: none;
   }
 `
 
@@ -88,7 +96,9 @@ const MarginTitle = styled.h3`
   padding: 0 20px;
 
   @media(max-width: 989px) {
-    display: none;
+    // display: none;
+    position: relative;
+    top: 20px;
   }
 `
 
@@ -109,8 +119,9 @@ export default function About({ data = {}, preview }) {
   useEffect(() => {
     setTimeout(() => {
       setStartType(true)
-    }, 1000)
+    }, 0)
   }, [])
+
 
   return (
     <>
@@ -129,8 +140,18 @@ export default function About({ data = {}, preview }) {
           <InnerContainer>
             <LeftCol>
               <Text className='body-large bio-type'>
-                <Body content={data?.aboutData?.text} />
-                <Typewriter data={[data?.aboutData?.text[1].children[0].text]} start={startType} />
+                <MobileOnly>
+                  <Body content={data?.aboutData?.text} />
+                </MobileOnly>
+                <DesktopOnly>
+                  <Typewriter
+                    data={(data?.aboutData?.text ?? [])
+                      .filter(block => block._type === 'block')
+                      .map(block => (block.children ?? []).map(child => child.text ?? '').join(''))
+                      .filter(text => text.trim() !== '')}
+                    start={startType}
+                  />
+                </DesktopOnly>
               </Text>
             </LeftCol>
             <RightCol>
