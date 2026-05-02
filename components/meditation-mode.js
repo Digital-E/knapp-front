@@ -118,7 +118,7 @@ export default function Component({ quotes, audio }) {
         if(!mobileOrTablet) {
             let audio = document.querySelector('#meditation-audio')
             if(isOpen) {
-                audio.currentTime = 0
+                audio.currentTime = audio.duration ? Math.random() * audio.duration : 0
                 audio.volume = 0
 
                 clearInterval(audioVolumeInterval)
