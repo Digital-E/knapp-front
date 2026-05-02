@@ -12,7 +12,14 @@ const Container = styled(motion.div)`
     font-size: 0.875rem;
     user-select: none;
 
-    span {
+    @media(min-width: 990px) {
+        transition: opacity 0.2s ease;
+        &:hover {
+            opacity: 0.5;
+        }
+    }
+
+    span {
         position: relative;
         top: 0.5px;
     }
@@ -21,9 +28,7 @@ const Container = styled(motion.div)`
 
 export default function Component ({ children }) {
     return (
-        <Container 
-        // whileHover={{scale: 1.05}}
-        >
+        <Container>
             <span>{children}</span>
         </Container>
     )

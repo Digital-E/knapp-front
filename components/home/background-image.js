@@ -4,18 +4,15 @@ const Component = ({ hasLoaded, loadProgress }) => {
     let imageRef = useRef();
     let img = null;
 
-
-
     useEffect(() => {
         Image.prototype.load = function(url){
             var thisImg = this;
             var xmlHTTP = new XMLHttpRequest();
             xmlHTTP.open('GET', url, true);
-            xmlHTTP.responseType = 'arraybuffer';
+            xmlHTTP.responseType = 'blob';
 
-            xmlHTTP.onload = function(e) {
-                var blob = new Blob([this.response]);
-                thisImg.src = window.URL.createObjectURL(blob);
+            xmlHTTP.onload = function() {
+                thisImg.src = window.URL.createObjectURL(this.response);
             };
             xmlHTTP.onprogress = function(e) {
                 thisImg.completedPercentage = parseInt((e.loaded / e.total) * 100);
@@ -36,14 +33,14 @@ const Component = ({ hasLoaded, loadProgress }) => {
             };
             xmlHTTP.send();
         };
-    
+
         Image.prototype.completedPercentage = 0;
 
         img = new Image();
         img.load(`${window.location.origin}/map/TK_MAP_opti2.jpg`)
 
       }, []);
-    
+
 
     return (
         <img ref={imageRef} />

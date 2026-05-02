@@ -389,9 +389,9 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
 
         setTimeout(() => {
             // Show Clicked Media
-            document.querySelector(`#media-stack-element-${toggleZoomState}`).classList.remove('hide');            
+            document.querySelector(`#media-stack-element-${toggleZoomState}`).classList.remove('hide');
 
-            toggleZoom(null)         
+            toggleZoom(null)
         }, 300)
           
     }

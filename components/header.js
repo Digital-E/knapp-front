@@ -111,7 +111,7 @@ let List = styled.ul`
   }
 
   @media(min-width: 990px) {
-      margin-top: 5px;
+    margin-top: 5px;
   }
 `
 
@@ -188,15 +188,17 @@ let IconSVG = styled.div`
   svg {
     width: 35px;
     filter: drop-shadow(0 0 0.3rem var(--primary));
-    transition: filter 0.4s, opacity 0.3s;
-  }
-
-  :hover svg {
-    filter: drop-shadow(0 0 0.1rem var(--primary));
   }
 
   path {
     fill: var(--primary);
+  }
+
+  @media(min-width: 990px) {
+    transition: opacity 0.2s ease;
+    &:hover {
+      opacity: 0.5;
+    }
   }
 `
 
@@ -263,7 +265,7 @@ let BackgroundBlur = styled.div`
 
 export default function Header({ data }) {
   let [menuOpen, setMenuOpen] = useState(false);
-  const router = useRouter();
+  useRouter();
 
   if(data === undefined) return null;
 
@@ -313,9 +315,9 @@ export default function Header({ data }) {
       </div>
       <Menu className={menuOpen ? "nav--open" : ""}>    
         <List>
-        <BackgroundBlur></BackgroundBlur>   
+        <BackgroundBlur></BackgroundBlur>
           {
-          data?.menuItems?.map((item, index) => {
+          data?.menuItems?.map((item) => {
             return (
               <ListItem key={item._id}  onClick={() => setMenuOpen(false)} >
                 <Link href={item.url} isMenu={true}>

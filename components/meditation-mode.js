@@ -18,6 +18,7 @@ const Container = styled(motion.div)`
     width: 100%;
     z-index: 9999;
     backdrop-filter: blur(50px);
+    background: rgba(0,0,0,0.3);
 
     .ml13 {
     font-size: inherit;

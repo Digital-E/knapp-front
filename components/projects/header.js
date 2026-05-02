@@ -39,6 +39,13 @@ const Back = styled.div`
     border-radius: 999px;
     cursor: pointer;
 
+    @media(min-width: 990px) {
+        transition: opacity 0.2s ease;
+        &:hover {
+            opacity: 0.5;
+        }
+    }
+
     svg {
         position: relative;
         left: -1px;
