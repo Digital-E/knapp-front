@@ -31,10 +31,10 @@ let desktopVariants = {
     filter: "blur(0px)",
     transition: {
       opacity: {
-        duration: 0.5
+        duration: 0.3
       },
       filter: {
-        duration: 0.5,
+        duration: 0.3,
       }
     }
   },
@@ -43,10 +43,10 @@ let desktopVariants = {
     filter: "blur(20px)",
     transition: {
       opacity: {
-        duration: 0.5
+        duration: 0.3
       },
       filter: {
-        duration: 0.5,
+        duration: 0.3,
       }
     }
   }

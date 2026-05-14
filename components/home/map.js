@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react'
+import { useEffect, useState, useContext, useRef } from 'react'
 import styled from 'styled-components'
 import BackgroundImage, { isCached } from './background-image'
 import LoadingOverlay from './loading-overlay'
@@ -30,6 +30,7 @@ const MobileBlurBg = styled.div`
         background: url('/map/TK_MAP_opti2.jpg') center / cover no-repeat;
         filter: blur(20px);
         z-index: -1;
+        opacity: 0;
     }
 `
 
@@ -66,6 +67,37 @@ let containerPosTop = null;
 export default function Component({ hasClickedSymbol, indexData }) {
     let [loadProgress, setLoadProgress] = useState(0);
     let [hasLoaded, setHasLoaded] = useState(() => isCached());
+    const wasCachedAtMount = useRef(isCached());
+
+    useEffect(() => {
+        if (window.innerWidth >= 990) return;
+        if (isCached()) return;
+        const map = document.querySelector('#map');
+        const bg = document.querySelector('#map-blur-bg');
+        if (map) map.style.opacity = '0';
+        if (bg) bg.style.opacity = '0';
+    }, []);
+
+    useEffect(() => {
+        if (!hasLoaded || window.innerWidth >= 990) return;
+        const map = document.querySelector('#map');
+        const bg = document.querySelector('#map-blur-bg');
+        if (!map) return;
+        if (wasCachedAtMount.current) {
+            if (bg) bg.style.opacity = '1';
+            return;
+        }
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                map.style.transition = 'opacity 0.8s ease';
+                map.style.opacity = '1';
+                if (bg) {
+                    bg.style.transition = 'opacity 0s 0.8s';
+                    bg.style.opacity = '1';
+                }
+            });
+        });
+    }, [hasLoaded]);
 
     let isSwiping;
     let isDragging;
@@ -349,7 +381,7 @@ export default function Component({ hasClickedSymbol, indexData }) {
 
     return (
         <Container className="container">
-            <MobileBlurBg />
+            <MobileBlurBg id="map-blur-bg" />
             <InnerContainer id="map">
                 {/* Gems */}
                 {/* <Gem x={70} y={80} index={0} sizeRatio={1.1} liftClick={() => hasClicked(0)} />
