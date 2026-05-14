@@ -7,6 +7,8 @@ import Img from 'next/image';
 
 const Container = styled.div`
     position: relative;
+    -webkit-touch-callout: none;
+    user-select: none;
 `
 
 const StyledImg = styled(Img)`
@@ -35,6 +37,7 @@ const Image = ({ data, hasCaption }) => {
                 sizes="(max-width: 800px) 100vw, 800px"
                 loaded={loaded ? 1 : 0}
                 onLoadingComplete={() => setLoaded(true)}
+                draggable={false}
             />
             {
                 (hasCaption && data.caption) && <span className="caption">{data.caption}</span>

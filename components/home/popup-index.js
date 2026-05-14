@@ -1,6 +1,4 @@
-import React, {useEffect, useState, useContext} from "react"
 import styled from "styled-components"
-import { motion } from "framer-motion"
 
 import Image from "../media/image"
 import Link from "../link"
@@ -23,9 +21,38 @@ const CloseButton = styled.div`
     svg path {
         fill: var(--primary);
     }
+
+    @media(max-width: 989px) {
+        opacity: 1;
+    }
 `
 
-const PopUp = styled(motion.div)`
+const Overlay = styled.div`
+    position: fixed;
+    z-index: 9997;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.4s ease-in,
+                visibility 0s 0.4s;
+
+    backdrop-filter: blur(50px);
+
+    &.open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+        transition: opacity 0.4s ease,
+                    visibility 0s;
+    }
+`
+
+const PopUp = styled.div`
     position: fixed;
     width: 480px;
     height: auto;
@@ -34,10 +61,32 @@ const PopUp = styled(motion.div)`
     z-index: 9998;
     max-width: 480px;
     background: var(--background);
+    left: 50%;
+    top: 50%;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(1.1);
+    filter: blur(100px);
+    transition: opacity 0.4s ease-in,
+                transform 0.4s ease-in,
+                filter 0.4s ease-in,
+                visibility 0s 0.4s;
 
+    &.open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+        transform: translate(-50%, -50%) scale(1);
+        filter: blur(0px);
+        transition: opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                    filter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                    visibility 0s;
+    }
 
     @media(max-width: 989px) {
-        width: calc(100% - 60px);
+        width: calc(100% - 80px);
     }
 
     @media(min-width: 990px) {
@@ -45,17 +94,6 @@ const PopUp = styled(motion.div)`
             opacity: 1;
         }
     }
-`
-
-const Overlay = styled(motion.div)`
-    position: fixed;
-    z-index: 9997;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    backdrop-filter: blur(50px);
-    cursor: pointer;
 `
 
 const Category = styled.div`
@@ -83,11 +121,6 @@ const ListItem = styled.div`
         display: flex;
         align-items: center;
     }
-
-    // :hover > a > div:nth-child(1) {
-    //     opacity: 0.4;
-    //     transition: opacity var(--transition-in);
-    // }
 
     :hover > a > div:nth-child(2) {
         color: var(--primary);
@@ -131,73 +164,6 @@ const Thumbnail = styled.div`
     }
 `
 
-
-
-
-const popUpVariants = {
-    initial: {
-        opacity: 0,
-        scale: 1.1,
-        filter: "blur(100px)",
-        display: "none",
-        y: "-50%",
-        x: "-50%",
-        left: "50%",
-        top: "50%",
-    },
-    hidden: {
-        opacity: 0,
-        scale: 1.1,
-        filter: "blur(100px)",
-        y: "-50%",
-        x: "-50%",
-        left: "50%",
-        top: "50%",
-        transition: {
-            duration: 0.7,
-            type: 'spring',
-            ease: "easeInOut"
-        },
-        transitionEnd: {
-            scale: 1.1,
-            display: "none"
-        }
-    },
-    visible: {
-        opacity: 1,
-        scale: 1,
-        filter: "blur(0px)",
-        display: "block",
-        y: "-50%",
-        x: "-50%",
-        left: "50%",
-        top: "50%",
-        transition: {
-            duration: 1,
-            type: 'spring',
-            ease: "easeInOut",
-            staggerChildren: 0.1,
-            delayChildren: 0.1
-        }
-    }
-}
-
-const overlayVariants = {
-    hidden: {
-        opacity: 0,
-        transitionEnd: {
-            display: "none"
-        }
-    },
-    visible: {
-        opacity: 1,
-        transition: {
-            duration: 0.4,
-        },
-        display: "block"
-    }
-}
-
 let Icon = styled.div`
     svg {
         height: 25px;
@@ -214,10 +180,10 @@ const Component = ({ data, togglePopup, popupOpen, currentCategoryIndex }) => {
 
     return (
         <>
-        <Overlay onClick={() => togglePopup()} animate={popupOpen? "visible" : "hidden"} variants={overlayVariants}/>
-        <PopUp initial={"initial"} animate={popupOpen ? "visible" : "hidden"} variants={popUpVariants}>
+        <Overlay onClick={() => togglePopup()} className={popupOpen ? 'open' : ''} />
+        <PopUp className={popupOpen ? 'open' : ''}>
             <Category>
-                <Icon 
+                <Icon
                     dangerouslySetInnerHTML={{__html: data.categories[currentCategoryIndex].icon}}
                 />
                 <p>{data.categories[currentCategoryIndex].title}</p>
@@ -227,17 +193,16 @@ const Component = ({ data, togglePopup, popupOpen, currentCategoryIndex }) => {
             </CloseButton>
             <List>
                 {data.categories[currentCategoryIndex].projects.map(item =>
-                    <ListItem>
+                    <ListItem key={item.project.slug.current}>
                         <Link href={item.project.slug.current}>
                             <Thumbnail><Image data={item.project.thumbnail}/></Thumbnail>
                             <Title>{item.project.title}</Title>
-                        </Link>                        
+                        </Link>
                     </ListItem>
                 )}
             </List>
-            {/* <Information dangerouslySetInnerHTML={{ __html: data !== null && data.AboutText }}/> */}
         </PopUp>
-        </>          
+        </>
     )
 }
 

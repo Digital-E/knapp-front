@@ -25,25 +25,8 @@ import MediaStack from '../../components/projects/media-stack'
 import ZoomGallery from '../../components/projects/zoom-gallery'
 
 let Container = styled.div`
-  position: relative; 
-
-  @media(min-width: 990px) {
-    min-height: 100vh;
-  }
-
-  @media(max-width: 989px) {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    min-height: 100vh;
-  }
-
-  // @supports(-webkit-touch-callout: none) {
-  //   position: fixed;
-  //   height: 100%;
-  //   width: 100%;
-  //   min-height: initial;
-  // }
+  position: relative;
+  min-height: 100vh;
 `
 
 let InnerContainer = styled.div`
@@ -54,12 +37,14 @@ let InnerContainer = styled.div`
   overflow: hidden;
   z-index: 0;
 
-  @media(max-width: 989px) {
-    // height: 100%;
-  }
-
   @supports(-webkit-touch-callout: none) {
     height: 100%;
+  }
+
+  @media(max-width: 989px) {
+    position: relative;
+    height: auto;
+    overflow: visible;
   }
 `
 
@@ -67,16 +52,16 @@ let InnerContainer = styled.div`
 let LeftCol = styled.div`
   flex-basis: 65%;
   margin: 140px 0 0 120px;
-  // padding-top: 102px;
   overflow: scroll;
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 1) 10px);
   box-sizing: border-box;
 
   @media(max-width: 989px) {
     flex-basis: 100%;
-    margin: 0px 20px;
-    padding-top: 60px;
-    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 1) 60px);
+    margin: 0;
+    padding: 60px 20px 120px;
+    overflow: visible;
+    mask-image: none;
   }
 `
 
@@ -130,7 +115,7 @@ const ButtonsWrapper = styled.div`
   width: 85%;
 
   > a:nth-child(2) {
-    margin: 0 10px 20px 10px;
+    margin: 0 10px 50px 10px;
   }
 
   a {
@@ -139,7 +124,7 @@ const ButtonsWrapper = styled.div`
 
   @media(max-width: 989px) {
     width: 100%;
-    margin-bottom: 130px;
+    margin-bottom: 0px;
 
     > a:nth-child(2) {
       margin: 0 auto;
@@ -157,6 +142,7 @@ export default function Component({ data = {}, preview }) {
 
   let [mediaStack, setMediaStack] = useState([])
   let [toggleZoomState, setToggleZoomState] = useState(null)
+  const savedScrollY = useRef(0)
   let [prevNextLinks, setPrevNextLinks] = useState({
     prev: '/',
     next: '/'
@@ -167,6 +153,25 @@ export default function Component({ data = {}, preview }) {
   if (!router.isFallback && !slug) {
     return <ErrorPage statusCode={404} />
   }
+
+  useEffect(() => {
+    if (toggleZoomState !== null) {
+      savedScrollY.current = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${savedScrollY.current}px`;
+      document.body.style.width = '100%';
+    } else {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      window.scrollTo(0, savedScrollY.current);
+    }
+    return () => {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+    };
+  }, [toggleZoomState]);
 
   useEffect(() => {
     // Create Media Stack Array

@@ -48,6 +48,10 @@ export default function Index({ data = {}, preview }) {
 
   }, []);
 
+  useEffect(() => {
+    document.body.classList.toggle('popup-open', popupOpen);
+  }, [popupOpen]);
+
   let togglePopup = () => {
     setPopupOpen(false)
   }
@@ -70,7 +74,7 @@ export default function Index({ data = {}, preview }) {
         <Container>
           <PopupIndex popupOpen={popupOpen} togglePopup={() => togglePopup()} data={data.indexData} currentCategoryIndex={currentCategoryIndex} />
           <Desktop>
-            <Map hasClickedSymbol={(index) => hasClickedSymbolFunc(index)} />
+            <Map hasClickedSymbol={(index) => hasClickedSymbolFunc(index)} indexData={data.indexData} />
           </Desktop>
         </Container>
       </Layout>

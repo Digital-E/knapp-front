@@ -73,22 +73,23 @@ const Overlay = styled.div`
 
 const LoadingProgress = ({progress}) => {
     let wrapperRef = useRef();
+    const initialProgress = useRef(progress);
 
     useEffect(() => {
         if(progress === 100) {
             setTimeout(() => {
-                wrapperRef.current.classList.add("hide");
+                if (wrapperRef.current) wrapperRef.current.classList.add("hide");
             }, 1000);
 
             setTimeout(() => {
-                wrapperRef.current.style.display = "none";
+                if (wrapperRef.current) wrapperRef.current.style.display = "none";
             }, 1300);
         }
     }, [progress]);
 
 
     return (
-    <Wrapper ref={wrapperRef}>
+    <Wrapper ref={wrapperRef} style={initialProgress.current === 100 ? {display: 'none'} : {}}>
         <Overlay />
         <ContainerBackground />
         <Container>

@@ -1,10 +1,20 @@
 import { useEffect, useRef } from "react";
 
+let cachedBlobUrl = null;
+
+export const isCached = () => !!cachedBlobUrl;
+
 const Component = ({ hasLoaded, loadProgress }) => {
     let imageRef = useRef();
     let img = null;
 
     useEffect(() => {
+        if (cachedBlobUrl) {
+            if (imageRef.current) imageRef.current.src = cachedBlobUrl;
+            hasLoaded();
+            return;
+        }
+
         Image.prototype.load = function(url){
             var thisImg = this;
             var xmlHTTP = new XMLHttpRequest();
@@ -23,6 +33,7 @@ const Component = ({ hasLoaded, loadProgress }) => {
             };
             xmlHTTP.onloadend = function() {
                 thisImg.completedPercentage = 100;
+                cachedBlobUrl = thisImg.src;
                 if(imageRef.current) {
                     imageRef.current.src = thisImg.src
                 }

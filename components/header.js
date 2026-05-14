@@ -155,16 +155,37 @@ let Menu = styled.div`
   }
 
   @media(max-width: 989px) {
-    display: none;
+    display: flex;
     flex-direction: column;
     position: absolute;
     left: 50%;
-    transform: translateX(-50%);
     width: 230px;
     background: #1A1A1A;
     border-radius: 25px;
     bottom: 20px;
     padding: 20px 0 65px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) scale(1.1);
+    filter: blur(100px);
+    pointer-events: none;
+    will-change: transform, opacity, filter;
+    transition: opacity 0.4s ease-in,
+                transform 0.4s ease-in,
+                filter 0.4s ease-in,
+                visibility 0s 0.4s;
+
+    &.nav--open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) scale(1);
+      filter: blur(0px);
+      pointer-events: all;
+      transition: opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  filter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  visibility 0s;
+    }
 
     ${ListItem} {
       margin: 0;
@@ -172,10 +193,6 @@ let Menu = styled.div`
 
     > ul {
       flex-direction: column;
-    }
-
-    &.nav--open {
-      display: flex;
     }
   }
 
@@ -244,6 +261,22 @@ let Logo = styled.div`
   }
 `
 
+let MobileOverlay = styled.div`
+    display: none;
+
+    @media(max-width: 989px) {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+
+        &.open {
+            pointer-events: all;
+        }
+    }
+`
+
 let BackgroundBlur = styled.div`
     position: absolute;
     z-index: -1;
@@ -273,6 +306,7 @@ export default function Header({ data }) {
   return (
     <>
     <ShopNotification />
+    <MobileOverlay className={menuOpen ? 'open' : ''} onClick={() => setMenuOpen(false)} />
     <Container className={menuOpen ? "nav--open hide-on-expand" : "hide-on-expand"}>
       {/* <div
         onClick={() => {setMenuOpen(false);}}>

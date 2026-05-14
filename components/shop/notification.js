@@ -87,13 +87,14 @@ export default function Component({ data, constraintsRef }) {
     useEffect(() => {
         setTimeout(() => {
             setShow(true)
-        }, 1000)
+        }, 500)
     }, [])
 
     return (
-        <Container 
+        <Container
             id='shop-notification'
-            animate={show ? 'show' : 'hide'} 
+            initial="hide"
+            animate={show ? 'show' : 'hide'}
             variants={variants}
             // drag
             // dragConstraints={constraintsRef}

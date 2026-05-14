@@ -23,6 +23,7 @@ const Container = styled(motion.div)`
         width: 100%;
         height: 100vh;
         z-index: 999;
+        background: var(--background);
     }
 `
 
@@ -46,6 +47,7 @@ const InnerContainer = styled.div`
         top: 0;
         box-sizing: border-box;
         overflow-y: scroll;
+        background: var(--background);
     }
 `
 
@@ -93,9 +95,6 @@ const Overlay = styled(motion.div)`
 
 const CloseButton = styled(motion.div)`
     position: fixed;
-    // bottom: 20px;
-    // left: 50%;
-    // transform: translateX(-50%);
     top: 20px;
     right: 20px;
     cursor: pointer;
@@ -105,6 +104,24 @@ const CloseButton = styled(motion.div)`
         bottom: auto;
         top: 20px;
     }
+`
+
+const Counter = styled(motion.div)`
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+    padding: 10px 15px;
+    border-radius: 999px;
+    background: #161616;
+    font-family: FT88 Regular;
+    font-size: 0.75rem;
+    letter-spacing: -0.1em;
+    color: var(--primary);
+    text-transform: uppercase;
+    white-space: nowrap;
+    pointer-events: none;
 `
 
 
@@ -137,6 +154,7 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
     let innerContainerRef = useRef();
 
     let [mediaStackExpanded, setMediaStackExpanded] = useState(false)
+    let [displayIndex, setDisplayIndex] = useState(0)
 
     const isDesktop = useMediaQuery({
         query: '(min-width: 990px)'
@@ -144,6 +162,7 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
 
     useEffect(() => {
         zoomIndex = toggleZoomState
+        if (toggleZoomState !== null) setDisplayIndex(toggleZoomState)
     }, [toggleZoomState])
 
     let resize = () => {
@@ -186,12 +205,19 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
 
         if(scrollCount < 1) return
         
+        let closest = 0;
+        let closestDist = Infinity;
+        const center = window.innerHeight / 2;
         document.querySelectorAll('.media-stack-zoom-element').forEach((item, index) => {
-            if(item.getBoundingClientRect().y === mediaStackMediazoomMargin / 2 && mediaStackExpandedVar) {
+            const rect = item.getBoundingClientRect();
+            const dist = Math.abs(rect.top + rect.height / 2 - center);
+            if (dist < closestDist) { closestDist = dist; closest = index; }
+            if(rect.y === mediaStackMediazoomMargin / 2 && mediaStackExpandedVar) {
                 gsap.to(document.querySelector('.media-stack-inner-container'), {duration: 0, scrollTo: {y: `#media-stack-element-${index}`, offsetY: 100}})
-                zoomIndex = index
             }
         })
+        zoomIndex = closest
+        setDisplayIndex(closest)
     }
 
     let clickZoomGallery = (e) => {
@@ -213,6 +239,7 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
             }
         }
 
+        setDisplayIndex(zoomIndex)
         gsap.to(innerContainerRef.current, {duration: 0, ease: "power2.inOut", scrollTo: {y: `#media-stack-zoom-element-${zoomIndex}`, offsetY: 100}})
     }
 
@@ -481,7 +508,8 @@ export default function Component({ data, toggleZoomState, toggleZoom }) {
                     onClick={(e) => clickZoomGallery(e)}>
                 {(data !== null && data !== undefined) ? data.map((slice, index) => renderSlice(slice, index)) : null}
             </InnerContainer>
-            <CloseButton animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={closeButtonVariants}onClick={() => expandMediaStack('close')}><Button>Close</Button></CloseButton>
+            <CloseButton animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={closeButtonVariants} onClick={() => expandMediaStack('close')}><Button>Close</Button></CloseButton>
+            <Counter animate={mediaStackExpanded ? 'visible' : 'hidden'} variants={closeButtonVariants}>{displayIndex + 1} / {data?.length}</Counter>
         </Container>
     )
 }
