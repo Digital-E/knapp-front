@@ -49,6 +49,7 @@ const InnerContainer = styled.div`
 
     @media(max-width: 989px) {
         position: relative;
+        opacity: 0;
         -webkit-mask-image:
             linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%),
             linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
@@ -69,34 +70,28 @@ export default function Component({ hasClickedSymbol, indexData }) {
     let [hasLoaded, setHasLoaded] = useState(() => isCached());
     const wasCachedAtMount = useRef(isCached());
 
-    useEffect(() => {
-        if (window.innerWidth >= 990) return;
-        if (isCached()) return;
-        const map = document.querySelector('#map');
-        const bg = document.querySelector('#map-blur-bg');
-        if (map) map.style.opacity = '0';
-        if (bg) bg.style.opacity = '0';
-    }, []);
-
-    useEffect(() => {
-        if (!hasLoaded || window.innerWidth >= 990) return;
+    const fadeInMap = () => {
         const map = document.querySelector('#map');
         const bg = document.querySelector('#map-blur-bg');
         if (!map) return;
-        if (wasCachedAtMount.current) {
-            if (bg) bg.style.opacity = '1';
-            return;
-        }
         requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                map.style.transition = 'opacity 0.8s ease';
-                map.style.opacity = '1';
-                if (bg) {
-                    bg.style.transition = 'opacity 0s 0.8s';
-                    bg.style.opacity = '1';
-                }
-            });
+            map.style.transition = 'opacity 2s ease';
+            map.style.opacity = '1';
+            if (bg) {
+                bg.style.transition = 'opacity 0s 2s';
+                bg.style.opacity = '1';
+            }
         });
+    };
+
+    useEffect(() => {
+        if (window.innerWidth >= 990) return;
+        if (wasCachedAtMount.current) fadeInMap();
+    }, []);
+
+    useEffect(() => {
+        if (!hasLoaded || wasCachedAtMount.current || window.innerWidth >= 990) return;
+        fadeInMap();
     }, [hasLoaded]);
 
     let isSwiping;
@@ -221,14 +216,6 @@ export default function Component({ hasClickedSymbol, indexData }) {
         document.addEventListener('mouseup', (e) => {
             mouseDown = false;
             isDragging = false;
-
-            // clearTimeout(isDraggingTimeoutFunction)
-            // let isDraggingTimeoutFunction = setTimeout(function(){
-            //     isDragging = false
-            // }, 500);
-
-            // incrementAmount.x = 0;
-            // incrementAmount.y = 0;
 
         });
 
